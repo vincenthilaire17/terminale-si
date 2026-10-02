@@ -17,8 +17,6 @@
             --border: #cbd5e1;
             --code-bg: #0f172a;
             --code-text: #f1f5f9;
-            --todo-bg: #fef3c7;
-            --todo-border: #f59e0b;
         }
 
         * {
@@ -36,7 +34,7 @@
         }
 
         .container {
-            max-width: 1020px;
+            max-width: 1000px;
             margin: 0 auto;
             background: var(--card-bg);
             padding: 2.2rem;
@@ -117,7 +115,7 @@
             color: var(--primary);
             border-bottom: 2px solid var(--primary);
             padding-bottom: 0.35rem;
-            margin: 2.4rem 0 1rem;
+            margin: 2.2rem 0 1rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -135,11 +133,11 @@
 
         h3.section-title {
             color: var(--secondary);
-            margin: 1.4rem 0 0.6rem;
+            margin: 1.3rem 0 0.6rem;
             font-size: 1.1rem;
         }
 
-        /* Documentation Matplotlib */
+        /* Lien documentation Matplotlib */
         .doc-link-box {
             background: #f0fdf4;
             border: 1px solid #86efac;
@@ -152,163 +150,53 @@
 
         .doc-link-box a {
             color: #15803d;
-            font-weight: 600;
+            font-weight: bold;
             text-decoration: underline;
         }
 
-        /* Tableaux */
+        /* Tableaux de mesure */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 1.1rem 0;
+            margin: 1rem 0 1.4rem;
             font-size: 0.9rem;
         }
 
         th, td {
             border: 1px solid var(--border);
-            padding: 0.65rem 0.75rem;
+            padding: 0.65rem 0.6rem;
             text-align: center;
         }
 
         th {
             background-color: #f1f5f9;
-            color: var(--primary);
+            color: var(--text);
             font-weight: 600;
         }
 
-        td:first-child {
-            text-align: left;
-            font-weight: 500;
-        }
-
-        .empty-cell {
-            color: #94a3b8;
-            font-style: italic;
-        }
-
-        /* Schémas & Figures Tinkercad */
-        .circuit-figure {
-            text-align: center;
-            margin: 1.2rem 0;
-            padding: 0.85rem;
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-        }
-
-        .circuit-figure img {
-            max-width: 100%;
-            height: auto;
-            max-height: 290px;
-            border-radius: 6px;
-            border: 1px solid #cbd5e1;
-            background: #ffffff;
-            display: inline-block;
-        }
-
-        .circuit-figure figcaption {
-            margin-top: 0.55rem;
-            font-size: 0.88rem;
+        td.empty-cell {
+            background-color: #ffffff;
             color: var(--text-muted);
             font-style: italic;
+            height: 2.2rem;
         }
 
+        /* Schémas */
         .schematic-box {
-            background: #ffffff;
-            border: 1px dashed var(--primary-light);
-            border-radius: 6px;
-            padding: 0.9rem;
-            font-family: 'Consolas', monospace;
-            font-size: 0.85rem;
-            white-space: pre;
-            line-height: 1.35;
-            margin: 1rem 0;
-            overflow-x: auto;
-            color: #334155;
-        }
-
-        /* Méthodologie comparative Grid */
-        .methodo-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.1rem;
-            margin: 1.2rem 0;
-        }
-
-        .methodo-card {
-            border: 1px solid var(--border);
-            border-radius: 7px;
-            padding: 1rem;
-            background: #ffffff;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
-        }
-
-        .methodo-card.sheets {
-            border-top: 4px solid #16a34a;
-            background: #f0fdf4;
-        }
-
-        .methodo-card.python {
-            border-top: 4px solid #2563eb;
             background: #f8fafc;
-        }
-
-        .methodo-card h4 {
-            margin-bottom: 0.6rem;
-            font-size: 0.98rem;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .methodo-card.sheets h4 {
-            color: #15803d;
-        }
-
-        .methodo-card.python h4 {
-            color: #1d4ed8;
-        }
-
-        .methodo-card ul {
-            padding-left: 1.3rem;
+            border: 1px dashed var(--text-muted);
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            line-height: 1.25;
+            color: #334155;
+            overflow-x: auto;
             font-size: 0.88rem;
-            line-height: 1.45;
         }
 
-        .methodo-card li {
-            margin-bottom: 0.35rem;
-        }
-
-        .methodo-card strong {
-            color: #0f172a;
-        }
-
-        .sheets-step {
-            display: inline-block;
-            background: #dcfce7;
-            color: #166534;
-            font-weight: 700;
-            font-size: 0.75rem;
-            padding: 0.1rem 0.4rem;
-            border-radius: 4px;
-            margin-right: 0.2rem;
-            border: 1px solid #bbf7d0;
-        }
-
-        .warning-pill {
-            display: inline-block;
-            background: #fee2e2;
-            color: #991b1b;
-            font-weight: 600;
-            font-size: 0.76rem;
-            padding: 0.1rem 0.45rem;
-            border-radius: 4px;
-            margin-top: 0.3rem;
-            border: 1px solid #fecaca;
-        }
-
-        /* Blocs de Code */
+        /* Blocs Code */
         .code-container {
             margin: 1rem 0 1.4rem;
             border-radius: 6px;
@@ -320,7 +208,7 @@
         .code-header {
             background: #1e293b;
             color: #94a3b8;
-            padding: 0.4rem 0.9rem;
+            padding: 0.35rem 0.9rem;
             font-size: 0.8rem;
             font-family: monospace;
             display: flex;
@@ -330,12 +218,12 @@
         }
 
         pre {
-            padding: 0.95rem;
+            padding: 0.9rem;
             overflow-x: auto;
             color: var(--code-text);
             font-family: 'Fira Code', 'Consolas', monospace;
-            font-size: 0.84rem;
-            line-height: 1.48;
+            font-size: 0.85rem;
+            line-height: 1.45;
         }
 
         .code-comment {
@@ -347,36 +235,69 @@
             font-weight: bold;
         }
 
-        /* Boîtes Questions */
+        /* Questions */
         .question-box {
             background-color: #fdf4ff;
             border-left: 4px solid #c084fc;
-            padding: 0.95rem 1.1rem;
-            margin: 1.2rem 0;
+            padding: 0.9rem 1.1rem;
+            margin: 1.1rem 0;
             border-radius: 0 6px 6px 0;
         }
 
         .question-box h4 {
             color: #7e22ce;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.35rem;
             font-size: 0.98rem;
         }
 
         .question-box p {
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.35rem;
             font-size: 0.92rem;
         }
 
-        /* Formules mathématiques */
+        /* Méthodologie */
+        .methodo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .methodo-card {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.9rem;
+            background: #fafafa;
+        }
+
+        .methodo-card.sheets {
+            border-top: 4px solid #16a34a;
+        }
+
+        .methodo-card.python {
+            border-top: 4px solid #2563eb;
+        }
+
+        .methodo-card h4 {
+            margin-bottom: 0.4rem;
+            font-size: 0.95rem;
+        }
+
+        .methodo-card ul {
+            padding-left: 1.2rem;
+            font-size: 0.88rem;
+        }
+
+        /* Formule mathématique HTML */
         .math-formula {
             display: block;
             text-align: center;
             font-family: 'Cambria Math', 'Times New Roman', serif;
-            font-size: 1.15rem;
+            font-size: 1.12rem;
             margin: 0.9rem 0;
             color: var(--primary);
             background: #f8fafc;
-            padding: 0.6rem;
+            padding: 0.5rem;
             border-radius: 6px;
             border: 1px solid var(--border);
         }
@@ -397,7 +318,7 @@
         @media print {
             body { background: white; padding: 0; }
             .container { box-shadow: none; border: none; padding: 0; }
-            .code-container, .schematic-box, .circuit-figure { page-break-inside: avoid; }
+            .code-container, .schematic-box { page-break-inside: avoid; }
         }
     </style>
 </head>
@@ -425,7 +346,7 @@
         </div>
         <div class="header-cell full title">
             <h1>Représentation & Modélisation des Mesures Physiques</h1>
-            <p>Google Sheets et Python Matplotlib — Capteurs passifs, Pont diviseur et Conditionnement CTN 10 k&Omega;</p>
+            <p>Google Sheets et Python Matplotlib — Capteurs passifs, Pont diviseur et Modélisation CTN 10 k&Omega;</p>
         </div>
     </div>
 
@@ -433,7 +354,7 @@
     <div class="competences-box">
         <h3>📌 Objectifs & Compétences du Programme de Terminale SI</h3>
         <ul>
-            <li><strong>Compétence B2 / CO2.1 :</strong> Caractériser les grandeurs physiques de la chaîne d'information (tension, courant, résistance, éclairement, température).</li>
+            <li><strong>Compétence B2 / CO2.1 :</strong> Caractériser les grandeurs physiques de la chaîne d'information (tension, résistance, éclairement, température).</li>
             <li><strong>Compétence B3 / CO2.4 :</strong> Mesurer et acquérir des grandeurs électriques par simulation (Tinkercad Circuits).</li>
             <li><strong>Compétence C1 / CO3.1 :</strong> Traiter et organiser méthodiquement des données de mesure sous tableur (Google Sheets) et en langage Python.</li>
             <li><strong>Compétence C2 / CO3.2 :</strong> Choisir et construire la représentation graphique adaptée (Nuage de points XY, Diagramme en colonnes/barres, Graphique en secteurs).</li>
@@ -459,14 +380,9 @@
     <p>Une photorésistance (<strong>LDR</strong> pour <em>Light Dependent Resistor</em>) est un capteur passif dont la résistance interne diminue lorsque le flux lumineux incident augmente.</p>
 
     <h3 class="section-title">1.1. Mesure directe R = f(Luminosité)</h3>
-    <p>1. Sous <strong>Tinkercad Circuits</strong>, reliez une LDR directement aux bornes d'un multimètre configuré en mode <strong>Ohmmètre</strong> (symbole <strong>R</strong>).<br>
+    <p>1. Sous <strong>Tinkercad Circuits</strong>, reliez une LDR directement aux bornes d'un multimètre configuré en mode <strong>Ohmmètre</strong> (&Omega;).<br>
     2. Lancez la simulation, cliquez sur la LDR et faites varier le curseur de 0 % (obscurité) à 100 % (plein soleil).<br>
     3. Complétez le tableau de mesures suivant :</p>
-
-    <figure class="circuit-figure">
-        <img src="images/schema_partie1_ldr_ohmmetre.png" alt="Câblage Tinkercad — Mesure directe de la LDR à l'ohmmètre">
-        <figcaption><strong>Figure 1.1 :</strong> Câblage sous Tinkercad Circuits — Mesure directe de la résistance R de la photorésistance au multimètre (mode Ohmmètre « R »).</figcaption>
-    </figure>
 
     <table>
         <thead>
@@ -489,24 +405,22 @@
 
     <div class="methodo-grid">
         <div class="methodo-card sheets">
-            <h4>🟢 Aide Google Sheets N°1 : Nuage de Points (Scatter Plot)</h4>
+            <h4>📊 Sous Google Sheets</h4>
             <ul>
-                <li><span class="sheets-step">1</span> <strong>Sélection :</strong> Sélectionnez les colonnes <em>Luminosité</em> et <em>Résistance</em> (avec les en-têtes).</li>
-                <li><span class="sheets-step">2</span> <strong>Insertion :</strong> Menu <code>Insertion</code> &gt; <code>Graphique</code>.</li>
-                <li><span class="sheets-step">3</span> <strong>Type de graphique :</strong> Dans l'onglet <code>Configurer</code> &gt; <em>Type de graphique</em>, choisissez <strong>Nuage de points</strong> (Scatter).<br>
-                    <span class="warning-pill">⚠️ INTERDIT : Ne choisissez jamais "Graphique en courbes" (ligne brisée) pour des données physiques !</span>
-                </li>
-                <li><span class="sheets-step">4</span> <strong>Axes :</strong> Vérifiez <strong>Axe X = Luminosité (%)</strong> (commande) et <strong>Série = Résistance</strong> (réponse).</li>
-                <li><span class="sheets-step">5</span> <strong>Personnalisation :</strong> Onglet <code>Personnaliser</code> &gt; <em>Titres</em> : nommez le graphique et les axes avec unités (k&Omega;). Cochez le <em>Quadrillage principal</em>.</li>
+                <li>Sélectionnez les deux colonnes de mesures.</li>
+                <li>Menu <code>Insertion</code> &gt; <code>Graphique</code>.</li>
+                <li>Dans <em>Type de graphique</em>, choisissez <strong>Nuage de points</strong> (Scatter).</li>
+                <li><em>Ne choisissez jamais "Graphique en courbes" (ligne brisée) pour des données physiques !</em></li>
+                <li>Ajoutez le titre et nommez les axes avec leurs unités.</li>
             </ul>
         </div>
         <div class="methodo-card python">
-            <h4>🐍 Méthode Python (Matplotlib)</h4>
+            <h4>🐍 Sous Python (Thonny)</h4>
             <ul>
-                <li>Consultez l'exemple officiel : <a href="https://matplotlib.org/stable/gallery/lines_bars_and_markers/scatter_demo2.html" target="_blank" rel="noopener noreferrer">Scatter plot demo</a>.</li>
-                <li>Utilisez <code>plt.scatter()</code> pour tracer les points de mesure expérimentaux discrets.</li>
-                <li>Superposez <code>plt.plot(..., linestyle='--')</code> pour esquisser l'allure du profil.</li>
-                <li>Paramétrez les libellés avec <code>plt.xlabel()</code>, <code>plt.ylabel()</code>, <code>plt.title()</code> et activez <code>plt.grid(True)</code>.</li>
+                <li>Consultez l'exemple de nuage de points : <a href="https://matplotlib.org/stable/gallery/lines_bars_and_markers/scatter_demo2.html" target="_blank" rel="noopener noreferrer">Scatter plot demo</a>.</li>
+                <li>Créez le script à partir du modèle ci-dessous.</li>
+                <li>Complétez les listes de données mesurées.</li>
+                <li>Utilisez <code>plt.scatter()</code> et <code>plt.plot()</code> pour tracer les points et relier le profil.</li>
             </ul>
         </div>
     </div>
@@ -519,21 +433,21 @@
         <pre><code class="language-python"># Squelette à compléter d'après la galerie : https://matplotlib.org/stable/gallery/index.html
 import matplotlib.pyplot as plt
 
-<span class="code-comment"># 1. TODO: Remplir les listes avec vos mesures réelles</span>
+# 1. TODO: Remplir les listes avec vos mesures réelles
 luminosite = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-resistance_kohm = [ ... ]  <span class="code-todo"># &lt;-- À COMPLÉTER avec vos valeurs mesurées</span>
+resistance_kohm = [ ... ]  # &lt;-- À COMPLÉTER avec vos valeurs mesurées
 
 plt.figure(figsize=(8, 5))
 
-<span class="code-comment"># 2. TODO: Tracer le nuage de points (scatter) et la courbe d'allure</span>
-<span class="code-todo"># plt.scatter(luminosite, resistance_kohm, color='red', marker='o', s=50, label='Mesures LDR')</span>
-<span class="code-todo"># plt.plot(luminosite, resistance_kohm, color='darkred', linestyle='--', alpha=0.7)</span>
+# 2. TODO: Tracer le nuage de points (scatter) et la courbe
+# plt.scatter( ... , ... , color='...', marker='o', label='...')
+# plt.plot( ... , ... , linestyle='--', color='...')
 
-<span class="code-comment"># 3. TODO: Configurer les axes, la grille et le titre</span>
+# 3. TODO: Configurer les axes, la grille et le titre
 plt.title("Caractéristique de la LDR : R = f(Luminosité)")
 plt.xlabel("Luminosité (%)")
 plt.ylabel("Résistance (kΩ)")
-plt.grid(True, linestyle=':', alpha=0.6)
+plt.grid(True)
 plt.legend()
 
 plt.show()</code></pre>
@@ -562,24 +476,7 @@ plt.show()</code></pre>
         </tbody>
     </table>
 
-    <div class="methodo-grid">
-        <div class="methodo-card sheets">
-            <h4>🟢 Aide Google Sheets N°2 : Gestion Multi-séries & Dynamique</h4>
-            <ul>
-                <li><strong>Option A (Axe secondaire) :</strong> Dans <code>Configurer</code> &gt; <em>Série</em> &gt; <em>Ajouter une série</em> (LDR 2). Puis dans <code>Personnaliser</code> &gt; <em>Série</em> &gt; LDR 2 &gt; <strong>Axe : Axe de droite</strong>.</li>
-                <li><strong>Option B (2 graphiques séparés — Recommandé) :</strong> Créez deux nuages de points distincts côte à côte. Chaque capteur dispose ainsi de sa propre échelle optimisée sans écrasement visuel.</li>
-            </ul>
-        </div>
-        <div class="methodo-card python">
-            <h4>🐍 Méthode Python : Deux Sous-graphiques (`plt.subplots`)</h4>
-            <ul>
-                <li>Consultez la galerie : <a href="https://matplotlib.org/stable/gallery/subplots_axes_and_figures/subplots_demo.html" target="_blank" rel="noopener noreferrer">Subplots Demo</a>.</li>
-                <li>Créez 2 axes avec <code>fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))</code>.</li>
-                <li>Tracez la LDR 1 sur <code>ax1</code> (échelle k&Omega;) et la LDR 2 sur <code>ax2</code> (échelle &Omega;).</li>
-                <li>Utilisez <code>plt.tight_layout()</code> pour éviter le chevauchement des titres.</li>
-            </ul>
-        </div>
-    </div>
+    <p>À l'aide de la galerie Matplotlib (<a href="https://matplotlib.org/stable/gallery/subplots_axes_and_figures/subplots_demo.html" target="_blank" rel="noopener noreferrer">Subplots Demo</a>), créez un script Python affichant les deux capteurs côte à côte dans deux sous-graphiques séparés.</p>
 
     <div class="code-container">
         <div class="code-header">
@@ -590,22 +487,16 @@ plt.show()</code></pre>
 import matplotlib.pyplot as plt
 
 lum = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-r_ldr1 = [ ... ]  <span class="code-todo"># Vos mesures de la LDR 1 (en kΩ)</span>
+r_ldr1 = [ ... ]  # Vos mesures de la LDR 1
 r_ldr2 = [9, 12, 20, 50, 110, 200, 400, 1000, 2200, 5000, 12000]
 
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 5))
 
-<span class="code-comment"># 1. TODO: Tracer sur ax1 la courbe de la LDR 1</span>
-<span class="code-todo"># ax1.scatter(lum, r_ldr1, color='blue', label='LDR 1')</span>
-<span class="code-todo"># ax1.plot(lum, r_ldr1, color='darkblue', linestyle='--')</span>
-<span class="code-todo"># ax1.set_title("Capteur 1 : LDR classique")</span>
-<span class="code-todo"># ax1.set_xlabel("Luminosité (%)"); ax1.set_ylabel("Résistance (kΩ)"); ax1.grid(True)</span>
+# TODO: Tracer sur ax1 la courbe de la LDR 1 (avec titre et axes)
+# ax1.plot( ... )
 
-<span class="code-comment"># 2. TODO: Tracer sur ax2 la courbe de la LDR 2</span>
-<span class="code-todo"># ax2.scatter(lum, r_ldr2, color='orange', label='LDR 2')</span>
-<span class="code-todo"># ax2.plot(lum, r_ldr2, color='darkorange', linestyle='--')</span>
-<span class="code-todo"># ax2.set_title("Capteur 2 : LDR spéciale")</span>
-<span class="code-todo"># ax2.set_xlabel("Luminosité (%)"); ax2.set_ylabel("Résistance (Ω)"); ax2.grid(True)</span>
+# TODO: Tracer sur ax2 la courbe de la LDR 2 (avec titre et axes)
+# ax2.plot( ... )
 
 plt.suptitle("Comparaison de la dynamique de mesure de deux LDR")
 plt.tight_layout()
@@ -618,12 +509,7 @@ plt.show()</code></pre>
     </div>
 
     <h3 class="section-title">1.3. Conditionnement en Pont Diviseur de Tension & Modélisation</h3>
-    <p>Réalisez sous Tinkercad Circuits le montage en pont diviseur alimenté par une source continue E = 1,5 V (pile AA) avec une résistance fixe R<sub>fixe</sub> = 1 k&Omega; et votre LDR.</p>
-
-    <figure class="circuit-figure">
-        <img src="images/schema_partie1_3_pont_diviseur_ldr.png" alt="Câblage Tinkercad — Pont diviseur de tension LDR et résistance fixe">
-        <figcaption><strong>Figure 1.3 :</strong> Câblage sous Tinkercad Circuits — Pont diviseur de tension alimenté sous 1,5 V associant la LDR et une résistance fixe de 1 k&Omega;.</figcaption>
-    </figure>
+    <p>Réalisez sous Tinkercad Circuits le montage en pont diviseur alimenté par une source continue E = 1,5 V avec une résistance fixe R<sub>fixe</sub> = 1 k&Omega; et votre LDR.</p>
 
     <div class="schematic-box">
           + E (1.5 V)
@@ -670,65 +556,33 @@ plt.show()</code></pre>
         </tbody>
     </table>
 
-    <div class="methodo-grid">
-        <div class="methodo-card sheets">
-            <h4>🟢 Aide Google Sheets N°3 : Courbe de Tendance & R²</h4>
-            <ul>
-                <li><span class="sheets-step">1</span> <strong>Sélection :</strong> Sélectionnez les 4 colonnes (Luminosité, U<sub>LDR</sub>, U<sub>R</sub>, U<sub>tot</sub>).</li>
-                <li><span class="sheets-step">2</span> <strong>Graphique :</strong> Type <strong>Nuage de points</strong> (Axe X = Luminosité).</li>
-                <li><span class="sheets-step">3</span> <strong>Courbe de tendance :</strong> <code>Personnaliser</code> &gt; <em>Série</em> &gt; Choisir <strong>U<sub>LDR</sub></strong> &gt; Cocher <strong>[x] Courbe de tendance</strong>.</li>
-                <li><span class="sheets-step">4</span> <strong>Modèle :</strong> Choisir Type = <strong>Polynomiale</strong> (Degré 2).</li>
-                <li><span class="sheets-step">5</span> <strong>Équation & R² :</strong> Dans <em>Libellé</em>, choisir <strong>Utiliser l'équation</strong>. Cocher impérativement <strong>[x] Afficher R²</strong>.</li>
-            </ul>
-        </div>
-        <div class="methodo-card python">
-            <h4>🐍 Méthode Python : Régression Polynomiale (`NumPy`)</h4>
-            <ul>
-                <li>Utilisez <code>np.polyfit(lum, u_ldr, deg=2)</code> pour calculer les coefficients [a, b, c].</li>
-                <li>Créez la fonction modèle avec <code>modele = np.poly1d(coeffs)</code>.</li>
-                <li>Évaluez le modèle sur une grille fine avec <code>np.linspace(0, 100, 100)</code>.</li>
-                <li>Calculez le coefficient de détermination R² avec la somme des résidus.</li>
-            </ul>
-        </div>
-    </div>
-
     <div class="code-container">
         <div class="code-header">
             <span>Python 3 — script_1_3_polyfit.py (À compléter par l'élève)</span>
-            <span>NumPy Polyfit & Matplotlib</span>
+            <span>NumPy Polyfit & Plot</span>
         </div>
         <pre><code class="language-python"># Squelette à compléter : Tracé des 3 tensions et courbe de tendance polynomiale
 import matplotlib.pyplot as plt
 import numpy as np
 
 lum = np.array([0, 20, 40, 60, 80, 100])
-u_ldr = np.array([ ... ])  <span class="code-todo"># Vos mesures de U_LDR</span>
-u_r = np.array([ ... ])    <span class="code-todo"># Vos mesures de U_R</span>
+u_ldr = np.array([ ... ])  # Vos mesures de U_LDR
+u_r = np.array([ ... ])    # Vos mesures de U_R
 u_tot = u_ldr + u_r
 
-<span class="code-comment"># 1. Modélisation mathématique avec numpy.polyfit (ordre 2)</span>
+# Modélisation polynomiale d'ordre 2 de U_LDR = f(lum)
 coeffs = np.polyfit(lum, u_ldr, deg=2)
 modele = np.poly1d(coeffs)
 x_curve = np.linspace(0, 100, 100)
 
-<span class="code-comment"># Calcul du R²</span>
-r2 = 1 - (np.sum((u_ldr - modele(lum))**2) / np.sum((u_ldr - np.mean(u_ldr))**2))
-print(f"Équation : U_LDR = {coeffs[0]:.5f}*L^2 + {coeffs[1]:.5f}*L + {coeffs[2]:.5f}")
-print(f"Coefficient R² = {r2:.4f}")
-
-plt.figure(figsize=(9, 5))
-
-<span class="code-comment"># 2. TODO: Tracer les points U_LDR, le modèle, U_R et la somme U_tot</span>
-<span class="code-todo"># plt.scatter(lum, u_ldr, color='blue', label='U_LDR (Mesures)')</span>
-<span class="code-todo"># plt.plot(x_curve, modele(x_curve), 'b--', label=f'Modèle ordre 2 (R²={r2:.3f})')</span>
-<span class="code-todo"># plt.scatter(lum, u_r, color='orange', label='U_R (Mesures)')</span>
-<span class="code-todo"># plt.plot(lum, u_tot, 'g-', linewidth=2, label='Somme U_tot')</span>
+# TODO: Tracer U_LDR (points), la courbe de tendance (modele), U_R et la somme U_tot
+# plt.scatter( ... )
+# plt.plot( ... )
 
 plt.title("Pont diviseur : Tensions partielles et modélisation polynomiale")
 plt.xlabel("Luminosité (%)")
 plt.ylabel("Tension (V)")
-plt.ylim(0, 1.8)
-plt.grid(True, linestyle=':')
+plt.grid(True)
 plt.legend()
 plt.show()</code></pre>
     </div>
@@ -774,54 +628,30 @@ plt.show()</code></pre>
         </tbody>
     </table>
 
-    <div class="methodo-grid">
-        <div class="methodo-card sheets">
-            <h4>🟢 Aide Google Sheets N°4 : Diagramme en Colonnes</h4>
-            <ul>
-                <li><span class="sheets-step">1</span> <strong>Pourquoi ce graphique ?</strong> La variable en abscisse est une grandeur <strong>qualitative / catégorielle</strong> (texte) et non continue.</li>
-                <li><span class="sheets-step">2</span> <strong>Sélection :</strong> Sélectionnez <em>Couleur de la DEL</em> et <em>Tension VF</em>.</li>
-                <li><span class="sheets-step">3</span> <strong>Type :</strong> Choisissez <strong>Graphique en colonnes</strong>.</li>
-                <li><span class="sheets-step">4</span> <strong>Étiquettes :</strong> Dans <code>Personnaliser</code> &gt; <em>Série</em> &gt; Cochez <strong>[x] Étiquettes de données</strong> pour afficher la tension en volts sur chaque barre.</li>
-                <li><span class="sheets-step">5</span> <strong>Couleurs :</strong> Cliquez sur chaque barre pour lui donner sa vraie couleur (rouge en rouge, verte en vert, etc.).</li>
-            </ul>
-        </div>
-        <div class="methodo-card python">
-            <h4>🐍 Méthode Python : Diagramme en Barres (`plt.bar`)</h4>
-            <ul>
-                <li>Consultez : <a href="https://matplotlib.org/stable/gallery/lines_bars_and_markers/barchart.html" target="_blank" rel="noopener noreferrer">Bar chart demo</a> et <a href="https://matplotlib.org/stable/gallery/lines_bars_and_markers/bar_label.html" target="_blank" rel="noopener noreferrer">Bar label demo</a>.</li>
-                <li>Créez le graphique avec <code>bars = plt.bar(couleurs, vf, color=palette)</code>.</li>
-                <li>Affichez les valeurs numériques au-dessus avec <code>plt.bar_label(bars, fmt='%.2f V')</code>.</li>
-                <li>Ajoutez une grille uniquement sur l'axe Y : <code>plt.grid(axis='y', linestyle=':')</code>.</li>
-            </ul>
-        </div>
-    </div>
+    <p>À l'aide de la galerie Matplotlib (<a href="https://matplotlib.org/stable/gallery/lines_bars_and_markers/barchart.html" target="_blank" rel="noopener noreferrer">Bar chart demo</a>), écrivez le script traçant le diagramme en barres de la tension de seuil directe avec la couleur correspondante pour chaque barre.</p>
 
     <div class="code-container">
         <div class="code-header">
             <span>Python 3 — script_2_1_barchart.py (À compléter par l'élève)</span>
-            <span>Matplotlib Gallery : Bar chart & Bar label</span>
+            <span>Matplotlib Gallery : Bar chart</span>
         </div>
         <pre><code class="language-python"># Squelette à compléter d'après la galerie : https://matplotlib.org/stable/gallery/index.html
 import matplotlib.pyplot as plt
 
 couleurs = ['Rouge', 'Jaune', 'Verte', 'Bleue', 'Blanche']
-vf_mesure = [ ... ]  <span class="code-todo"># &lt;-- Renseigner vos tensions VF mesurées</span>
+vf_mesure = [ ... ]  # &lt;-- Renseigner vos tensions VF mesurées
 couleurs_barres = ['red', 'gold', 'green', 'blue', 'lightgray']
 
 plt.figure(figsize=(8, 5))
 
-<span class="code-comment"># 1. TODO: Créer le diagramme en barres avec plt.bar()</span>
-<span class="code-todo"># bars = plt.bar(couleurs, vf_mesure, color=couleurs_barres, edgecolor='black', width=0.55)</span>
+# TODO: Créer le diagramme en barres avec plt.bar()
+# bars = plt.bar(couleurs, vf_mesure, color=couleurs_barres, edgecolor='black', width=0.55)
 
-<span class="code-comment"># 2. TODO: Ajouter les étiquettes de valeurs avec bar_label</span>
-<span class="code-todo"># plt.bar_label(bars, fmt='%.2f V', padding=3, fontweight='bold')</span>
-
-<span class="code-comment"># 3. TODO: Ajouter le titre, les étiquettes et la grille</span>
+# TODO: Configurer les titres et axes
 plt.title("Tension de seuil directe VF selon la couleur de la DEL")
 plt.xlabel("Couleur de la DEL")
 plt.ylabel("Tension VF (V)")
-plt.ylim(0, 4.0)
-plt.grid(axis='y', linestyle=':', alpha=0.7)
+plt.grid(axis='y', linestyle=':')
 
 plt.show()</code></pre>
     </div>
@@ -840,7 +670,8 @@ plt.show()</code></pre>
         <span class="duration-badge">Durée : 0h30</span>
     </h2>
 
-    <p>Réalisez sous Tinkercad un circuit série alimenté sous E = 9,0 V comportant : R<sub>1</sub> = 1,0 k&Omega;, R<sub>2</sub> = 1,5 k&Omega; et un potentiomètre réglé à R<sub>3</sub> = 2,5 k&Omega; (R<sub>tot</sub> = 5,0 k&Omega;). Mesurez les trois tensions partielles.</p>
+    <p>Dans un circuit série à 3 dipôles sous E = 9,0 V, la tension se répartit proportionnellement aux résistances :
+    R<sub>1</sub> = 1,0 k&Omega;, R<sub>2</sub> = 1,5 k&Omega;, R<sub>3</sub> = 2,5 k&Omega; (Potentiomètre réglé à 2,5 k&Omega;).</p>
 
     <table>
         <thead>
@@ -879,30 +710,7 @@ plt.show()</code></pre>
         </tbody>
     </table>
 
-    <div class="methodo-grid">
-        <div class="methodo-card sheets">
-            <h4>🟢 Aide Google Sheets N°5 : Graphique en Secteurs (Camembert)</h4>
-            <ul>
-                <li><span class="sheets-step">1</span> <strong>Pourquoi ce graphique ?</strong> Il illustre le partage des parts d'un total (100 %) — idéal pour la loi des mailles.</li>
-                <li><span class="sheets-step">2</span> <strong>Règle d'or de sélection :</strong> Sélectionnez uniquement les 3 dipôles et leurs tensions partielles (A2:C4).<br>
-                    <span class="warning-pill">⚠️ PIÈGE : Ne sélectionnez JAMAIS la ligne TOTAL !</span>
-                </li>
-                <li><span class="sheets-step">3</span> <strong>Type :</strong> Choisissez <strong>Graphique en secteurs</strong> (ou Anneau).</li>
-                <li><span class="sheets-step">4</span> <strong>Pourcentages :</strong> Dans <code>Personnaliser</code> &gt; <em>Graphique en secteurs</em> &gt; <em>Libellé de secteur</em> : choisissez <strong>Pourcentage</strong>.</li>
-                <li><span class="sheets-step">5</span> <strong>Extraction :</strong> Dans <em>Secteur de graphique circulaire</em> &gt; R3 (Potar) &gt; <strong>Distance du centre = 15 %</strong> pour détacher la tranche.</li>
-            </ul>
-        </div>
-        <div class="methodo-card python">
-            <h4>🐍 Méthode Python : Camembert (`plt.pie`) & Détachement</h4>
-            <ul>
-                <li>Consultez : <a href="https://matplotlib.org/stable/gallery/pie_and_polar_charts/pie_features.html" target="_blank" rel="noopener noreferrer">Pie chart demo</a>.</li>
-                <li>Transmettez uniquement la liste des 3 tensions (SANS le total).</li>
-                <li>Activez les pourcentages automatiques avec <code>autopct='%1.1f%%'</code>.</li>
-                <li>Détachez la 3e tranche avec <code>explode=(0, 0, 0.1)</code>.</li>
-                <li>Assurez un tracé circulaire parfait avec <code>plt.axis('equal')</code>.</li>
-            </ul>
-        </div>
-    </div>
+    <p>À l'aide de la galerie Matplotlib (<a href="https://matplotlib.org/stable/gallery/pie_and_polar_charts/pie_features.html" target="_blank" rel="noopener noreferrer">Pie chart demo</a>), créez un graphique circulaire (camembert) avec l'affichage automatique des pourcentages et le détachement de la tranche du potentiomètre.</p>
 
     <div class="code-container">
         <div class="code-header">
@@ -912,25 +720,22 @@ plt.show()</code></pre>
         <pre><code class="language-python"># Squelette à compléter d'après la galerie : https://matplotlib.org/stable/gallery/index.html
 import matplotlib.pyplot as plt
 
-labels = ['R1 (1.0 kΩ)', 'R2 (1.5 kΩ)', 'R3 (2.5 kΩ - Potar)']
-tensions = [ ... ]  <span class="code-todo"># Renseigner vos 3 tensions mesurées (ATTENTION : SANS le total !)</span>
-explode = (0, 0, 0.1)  <span class="code-comment"># Détache la 3e tranche de 10%</span>
-couleurs = ['#ff9999', '#66b3ff', '#99ff99']
+labels = ['R1 (1.0 kΩ)', 'R2 (1.5 kΩ)', 'R3 (2.5 kΩ)']
+tensions = [ ... ]  # Renseigner vos 3 tensions mesurées (ATTENTION : SANS le total !)
+explode = (0, 0, 0.1)  # Détacher la tranche du potentiomètre
 
-plt.figure(figsize=(7, 7))
+plt.figure(figsize=(6, 6))
 
-<span class="code-comment"># 1. TODO: Créer le graphique en secteurs avec plt.pie()</span>
-<span class="code-todo"># plt.pie(tensions, labels=labels, autopct='%1.1f%%', explode=explode,</span>
-<span class="code-todo">#         colors=couleurs, shadow=True, startangle=90)</span>
+# TODO: Tracer le camembert avec plt.pie()
+# plt.pie(tensions, labels=labels, autopct='%1.1f%%', explode=explode, startangle=90)
 
-plt.title("Répartition de la tension totale E = 9.0 V (Loi des mailles)")
-plt.axis('equal')
+plt.title("Répartition de la tension totale (Loi des mailles)")
 plt.show()</code></pre>
     </div>
 
     <div class="question-box">
         <h4>Questions d'analyse :</h4>
-        <p><strong>Q8.</strong> Quel problème majeur se produit-il sous Google Sheets ou sous Python si l'on sélectionne par erreur la ligne "TOTAL" dans les données du camembert ?</p>
+        <p><strong>Q8.</strong> Quel problème se produit-il sous Google Sheets ou sous Python si l'on sélectionne par mégarde la ligne "TOTAL" dans les données du camembert ?</p>
         <p><strong>Q9.</strong> Si l'on tourne le curseur de R<sub>3</sub> pour amener sa résistance à 0 &Omega; (court-circuit), que deviennent les tensions U<sub>1</sub> et U<sub>2</sub> ?</p>
     </div>
 
@@ -938,20 +743,14 @@ plt.show()</code></pre>
     <!-- PARTIE 4 -->
     <!-- ========================================================================= -->
     <h2 class="part-title">
-        <span>Partie 4 : Challenge Ingénierie — Capteur de Température CTN/RTC 10 k&Omega;</span>
+        <span>Partie 4 : Challenge Ingénierie — Caractérisation CTN 10 k&Omega; via Datasheet & Courbe de Tendance</span>
         <span class="duration-badge">Durée : 1h30</span>
     </h2>
 
-    <p>On étudie la chaîne d'acquisition d'un système thermique instrumenté par une <strong>thermistance CTN/RTC de 10 k&Omega; à 25 °C</strong> (Coefficient de Température Négatif / Résistance Thermométrique).</p>
+    <p>On conçoit la chaîne d'acquisition de température d'un système embarqué (serre connectée ou imprimante 3D). Le capteur utilisé est une <strong>thermistance CTN/RTC de 10 k&Omega; à 25 °C</strong> (Coefficient de Température Négatif / Résistance Thermométrique). Plutôt que d'utiliser une formule théorique complexe, vous allez <strong>extraire la relation mathématique réelle T = f(R) directement à partir des données constructeur (datasheet)</strong> à l'aide d'une <strong>courbe de tendance</strong>, puis l'intégrer dans le code du capteur.</p>
 
-    <h3 class="section-title">4.1. Caractérisation de la thermistance R = f(T)</h3>
-    <p>La résistance d'une thermistance CTN varie selon la relation physique suivante :</p>
-    
-    <div class="math-formula">
-        R(T) = R<sub>0</sub> &middot; exp[ &beta; &middot; ( 1 / T - 1 / T<sub>0</sub> ) ]
-    </div>
-    
-    <p>Avec R<sub>0</sub> = 10 000 &Omega;, T<sub>0</sub> = 25 °C = 298,15 K, &beta; = 3950 K et T(K) = T(°C) + 273,15.</p>
+    <h3 class="section-title">4.1. Données du Datasheet Constructeur (Extrait)</h3>
+    <p>Le constructeur fournit dans sa documentation technique (datasheet) les valeurs de résistance de la thermistance pour différentes températures normalisées :</p>
 
     <table>
         <thead>
@@ -963,15 +762,17 @@ plt.show()</code></pre>
         </thead>
         <tbody>
             <tr>
-                <td><strong>Résistance R<sub>CTN</sub> (&Omega;)</strong></td>
-                <td class="empty-cell">...</td><td class="empty-cell">...</td><td class="empty-cell">...</td>
-                <td>10 000</td>
-                <td class="empty-cell">...</td><td class="empty-cell">...</td><td class="empty-cell">...</td>
-                <td class="empty-cell">...</td><td class="empty-cell">...</td><td class="empty-cell">...</td>
-                <td class="empty-cell">...</td><td class="empty-cell">...</td>
+                <td><strong>Résistance datasheet R<sub>CTN</sub> (k&Omega;)</strong></td>
+                <td>32,65</td><td>19,90</td><td>12,49</td><td>10,00</td><td>8,06</td><td>5,33</td>
+                <td>3,60</td><td>2,49</td><td>1,75</td><td>1,26</td><td>0,92</td><td>0,68</td>
             </tr>
             <tr>
-                <td><strong>Tension U<sub>mes</sub> au pont (V)</strong></td>
+                <td><strong>Résistance datasheet R<sub>CTN</sub> (&Omega;)</strong></td>
+                <td>32 650</td><td>19 900</td><td>12 490</td><td>10 000</td><td>8 057</td><td>5 327</td>
+                <td>3 603</td><td>2 488</td><td>1 752</td><td>1 258</td><td>918</td><td>680</td>
+            </tr>
+            <tr>
+                <td><strong>Tension U<sub>mes</sub> au pont diviseur (V)</strong></td>
                 <td class="empty-cell">...</td><td class="empty-cell">...</td><td class="empty-cell">...</td>
                 <td class="empty-cell">...</td><td class="empty-cell">...</td><td class="empty-cell">...</td>
                 <td class="empty-cell">...</td><td class="empty-cell">...</td><td class="empty-cell">...</td>
@@ -980,19 +781,89 @@ plt.show()</code></pre>
         </tbody>
     </table>
 
-    <h3 class="section-title">4.2. Conditionnement en Pont Diviseur de Tension</h3>
-    <p>Pour convertir R<sub>CTN</sub> en tension U<sub>mes</sub>, on associe la CTN à une résistance fixe R<sub>fixe</sub> = 10 k&Omega; alimentée sous V<sub>cc</sub> = 5,0 V.</p>
+    <h3 class="section-title">4.2. Tracé de la Courbe et Extraction de la Relation T = f(R) par Courbe de Tendance</h3>
+    <p>Dans un système instrumenté réel, le microcontrôleur mesure la résistance de la thermistance et doit en déduire la température. Nous cherchons donc la relation : <strong>T = f(R)</strong> (avec la Résistance R en abscisse X, et la Température T en ordonnée Y).</p>
+
+    <div class="methodo-grid">
+        <div class="methodo-card sheets">
+            <h4>🟢 Aide Google Sheets N°6 : Courbe de Tendance & Équation</h4>
+            <ul>
+                <li><span class="sheets-step">1</span> <strong>Organisation :</strong> Placez la colonne <em>Résistance R (k&Omega;)</em> à gauche (Axe X) et <em>Température T (°C)</em> à droite (Axe Y).</li>
+                <li><span class="sheets-step">2</span> <strong>Tracé :</strong> <code>Insertion</code> &gt; <code>Graphique</code> &gt; Type : <strong>Nuage de points</strong>.</li>
+                <li><span class="sheets-step">3</span> <strong>Courbe de tendance :</strong> Allez dans <code>Personnaliser</code> &gt; <em>Série</em> &gt; Cochez <strong>[x] Courbe de tendance</strong>.</li>
+                <li><span class="sheets-step">4</span> <strong>Choix du modèle :</strong> Dans <em>Type</em>, testez <strong>Polynôme (degré 2 ou 3)</strong>, <strong>Logarithmique</strong> ou <strong>Puissance</strong>.</li>
+                <li><span class="sheets-step">5</span> <strong>Extraction :</strong> Dans <em>Étiquette</em>, sélectionnez <strong>Utiliser l'équation</strong> et cochez <strong>[x] Afficher R²</strong>.</li>
+                <li><span class="sheets-step">6</span> <strong>Relevé :</strong> Notez précisément l'équation mathématique affichée sur le graphique et le coefficient R².</li>
+            </ul>
+        </div>
+        <div class="methodo-card python">
+            <h4>🐍 Méthode Python : Régression Polynomiale (`np.polyfit`)</h4>
+            <ul>
+                <li>Consultez la galerie : <a href="https://matplotlib.org/stable/gallery/lines_bars_and_markers/scatter_demo2.html" target="_blank" rel="noopener noreferrer">Scatter plot demo</a>.</li>
+                <li>Renseignez les listes <code>r_kohm</code> et <code>temp</code> d'après les données du datasheet.</li>
+                <li>Ajustez un polynôme avec <code>coeffs = np.polyfit(r_kohm, temp, deg=2)</code> (ou degré 3).</li>
+                <li>Superposez les points du datasheet et la courbe du modèle avec <code>plt.plot()</code>.</li>
+                <li>Affichez les coefficients [a, b, c] dans la console Thonny pour votre programme.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="code-container">
+        <div class="code-header">
+            <span>Python 3 — script_4_1_tendance_ctn.py (À compléter par l'élève)</span>
+            <span>NumPy Polyfit & Matplotlib</span>
+        </div>
+        <pre><code class="language-python"># Squelette à compléter : Tracé T = f(R) depuis le datasheet et courbe de tendance
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Données issues du datasheet constructeur (CTN 10 kΩ)
+temp = np.array([0, 10, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100])
+r_kohm = np.array([32.65, 19.90, 12.49, 10.00, 8.06, 5.33, 3.60, 2.49, 1.75, 1.26, 0.92, 0.68])
+
+plt.figure(figsize=(9, 5))
+
+# 1. TODO: Tracer les points du datasheet avec plt.scatter()
+# plt.scatter(r_kohm, temp, color='red', marker='o', label='Points du datasheet')
+
+# 2. Modélisation mathématique par courbe de tendance polynomiale (degré 2 ou 3)
+coeffs = np.polyfit(r_kohm, temp, deg=2)  # Retourne les coefficients [a, b, c]
+modele = np.poly1d(coeffs)
+x_trace = np.linspace(min(r_kohm), max(r_kohm), 100)
+
+print("Coefficients de la courbe de tendance T = f(R) :")
+print(f"T(R) = {coeffs[0]:.4f} * R^2 + {coeffs[1]:.4f} * R + {coeffs[2]:.4f}")
+
+# 3. TODO: Tracer la courbe de tendance sur le graphique
+# plt.plot(x_trace, modele(x_trace), 'b--', label='Modèle tendance : T = f(R)')
+
+plt.title("Caractéristique de la CTN 10 kΩ : Température en fonction de la Résistance")
+plt.xlabel("Résistance R (kΩ)")
+plt.ylabel("Température T (°C)")
+plt.grid(True, linestyle=':')
+plt.legend()
+plt.show()</code></pre>
+    </div>
+
+    <div class="question-box">
+        <h4>Questions d'analyse :</h4>
+        <p><strong>Q10.</strong> Relevez l'équation mathématique fournie par la courbe de tendance sous Google Sheets (ou Python) pour la relation T = f(R), ainsi que la valeur du coefficient R².</p>
+        <p><strong>Q11.</strong> Le coefficient R² est-il satisfaisant ? Quelle est l'erreur maximale constatée entre le modèle et les données du constructeur ?</p>
+    </div>
+
+    <h3 class="section-title">4.3. Conditionnement en Pont Diviseur de Tension</h3>
+    <p>Pour mesurer la résistance de la CTN avec un microcontrôleur, on réalise un pont diviseur alimenté sous V<sub>cc</sub> = 5,0 V avec une résistance fixe R<sub>fixe</sub> = 10 k&Omega; reliée à la masse.</p>
 
     <div class="schematic-box">
           + Vcc (5.0 V)
              |
              +------+
              |      |
-            [ R_CTN ]  (Thermistance CTN 10 kΩ)
+            [ R_CTN ]  (Thermistance CTN 10 kΩ issue du datasheet)
              |      |
              +------+
              |
-             +-----> Sortie U_mes vers Entrée Analogique (A0)
+             +-----> Sortie analogique U_mes vers Entrée A0 (Arduino)
              |
              +------+
              |      |
@@ -1003,79 +874,24 @@ plt.show()</code></pre>
             GND (0 V)</div>
 
     <div class="math-formula">
-        U<sub>mes</sub>(T) = V<sub>cc</sub> &middot; [ R<sub>fixe</sub> / ( R<sub>CTN</sub>(T) + R<sub>fixe</sub> ) ]
+        U<sub>mes</sub> = V<sub>cc</sub> &middot; [ R<sub>fixe</sub> / ( R<sub>CTN</sub> + R<sub>fixe</sub> ) ] &nbsp;&nbsp;&Longleftrightarrow&nbsp;&nbsp; R<sub>CTN</sub> = R<sub>fixe</sub> &middot; [ ( V<sub>cc</sub> / U<sub>mes</sub> ) - 1 ]
     </div>
 
-    <div class="methodo-grid">
-        <div class="methodo-card sheets">
-            <h4>🟢 Aide Google Sheets N°6 : Formules Exponentielles & Tracé Continu</h4>
-            <ul>
-                <li><span class="sheets-step">1</span> <strong>Calcul R<sub>CTN</sub> :</strong> En B2 : <code>=10000*EXP(3950*(1/(A2+273.15)-1/298.15))</code>.</li>
-                <li><span class="sheets-step">2</span> <strong>Calcul U<sub>mes</sub> :</strong> En C2 : <code>=5.0*(10000/(B2+10000))</code>. Étirez jusqu'à 100 °C.</li>
-                <li><span class="sheets-step">3</span> <strong>Tracé U<sub>mes</sub> = f(T) :</strong> Sélectionnez Température (A) et Tension (C). Type : <strong>Nuage de points</strong>.</li>
-                <li><span class="sheets-step">4</span> <strong>Ligne lissée :</strong> Dans <code>Personnaliser</code> &gt; <em>Série</em> &gt; Cochez <strong>[x] Courbe lissée</strong> ou <strong>[x] Ligne de tendance</strong> pour afficher la caractéristique continue.</li>
-            </ul>
-        </div>
-        <div class="methodo-card python">
-            <h4>🐍 Méthode Python : Modélisation Vectorielle NumPy</h4>
-            <ul>
-                <li>Consultez : <a href="https://matplotlib.org/stable/gallery/lines_bars_and_markers/simple_plot.html" target="_blank" rel="noopener noreferrer">Simple plot demo</a>.</li>
-                <li>Calculez vectoriellement <code>t_k = temp + 273.15</code> et <code>r_ctn = R0 * np.exp(...)</code>.</li>
-                <li>Calculez la tension avec la formule du pont diviseur.</li>
-                <li>Tracez la courbe lissée avec <code>plt.plot(temp, u_mes, 'mo-', linewidth=2)</code>.</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="code-container">
-        <div class="code-header">
-            <span>Python 3 — script_4_ctn_analyse.py (À compléter par l'élève)</span>
-            <span>Matplotlib & NumPy</span>
-        </div>
-        <pre><code class="language-python"># Squelette à compléter : Tracé de R_CTN = f(T) et de la tension U_mes = f(T)
-import matplotlib.pyplot as plt
-import numpy as np
-
-temp = np.array([0, 10, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100])
-
-VCC = 5.0
-R_FIXE = 10000.0
-R0 = 10000.0
-T0 = 298.15
-BETA = 3950.0
-
-<span class="code-comment"># 1. TODO: Calculer r_ctn et u_mes</span>
-t_k = temp + 273.15
-r_ctn = R0 * np.exp(BETA * (1.0 / t_k - 1.0 / T0))
-u_mes = VCC * (R_FIXE / (r_ctn + R_FIXE))
-
-plt.figure(figsize=(8, 5))
-
-<span class="code-comment"># 2. TODO: Tracer U_mes = f(T) à l'aide de plt.plot()</span>
-<span class="code-todo"># plt.plot(temp, u_mes, 'mo-', linewidth=2, label='Caractéristique U_mes = f(T)')</span>
-
-plt.title("Caractéristique d'étalonnage CTN 10 kΩ : U_mes = f(T)")
-plt.xlabel("Température (°C)")
-plt.ylabel("Tension mesurée U_mes (V)")
-plt.grid(True, linestyle=':')
-plt.legend()
-plt.show()</code></pre>
-    </div>
+    <p>1. Complétez la 3<sup>e</sup> ligne du tableau de mesures en calculant la tension U<sub>mes</sub> théorique pour chaque température du datasheet.<br>
+    2. Câblez le montage sous Tinkercad Circuits et vérifiez la tension obtenue pour 25 °C (R<sub>CTN</sub> = 10 k&Omega;).</p>
 
     <div class="question-box">
-        <h4>Questions d'analyse :</h4>
-        <p><strong>Q10.</strong> Pourquoi la tension U<sub>mes</sub> augmente-t-elle avec la température alors que la résistance de la CTN diminue ?</p>
-        <p><strong>Q11.</strong> Sur la plage [10 °C ; 50 °C], la courbe U<sub>mes</sub> = f(T) est quasi-linéaire. Déterminez graphiquement la sensibilité moyenne S = &Delta;U / &Delta;T en mV/°C.</p>
+        <h4>Question d'analyse :</h4>
+        <p><strong>Q12.</strong> Pourquoi la tension U<sub>mes</sub> augmente-t-elle quand la température augmente, alors que la résistance de la CTN diminue ?</p>
     </div>
 
-    <h3 class="section-title">4.3. Intégration dans le Code du Capteur (Microcontrôleur)</h3>
-    <p>Le microcontrôleur lit une valeur numérique brute N sur 10 bits comprise entre 0 et 1023 (entrée analogique A0) :</p>
-    
-    <div class="math-formula">
-        N = ( U<sub>mes</sub> / 5,0 ) &times; 1023
-    </div>
-
-    <p>À partir de N, complétez le programme permettant de retrouver la température réelle en inversant la loi du pont et la formule de la thermistance :</p>
+    <h3 class="section-title">4.4. Intégration de la Relation de Tendance dans le Code du Capteur</h3>
+    <p>Le microcontrôleur lit une valeur numérique brute N comprise entre 0 et 1023 sur son entrée analogique A0 (N = (U<sub>mes</sub> / 5,0) &times; 1023). Le programme doit :</p>
+    <ol style="margin-left: 2rem; margin-bottom: 1rem; font-size: 0.95rem;">
+        <li>Calculer la tension analogique : <code>U_mes = N &times; (5.0 / 1023.0)</code></li>
+        <li>Calculer la résistance de la CTN en k&Omega; : <code>R_ctn_kohm = R_fixe &times; ((5.0 / U_mes) - 1.0)</code></li>
+        <li><strong>Appliquer directement l'équation de la courbe de tendance trouvée en 4.2</strong> (T = a &middot; R<sup>2</sup> + b &middot; R + c) pour calculer la température réelle en °C !</li>
+    </ol>
 
     <div class="code-container">
         <div class="code-header">
@@ -1083,61 +899,78 @@ plt.show()</code></pre>
             <span>Arduino IDE</span>
         </div>
         <pre><code class="language-cpp">const int PIN_CTN = A0;
-const float R_FIXE = 10000.0;
-const float R0 = 10000.0;
-const float T0 = 298.15; // 25°C en Kelvin
-const float BETA = 3950.0;
+const float R_FIXE = 10.0; // En kΩ (10 kΩ)
+
+// TODO: Renseigner ici les coefficients [a, b, c] obtenus lors de la courbe de tendance T = f(R)
+const float COEFF_A = 0.1571;  // Exemple pour R en kΩ (à adapter avec votre équation)
+const float COEFF_B = -7.6605; // Exemple (à adapter avec votre équation)
+const float COEFF_C = 87.1517; // Exemple (à adapter avec votre équation)
 
 void setup() {
   Serial.begin(9600);
+  Serial.println("--- Capteur de Température CTN 10k (Modèle Tendance) ---");
 }
 
 void loop() {
   int adc = analogRead(PIN_CTN); // Lecture 0 à 1023
   
-  // 1. TODO: Calculer la tension analogique U_mes à partir de adc
+  // 1. Calcul de la tension analogique U_mes (V)
   float u_mes = adc * (5.0 / 1023.0);
   
-  // 2. TODO: Exprimer la résistance r_ctn en fonction de u_mes et R_FIXE
-  // float r_ctn = R_FIXE * ((5.0 / u_mes) - 1.0);
+  // 2. Calcul de la résistance de la CTN en kΩ à partir de la loi du pont diviseur
+  float r_ctn_kohm = R_FIXE * ((5.0 / u_mes) - 1.0);
+  
+  // 3. TODO: Calcul de la température en appliquant l'équation de la courbe de tendance T = f(R)
+  float temp_celsius = COEFF_A * (r_ctn_kohm * r_ctn_kohm) + COEFF_B * r_ctn_kohm + COEFF_C;
 
-  // 3. TODO: Calculer la température en Kelvin puis en Celsius (Steinhart-Hart / Bêta)
-  // float temp_k = 1.0 / ( (1.0 / T0) + (1.0 / BETA) * log(r_ctn / R0) );
-  // float temp_c = temp_k - 273.15;
-
-  // Serial.print("Temp: "); Serial.print(temp_c); Serial.println(" deg C");
+  // Affichage sur le moniteur série
+  Serial.print("U_mes: "); Serial.print(u_mes, 2);
+  Serial.print(" V | R_ctn: "); Serial.print(r_ctn_kohm, 2);
+  Serial.print(" kOhms | Temp: "); Serial.print(temp_celsius, 1);
+  Serial.println(" deg C");
+  
   delay(1000);
 }</code></pre>
     </div>
 
     <div class="code-container">
         <div class="code-header">
-            <span>Python 3 — script_4_3_conversion.py (À compléter)</span>
-            <span>Banc d'essai algorithmique</span>
+            <span>Python 3 — script_4_2_capteur_simulation.py (À compléter)</span>
+            <span>Banc de test algorithmique</span>
         </div>
-        <pre><code class="language-python"># Squelette de la fonction de conversion à implémenter
+        <pre><code class="language-python"># Squelette de test de la fonction de conversion avec l'équation de tendance
 import numpy as np
 
-def convertir_adc_en_temperature(valeur_adc):
+def acquisition_temperature(adc_valeur):
     VCC = 5.0
-    R_FIXE = 10000.0
-    R0 = 10000.0
-    T0 = 298.15
-    BETA = 3950.0
+    R_FIXE_KOHM = 10.0
     
-    <span class="code-comment"># 1. TODO: Calculer u_mes à partir de valeur_adc (0-1023)</span>
-    <span class="code-todo"># u_mes = valeur_adc * (VCC / 1023.0)</span>
+    # 1. Calcul de la tension U_mes
+    u_mes = adc_valeur * (VCC / 1023.0)
+    if u_mes <= 0.05: return -999.0
     
-    <span class="code-comment"># 2. TODO: Calculer r_ctn</span>
-    <span class="code-todo"># r_ctn = R_FIXE * ((VCC / u_mes) - 1.0)</span>
+    # 2. Calcul de la résistance R_ctn en kΩ
+    r_ctn_kohm = R_FIXE_KOHM * ((VCC / u_mes) - 1.0)
     
-    <span class="code-comment"># 3. TODO: Calculer temp_celsius</span>
-    <span class="code-todo"># temp_k = 1.0 / ((1.0 / T0) + (1.0 / BETA) * np.log(r_ctn / R0))</span>
-    <span class="code-todo"># temp_celsius = temp_k - 273.15</span>
-    <span class="code-todo"># return temp_celsius</span>
+    # 3. TODO: Appliquer l'équation de votre courbe de tendance T = a*R^2 + b*R + c
+    # Remplacez a, b et c par vos valeurs obtenues à la question Q10
+    a = 0.1571
+    b = -7.6605
+    c = 87.1517
+    temp_restituee = a * (r_ctn_kohm**2) + b * r_ctn_kohm + c
+    
+    return u_mes, r_ctn_kohm, temp_restituee
 
-<span class="code-comment"># Test pour une valeur médiane : N = 512 (U_mes = 2.5 V)</span>
-<span class="code-comment"># print("Température restituée :", convertir_adc_en_temperature(512), "°C")</span></code></pre>
+# Test pour quelques valeurs représentatives du convertisseur ADC
+echantillons_adc = [239, 342, 512, 667, 818, 937]
+
+print("="*65)
+print(f"{'ADC':^6} | {'U_mes (V)':^12} | {'R_ctn (kΩ)':^14} | {'Temp (°C)':^12}")
+print("="*65)
+for adc in echantillons_adc:
+    u, r, t = acquisition_temperature(adc)
+    print(f"{adc:^6d} | {u:^12.2f} | {r:^14.2f} | {t:^12.1f}")
+print("="*65)</code></pre>
     </div>
 
     <!-- ========================================================================= -->
@@ -1161,7 +994,7 @@ def convertir_adc_en_temperature(valeur_adc):
                 <td><strong>Nuage de points (XY)</strong></td>
                 <td><code>Type : Nuage de points</code><br>+ Courbe de tendance (R²)</td>
                 <td><code>plt.scatter()</code><br>&amp; <code>plt.plot()</code></td>
-                <td>• R = f(Luminosité)<br>• U = f(T) (thermistance)<br>• u<sub>c</sub>(t) (charge RC)</td>
+                <td>• R = f(Luminosité)<br>• T = f(R) (thermistance)<br>• u<sub>c</sub>(t) (charge RC)</td>
             </tr>
             <tr>
                 <td><strong>Catégories discrètes / qualitatives</strong></td>
@@ -1198,7 +1031,7 @@ def convertir_adc_en_temperature(valeur_adc):
             </tr>
             <tr>
                 <td><strong>2. Maîtrise de Google Sheets</strong></td>
-                <td>Tableaux correctement renseignés, formules sans erreur, types de graphiques appropriés et maîtrise des aides.</td>
+                <td>Tableaux correctement renseignés, formules sans erreur, types de graphiques appropriés.</td>
                 <td class="bareme-points">/ 4</td>
             </tr>
             <tr>
@@ -1213,7 +1046,7 @@ def convertir_adc_en_temperature(valeur_adc):
             </tr>
             <tr>
                 <td><strong>5. Challenge Capteur CTN 10 k&Omega;</strong></td>
-                <td>Résolution du diviseur de tension, calcul de sensibilité et code de conversion fonctionnel.</td>
+                <td>Courbe de tendance extraite du datasheet, équation injectée et code de conversion fonctionnel.</td>
                 <td class="bareme-points">/ 4</td>
             </tr>
             <tr style="background:#f1f5f9; font-weight:bold;">
