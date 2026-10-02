@@ -809,30 +809,7 @@ plt.show()</code></pre>
     </div>
 
     <h3 class="section-title">4.3. Conditionnement en Pont Diviseur de Tension</h3>
-    <p>Pour mesurer la résistance de la CTN avec un microcontrôleur, on réalise un pont diviseur alimenté sous V<sub>cc</sub> = 5,0 V avec une résistance fixe R<sub>fixe</sub> = 10 k&Omega; reliée à la masse.</p>
-
-    <div class="schematic-box">
-          + Vcc (5.0 V)
-             |
-             +------+
-             |      |
-            [ R_CTN ]  (Thermistance CTN 10 kΩ issue du datasheet)
-             |      |
-             +------+
-             |
-             +-----> Sortie analogique U_mes vers Entrée A0 (Arduino)
-             |
-             +------+
-             |      |
-            [ R_fixe]  (Résistance fixe = 10 kΩ)
-             |      |
-             +------+
-             |
-            GND (0 V)</div>
-
-    <div class="math-formula">
-        U<sub>mes</sub> = V<sub>cc</sub> &middot; [ R<sub>fixe</sub> / ( R<sub>CTN</sub> + R<sub>fixe</sub> ) ] &nbsp;&nbsp;&Longleftrightarrow&nbsp;&nbsp; R<sub>CTN</sub> = R<sub>fixe</sub> &middot; [ ( V<sub>cc</sub> / U<sub>mes</sub> ) - 1 ]
-    </div>
+    <p>Pour mesurer la résistance de la CTN avec un microcontrôleur, on réalise un pont diviseur alimenté sous V, on prélève le potentiel entre les 2 résistances et on applique la formule du pont diviseur pour trouver la resistance Rctn<sub>cc</sub> = 5,0 V avec une résistance fixe R<sub>fixe</sub> = 10 k&Omega; reliée à la masse.</p>
 
     <p>1. Complétez la 3<sup>e</sup> ligne du tableau de mesures en calculant la tension U<sub>mes</sub> théorique pour chaque température du datasheet.<br>
     2. Câblez le montage sous Tinkercad Circuits et vérifiez la tension obtenue pour 25 °C (R<sub>CTN</sub> = 10 k&Omega;).</p>
