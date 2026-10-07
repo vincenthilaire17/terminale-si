@@ -307,6 +307,55 @@
             color: var(--accent);
         }
 
+        /* Boîte Concept / Théorie */
+        .concept-box {
+            background-color: #fefce8;
+            border: 1px solid #fef08a;
+            border-left: 5px solid #eab308;
+            padding: 0.95rem 1.15rem;
+            margin: 1.1rem 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.92rem;
+        }
+
+        .concept-box h4 {
+            color: #a16207;
+            margin-bottom: 0.45rem;
+            font-size: 1rem;
+        }
+
+        .concept-box ul {
+            padding-left: 1.3rem;
+            margin: 0.4rem 0;
+        }
+
+        .concept-box li {
+            margin-bottom: 0.35rem;
+        }
+
+        /* Tableau défilant */
+        .table-scroll-container {
+            max-height: 480px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin: 1rem 0 1.4rem;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .table-scroll-container table {
+            margin: 0;
+            border: none;
+        }
+
+        .table-scroll-container th {
+            position: sticky;
+            top: 0;
+            background-color: #f1f5f9;
+            z-index: 2;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+        }
+
         @media (max-width: 768px) {
             .container { padding: 1rem; }
             .tp-header { grid-template-columns: 1fr; }
@@ -319,6 +368,7 @@
             body { background: white; padding: 0; }
             .container { box-shadow: none; border: none; padding: 0; }
             .code-container, .schematic-box { page-break-inside: avoid; }
+            .table-scroll-container { max-height: none !important; overflow: visible !important; border: none !important; }
         }
     </style>
 </head>
@@ -346,7 +396,7 @@
         </div>
         <div class="header-cell full title">
             <h1>Représentation & Modélisation des Mesures Physiques</h1>
-            <p>Google Sheets et Python Matplotlib — Capteurs passifs, Pont diviseur et Modélisation CTN 10 k&Omega;</p>
+            <p>Google Sheets et Python Matplotlib — Capteurs passifs, Pont diviseur et Modélisation CTN 10 kΩ</p>
         </div>
     </div>
 
@@ -380,7 +430,7 @@
     <p>Une photorésistance (<strong>LDR</strong> pour <em>Light Dependent Resistor</em>) est un capteur passif dont la résistance interne diminue lorsque le flux lumineux incident augmente.</p>
 
     <h3 class="section-title">1.1. Mesure directe R = f(Luminosité)</h3>
-    <p>1. Sous <strong>Tinkercad Circuits</strong>, reliez une LDR directement aux bornes d'un multimètre configuré en mode <strong>Ohmmètre</strong> (&Omega;).<br>
+    <p>1. Sous <strong>Tinkercad Circuits</strong>, reliez une LDR directement aux bornes d'un multimètre configuré en mode <strong>Ohmmètre</strong> (Ω).<br>
     2. Lancez la simulation, cliquez sur la LDR et faites varier le curseur de 0 % (obscurité) à 100 % (plein soleil).<br>
     3. Complétez le tableau de mesures suivant :</p>
 
@@ -394,7 +444,7 @@
         </thead>
         <tbody>
             <tr>
-                <td><strong>Résistance mesurée R (k&Omega; ou &Omega;)</strong></td>
+                <td><strong>Résistance mesurée R (kΩ ou Ω)</strong></td>
                 <td class="empty-cell">...</td><td class="empty-cell">...</td><td class="empty-cell">...</td>
                 <td class="empty-cell">...</td><td class="empty-cell">...</td><td class="empty-cell">...</td>
                 <td class="empty-cell">...</td><td class="empty-cell">...</td><td class="empty-cell">...</td>
@@ -457,7 +507,7 @@ resistance_kohm = [ ... ]  # &lt;-- À COMPLÉTER avec vos valeurs mesurées
         </thead>
         <tbody>
             <tr>
-                <td><strong>Résistance LDR 2 (&Omega;)</strong></td>
+                <td><strong>Résistance LDR 2 (Ω)</strong></td>
                 <td>9</td><td>12</td><td>20</td><td>50</td><td>110</td><td>200</td><td>400</td><td>1000</td><td>2200</td><td>5000</td><td>12000</td>
             </tr>
         </tbody>
@@ -496,7 +546,7 @@ plt.show()</code></pre>
     </div>
 
     <h3 class="section-title">1.3. Conditionnement en Pont Diviseur de Tension & Modélisation</h3>
-    <p>Réalisez sous Tinkercad Circuits le montage en pont diviseur alimenté par une source continue E = 1,5 V avec une résistance fixe R<sub>fixe</sub> = 1 k&Omega; et votre LDR.</p>
+    <p>Réalisez sous Tinkercad Circuits le montage en pont diviseur alimenté par une source continue E = 1,5 V avec une résistance fixe R<sub>fixe</sub> = 1 kΩ et votre LDR.</p>
 
    <img src="images/schema_partie1_3_pont_diviseur_ldr.png">
 
@@ -558,7 +608,7 @@ u_tot = u_ldr + u_r
         <span class="duration-badge">Durée : 0h30</span>
     </h2>
 
-    <p>Réalisez sous Tinkercad Circuits le circuit suivant : source 5,0 V, résistance de protection R = 220 &Omega; et une DEL. Mesurez au voltmètre la tension de seuil directe V<sub>F</sub> aux bornes de la DEL pour chaque couleur.</p>
+    <p>Réalisez sous Tinkercad Circuits le circuit suivant : source 5,0 V, résistance de protection R = 220 Ω et une DEL. Mesurez au voltmètre la tension de seuil directe V<sub>F</sub> aux bornes de la DEL pour chaque couleur.</p>
 
     <table>
         <thead>
@@ -628,13 +678,13 @@ plt.show()</code></pre>
     </h2>
 
     <p>Dans un circuit série à 3 dipôles sous E = 9,0 V, la tension se répartit proportionnellement aux résistances :
-    R<sub>1</sub> = 1,0 k&Omega;, R<sub>2</sub> = 1,5 k&Omega;, R<sub>3</sub> = 2,5 k&Omega; (Potentiomètre réglé à 2,5 k&Omega;).</p>
+    R<sub>1</sub> = 1,0 kΩ, R<sub>2</sub> = 1,5 kΩ, R<sub>3</sub> = 2,5 kΩ (Potentiomètre réglé à 2,5 kΩ).</p>
 
     <table>
         <thead>
             <tr>
                 <th>Dipôle / Résistance</th>
-                <th>Résistance nominale (k&Omega;)</th>
+                <th>Résistance nominale (kΩ)</th>
                 <th>Tension mesurée (V)</th>
                 <th>Part relative calculée (%)</th>
             </tr>
@@ -693,50 +743,68 @@ plt.show()</code></pre>
     <div class="question-box">
         <h4>Questions d'analyse :</h4>
         <p><strong>Q8.</strong> Quel problème se produit-il sous Google Sheets ou sous Python si l'on sélectionne par mégarde la ligne "TOTAL" dans les données du camembert ?</p>
-        <p><strong>Q9.</strong> Si l'on tourne le curseur de R<sub>3</sub> pour amener sa résistance à 0 &Omega; (court-circuit), que deviennent les tensions U<sub>1</sub> et U<sub>2</sub> ?</p>
+        <p><strong>Q9.</strong> Si l'on tourne le curseur de R<sub>3</sub> pour amener sa résistance à 0 Ω (court-circuit), que deviennent les tensions U<sub>1</sub> et U<sub>2</sub> ?</p>
     </div>
 
     <!-- ========================================================================= -->
     <!-- PARTIE 4 -->
     <!-- ========================================================================= -->
     <h2 class="part-title">
-        <span>Partie 4 : Challenge Ingénierie — Caractérisation CTN 10 k&Omega; via Datasheet & Courbe de Tendance</span>
+        <span>Partie 4 : Challenge Ingénierie — Caractérisation CTN 10 kΩ via Datasheet & Courbe de Tendance</span>
         <span class="duration-badge">Durée : 1h30</span>
     </h2>
 
-    <p>On conçoit la chaîne d'acquisition de température d'un système embarqué (serre connectée ou imprimante 3D). Le capteur utilisé est une <strong>thermistance CTN/RTC de 10 k&Omega; à 25 °C</strong> (Coefficient de Température Négatif / Résistance Thermométrique). Plutôt que d'utiliser une formule théorique complexe, vous allez <strong>extraire la relation mathématique réelle T = f(R) directement à partir des données constructeur (datasheet)</strong> à l'aide d'une <strong>courbe de tendance</strong>, puis l'intégrer dans le code du capteur.</p>
+    <p>On conçoit la chaîne d'acquisition de température d'un système embarqué (serre connectée ou imprimante 3D). Le capteur utilisé est une <strong>thermistance CTN MF52-103 (10 kΩ à 25 °C, B<sub>25/50</sub> = 3950 K)</strong>. Plutôt que d'utiliser une formule théorique complexe, vous allez <strong>extraire la relation mathématique réelle T = f(R) directement à partir des données constructeur (datasheet)</strong> à l'aide d'une <strong>courbe de tendance</strong>, puis l'intégrer dans le code du capteur.</p>
 
-    <h3 class="section-title">4.1. Données du Datasheet Constructeur (Extrait)</h3>
-    <p>Le constructeur fournit dans sa documentation technique (datasheet) les valeurs de résistance de la thermistance pour différentes températures normalisées :</p>
+    <h3 class="section-title">4.1. Tableau Résistance / Température (NTC 10K B3950 — MF52-103)</h3>
+    <p>Le constructeur fournit dans sa documentation technique (datasheet) la caractéristique normalisée Résistance / Température pour la thermistance CTN <strong>MF52-103 (10 kΩ, valeur B<sub>25/50</sub> = 3950 K)</strong> de -30 °C à +125 °C :</p>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Température T (°C)</th>
-                <th>0</th><th>10</th><th>20</th><th>25</th><th>30</th><th>40</th>
-                <th>50</th><th>60</th><th>70</th><th>80</th><th>90</th><th>100</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><strong>Résistance datasheet R<sub>CTN</sub> (k&Omega;)</strong></td>
-                <td>32,65</td><td>19,90</td><td>12,49</td><td>10,00</td><td>8,06</td><td>5,33</td>
-                <td>3,60</td><td>2,49</td><td>1,75</td><td>1,26</td><td>0,92</td><td>0,68</td>
-            </tr>
-            <tr>
-                <td><strong>Résistance datasheet R<sub>CTN</sub> (&Omega;)</strong></td>
-                <td>32 650</td><td>19 900</td><td>12 490</td><td>10 000</td><td>8 057</td><td>5 327</td>
-                <td>3 603</td><td>2 488</td><td>1 752</td><td>1 258</td><td>918</td><td>680</td>
-            </tr>
-            <tr>
-                <td><strong>Tension U<sub>mes</sub> au pont diviseur (V)</strong></td>
-                <td class="empty-cell">...</td><td class="empty-cell">...</td><td class="empty-cell">...</td>
-                <td class="empty-cell">...</td><td class="empty-cell">...</td><td class="empty-cell">...</td>
-                <td class="empty-cell">...</td><td class="empty-cell">...</td><td class="empty-cell">...</td>
-                <td class="empty-cell">...</td><td class="empty-cell">...</td><td class="empty-cell">...</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="table-scroll-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Température T (°C)</th>
+                    <th>Résistance R<sub>CTN</sub> (kΩ)</th>
+                    <th>Résistance R<sub>CTN</sub> (Ω)</th>
+                    <th>Tension U<sub>mes</sub> au pont diviseur (V)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>-30 °C</td><td>200,20</td><td>200 204</td><td class="empty-cell">...</td></tr>
+                <tr><td>-25 °C</td><td>144,32</td><td>144 317</td><td class="empty-cell">...</td></tr>
+                <tr><td>-20 °C</td><td>105,38</td><td>105 385</td><td class="empty-cell">...</td></tr>
+                <tr><td>-15 °C</td><td>77,90</td><td>77 898</td><td class="empty-cell">...</td></tr>
+                <tr><td>-10 °C</td><td>58,25</td><td>58 246</td><td class="empty-cell">...</td></tr>
+                <tr><td>-5 °C</td><td>44,03</td><td>44 026</td><td class="empty-cell">...</td></tr>
+                <tr><td>0 °C</td><td>33,62</td><td>33 621</td><td class="empty-cell">...</td></tr>
+                <tr><td>5 °C</td><td>25,92</td><td>25 925</td><td class="empty-cell">...</td></tr>
+                <tr><td>10 °C</td><td>20,17</td><td>20 175</td><td class="empty-cell">...</td></tr>
+                <tr><td>15 °C</td><td>15,84</td><td>15 837</td><td class="empty-cell">...</td></tr>
+                <tr><td>20 °C</td><td>12,54</td><td>12 535</td><td class="empty-cell">...</td></tr>
+                <tr><td>25 °C</td><td>10,00</td><td>10 000</td><td class="empty-cell">...</td></tr>
+                <tr><td>30 °C</td><td>8,04</td><td>8 037</td><td class="empty-cell">...</td></tr>
+                <tr><td>35 °C</td><td>6,51</td><td>6 506</td><td class="empty-cell">...</td></tr>
+                <tr><td>40 °C</td><td>5,30</td><td>5 301</td><td class="empty-cell">...</td></tr>
+                <tr><td>45 °C</td><td>4,35</td><td>4 348</td><td class="empty-cell">...</td></tr>
+                <tr><td>50 °C</td><td>3,59</td><td>3 588</td><td class="empty-cell">...</td></tr>
+                <tr><td>55 °C</td><td>2,98</td><td>2 978</td><td class="empty-cell">...</td></tr>
+                <tr><td>60 °C</td><td>2,49</td><td>2 486</td><td class="empty-cell">...</td></tr>
+                <tr><td>65 °C</td><td>2,09</td><td>2 086</td><td class="empty-cell">...</td></tr>
+                <tr><td>70 °C</td><td>1,76</td><td>1 760</td><td class="empty-cell">...</td></tr>
+                <tr><td>75 °C</td><td>1,49</td><td>1 492</td><td class="empty-cell">...</td></tr>
+                <tr><td>80 °C</td><td>1,27</td><td>1 270</td><td class="empty-cell">...</td></tr>
+                <tr><td>85 °C</td><td>1,09</td><td>1 087</td><td class="empty-cell">...</td></tr>
+                <tr><td>90 °C</td><td>0,934</td><td>933,6</td><td class="empty-cell">...</td></tr>
+                <tr><td>95 °C</td><td>0,805</td><td>805,4</td><td class="empty-cell">...</td></tr>
+                <tr><td>100 °C</td><td>0,698</td><td>697,5</td><td class="empty-cell">...</td></tr>
+                <tr><td>105 °C</td><td>0,606</td><td>606,4</td><td class="empty-cell">...</td></tr>
+                <tr><td>110 °C</td><td>0,529</td><td>529,1</td><td class="empty-cell">...</td></tr>
+                <tr><td>115 °C</td><td>0,463</td><td>463,3</td><td class="empty-cell">...</td></tr>
+                <tr><td>120 °C</td><td>0,407</td><td>407,1</td><td class="empty-cell">...</td></tr>
+                <tr><td>125 °C</td><td>0,359</td><td>358,8</td><td class="empty-cell">...</td></tr>
+            </tbody>
+        </table>
+    </div>
 
     <h3 class="section-title">4.2. Tracé de la Courbe et Extraction de la Relation T = f(R) par Courbe de Tendance</h3>
     <p>Dans un système instrumenté réel, le microcontrôleur mesure la résistance de la thermistance et doit en déduire la température. Nous cherchons donc la relation : <strong>T = f(R)</strong> (avec la Résistance R en abscisse X, et la Température T en ordonnée Y).</p>
@@ -745,7 +813,7 @@ plt.show()</code></pre>
         <div class="methodo-card sheets">
             <h4>🟢 Aide Google Sheets N°6 : Courbe de Tendance & Équation</h4>
             <ul>
-                <li><span class="sheets-step">1</span> <strong>Organisation :</strong> Placez la colonne <em>Résistance R (k&Omega;)</em> à gauche (Axe X) et <em>Température T (°C)</em> à droite (Axe Y).</li>
+                <li><span class="sheets-step">1</span> <strong>Organisation :</strong> Placez la colonne <em>Résistance R (kΩ)</em> à gauche (Axe X) et <em>Température T (°C)</em> à droite (Axe Y).</li>
                 <li><span class="sheets-step">2</span> <strong>Tracé :</strong> <code>Insertion</code> &gt; <code>Graphique</code> &gt; Type : <strong>Nuage de points</strong>.</li>
                 <li><span class="sheets-step">3</span> <strong>Courbe de tendance :</strong> Allez dans <code>Personnaliser</code> &gt; <em>Série</em> &gt; Cochez <strong>[x] Courbe de tendance</strong>.</li>
                 <li><span class="sheets-step">4</span> <strong>Choix du modèle :</strong> Dans <em>Type</em>, testez <strong>Polynôme (degré 2 ou 3)</strong>, <strong>Logarithmique</strong> ou <strong>Puissance</strong>.</li>
@@ -754,157 +822,130 @@ plt.show()</code></pre>
             </ul>
         </div>
         <div class="methodo-card python">
-            <h4>🐍 Méthode Python : Régression Polynomiale (`np.polyfit`)</h4>
+            <h4>🐍 Méthode Python : Régressions Polynomiale & Logarithmique (`np.polyfit`)</h4>
             <ul>
                 <li>Consultez la galerie : <a href="https://matplotlib.org/stable/gallery/lines_bars_and_markers/scatter_demo2.html" target="_blank" rel="noopener noreferrer">Scatter plot demo</a>.</li>
-                <li>Renseignez les listes <code>r_kohm</code> et <code>temp</code> d'après les données du datasheet.</li>
-                <li>Ajustez un polynôme avec <code>coeffs = np.polyfit(r_kohm, temp, deg=2)</code> (ou degré 3).</li>
-                <li>Superposez les points du datasheet et la courbe du modèle avec <code>plt.plot()</code>.</li>
-                <li>Affichez les coefficients [a, b, c] dans la console Thonny pour votre programme.</li>
+                <li>Renseignez les tableaux <code>temp</code> et <code>r_kohm</code> d'après le datasheet MF52-103 :
+                    <pre style="background:#1e293b; color:#f1f5f9; padding:0.4rem; border-radius:4px; font-size:0.75rem; margin:0.3rem 0; overflow-x:auto;"><code>temp = np.array([-30, -25, -20, -15, -10, -5, 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125])
+r_kohm = np.array([200.20, 144.32, 105.38, 77.90, 58.25, 44.03, 33.62, 25.92, 20.17, 15.84, 12.54, 10.00, 8.04, 6.51, 5.30, 4.35, 3.59, 2.98, 2.49, 2.09, 1.76, 1.49, 1.27, 1.09, 0.934, 0.805, 0.698, 0.606, 0.529, 0.463, 0.407, 0.359])</code></pre>
+                </li>
+                <li><strong>Option 1 — Régression polynomiale (degré 2 ou 3) :</strong><br>
+                    <code>coeffs_poly = np.polyfit(r_kohm, temp, deg=2)</code><br>
+                    Modèle : <code>modele_poly = np.poly1d(coeffs_poly)</code> (forme <em>T(R) = a&middot;R² + b&middot;R + c</em>).<br>
+                    Évaluation : <code>y_poly = modele_poly(x_trace)</code>.
+                </li>
+                <li><strong>Option 2 — Régression logarithmique :</strong><br>
+                    On ajuste une droite sur le logarithme de la résistance (forme <em>T(R) = a&middot;ln(R) + b</em>) :<br>
+                    <code>coeffs_log = np.polyfit(np.log(r_kohm), temp, deg=1)</code><br>
+                    Évaluation : <code>y_log = coeffs_log[0] * np.log(x_trace) + coeffs_log[1]</code>.
+                </li>
+                <li>Superposez les points expérimentaux (<code>plt.scatter</code>) et la courbe du modèle retenu (<code>plt.plot</code>).</li>
+                <li>Affichez les coefficients obtenus dans la console pour votre programme microcontrôleur.</li>
             </ul>
         </div>
     </div>
 
-    <div class="code-container">
-        <div class="code-header">
-            <span>Python 3 — script_4_1_tendance_ctn.py (À compléter par l'élève)</span>
-            <span>NumPy Polyfit & Matplotlib</span>
+    <div class="concept-box">
+        <h4>📐 Comprendre le Coefficient de Détermination R² (Qualité de la Modélisation)</h4>
+        <p>Le coefficient de détermination <strong>R²</strong> (valeur sans dimension comprise entre <strong>0</strong> et <strong>1</strong>, souvent exprimée en pourcentage de 0&nbsp;% à 100&nbsp;%) quantifie la proportion de la variabilité des mesures expliquée par le modèle mathématique choisi :</p>
+        
+        <div class="math-formula">
+            R² = 1 - <span style="display: inline-block; vertical-align: middle; text-align: center; margin: 0 4px;"><span style="display: block; border-bottom: 1px solid currentColor; padding-bottom: 2px;">&sum;(y<sub>réel</sub> &minus; y<sub>modèle</sub>)²</span><span style="display: block; padding-top: 2px;">&sum;(y<sub>réel</sub> &minus; y<sub>moyen</sub>)²</span></span> = 1 - <span style="display: inline-block; vertical-align: middle; text-align: center; margin: 0 4px;"><span style="display: block; border-bottom: 1px solid currentColor; padding-bottom: 2px;">Somme des résidus au carré (SS<sub>res</sub>)</span><span style="display: block; padding-top: 2px;">Dispersion totale des mesures (SS<sub>tot</sub>)</span></span>
         </div>
-        <pre><code class="language-python"># Squelette à compléter : Tracé T = f(R) depuis le datasheet et courbe de tendance
-import matplotlib.pyplot as plt
-import numpy as np
 
-# Données issues du datasheet constructeur (CTN 10 kΩ)
-temp = np.array([0, 10, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100])
-r_kohm = np.array([32.65, 19.90, 12.49, 10.00, 8.06, 5.33, 3.60, 2.49, 1.75, 1.26, 0.92, 0.68])
+        <ul>
+            <li><strong>R² = 1 (soit 100 %) :</strong> Modélisation parfaite. La courbe passe exactement par tous les points de mesure expérimentaux (résidus nuls).</li>
+            <li><strong>R² &ge; 0,98 :</strong> Excellent ajustement en ingénierie. L'erreur d'estimation est très faible : l'équation est fiable pour être programmée sur le microcontrôleur.</li>
+            <li><strong>R² compris entre 0,90 et 0,95 :</strong> Ajustement moyen. Le modèle donne l'allure générale mais produit des erreurs d'estimation sensibles sur certaines plages de mesure.</li>
+            <li><strong>R² &lt; 0,90 :</strong> Modèle inadapté. Le choix de la loi mathématique (ex. régression linéaire simple) ne traduit pas le comportement physique du composant.</li>
+            <li><strong>Démarche de l'ingénieur :</strong> Comparez les valeurs de R² obtenues pour le <em>modèle polynomial (degré 2 ou 3)</em> et le <em>modèle logarithmique</em> afin de choisir scientifiquement le meilleur compromis entre précision (R² maximal) et simplicité algorithmique.</li>
+        </ul>
 
-plt.figure(figsize=(9, 5))
-
-# 1. TODO: Tracer les points du datasheet avec plt.scatter()
-# plt.scatter(r_kohm, temp, color='red', marker='o', label='Points du datasheet')
-
-# 2. Modélisation mathématique par courbe de tendance polynomiale (degré 2 ou 3)
-coeffs = np.polyfit(r_kohm, temp, deg=2)  # Retourne les coefficients [a, b, c]
-modele = np.poly1d(coeffs)
-x_trace = np.linspace(min(r_kohm), max(r_kohm), 100)
-
-print("Coefficients de la courbe de tendance T = f(R) :")
-print(f"T(R) = {coeffs[0]:.4f} * R^2 + {coeffs[1]:.4f} * R + {coeffs[2]:.4f}")
-
-# 3. TODO: Tracer la courbe de tendance sur le graphique
-# plt.plot(x_trace, modele(x_trace), 'b--', label='Modèle tendance : T = f(R)')
-
-plt.title("Caractéristique de la CTN 10 kΩ : Température en fonction de la Résistance")
-plt.xlabel("Résistance R (kΩ)")
-plt.ylabel("Température T (°C)")
-plt.grid(True, linestyle=':')
-plt.legend()
-plt.show()</code></pre>
+        <p style="margin-top: 0.6rem; font-size: 0.88rem; color: #334155;">
+            💡 <em>Calcul direct du R² en Python :</em><br>
+            <code>residus = temp - y_modele_points</code><br>
+            <code>r2 = 1 - (np.sum(residus**2) / np.sum((temp - np.mean(temp))**2))</code><br>
+            <code>print(f"Qualité du modèle : R² = {r2:.4f}")</code>
+        </p>
     </div>
 
     <div class="question-box">
         <h4>Questions d'analyse :</h4>
-        <p><strong>Q10.</strong> Relevez l'équation mathématique fournie par la courbe de tendance sous Google Sheets (ou Python) pour la relation T = f(R), ainsi que la valeur du coefficient R².</p>
-        <p><strong>Q11.</strong> Le coefficient R² est-il satisfaisant ? Quelle est l'erreur maximale constatée entre le modèle et les données du constructeur ?</p>
+        <p><strong>Q10.</strong> Relevez l'équation mathématique fournie par la courbe de tendance sous Google Sheets (ou Python) pour la relation T = f(R), ainsi que la valeur du coefficient R² (comparez les régressions polynomiale et logarithmique).</p>
+        <p><strong>Q11.</strong> Le coefficient R² est-il satisfaisant ? Quel modèle retenez-vous ? Quelle est l'erreur maximale constatée entre le modèle et les données du constructeur ?</p>
     </div>
 
     <h3 class="section-title">4.3. Conditionnement en Pont Diviseur de Tension</h3>
-    <p>Pour mesurer la résistance de la CTN avec un microcontrôleur, on réalise un pont diviseur alimenté sous 5V avec une résistance fixe R<sub>fixe</sub> = 10 k&Omega, on prélève le potentiel entre les 2 résistances et on applique la formule du pont diviseur pour trouver la resistance R<sub>ctn</sub> </p>
+    <p>Pour mesurer la résistance de la CTN avec un microcontrôleur <strong>Raspberry Pi Pico</strong>, on réalise un pont diviseur alimenté sous <strong>3,3 V</strong> (tension de référence du convertisseur ADC du Pico) avec une résistance fixe R<sub>fixe</sub> = 10 kΩ. On prélève le potentiel entre les 2 résistances et on applique la formule du pont diviseur pour trouver la résistance R<sub>ctn</sub>.</p>
 
-    <p>1. Complétez la 3<sup>e</sup> ligne du tableau de mesures en calculant la tension U<sub>mes</sub> théorique pour chaque température du datasheet.<br>
-    2. Câblez le montage sous Tinkercad Circuits et vérifiez la tension obtenue pour 25 °C (R<sub>CTN</sub> = 10 k&Omega;).</p>
+    <p>1. Complétez la 4<sup>e</sup> colonne (<strong>Tension U<sub>mes</sub> au pont diviseur</strong>) du tableau de mesures en calculant la tension théorique pour quelques températures clés (avec une alimentation V<sub>CC</sub> = 3,3 V et R<sub>fixe</sub> = 10 kΩ).<br>
+    2. Câblez le montage sous Tinkercad Circuits et vérifiez la tension obtenue pour 25 °C (R<sub>CTN</sub> = 10 kΩ, soit U<sub>mes</sub> = 1,65 V).</p>
 
     <div class="question-box">
         <h4>Question d'analyse :</h4>
         <p><strong>Q12.</strong> Pourquoi la tension U<sub>mes</sub> augmente-t-elle quand la température augmente, alors que la résistance de la CTN diminue ?</p>
     </div>
 
-    <h3 class="section-title">4.4. Intégration de la Relation de Tendance dans le Code du Capteur</h3>
-    <p>Le microcontrôleur lit une valeur numérique brute N comprise entre 0 et 1023 sur son entrée analogique A0 (N = (U<sub>mes</sub> / 5,0) &times; 1023). Le programme doit :</p>
+    <h3 class="section-title">4.4. Intégration de la Relation de Tendance dans le Code du Capteur (Raspberry Pi Pico)</h3>
+    <p>Le microcontrôleur utilisé est un <strong>Raspberry Pi Pico (RP2040)</strong>. Son convertisseur analogique-numérique (CAN / ADC, broche GP26 / ADC0) mesure une tension analogique comprise entre 0 et 3,3 V. En MicroPython, la méthode standard <code>read_u16()</code> retourne une valeur numérique brute non signée <strong>N comprise entre 0 et 65 535</strong> (pleine échelle 16 bits, soit <code>N = (U<sub>mes</sub> / 3,3) &times; 65535</code>). Le programme doit réaliser les étapes suivantes :</p>
     <ol style="margin-left: 2rem; margin-bottom: 1rem; font-size: 0.95rem;">
-        <li>Calculer la tension analogique : <code>U_mes = N &times; (5.0 / 1023.0)</code></li>
-        <li>Calculer la résistance de la CTN en k&Omega; : <code>R_ctn_kohm = R_fixe &times; ((5.0 / U_mes) - 1.0)</code></li>
-        <li><strong>Appliquer directement l'équation de la courbe de tendance trouvée en 4.2</strong> (T = a &middot; R<sup>2</sup> + b &middot; R + c) pour calculer la température réelle en °C !</li>
+        <li>Calculer la tension analogique mesurée : <code>U_mes = N &times; (3.3 / 65535.0)</code></li>
+        <li>Calculer la résistance de la CTN en kΩ à partir de la loi du pont diviseur : <code>R_ctn_kohm = R_fixe &times; ((3.3 / U_mes) - 1.0)</code></li>
+        <li><strong>Appliquer directement l'équation de la courbe de tendance retenue en 4.2</strong> (modèle polynomial ou logarithmique) pour déduire la température réelle en °C !</li>
     </ol>
 
     <div class="code-container">
         <div class="code-header">
-            <span>C++ Arduino — Code embarqué Microcontrôleur (À compléter)</span>
-            <span>Arduino IDE</span>
+            <span>Pseudo-code Algorithmique — Raspberry Pi Pico (RP2040)</span>
+            <span>MicroPython / Algorithme Embarqué</span>
         </div>
-        <pre><code class="language-cpp">const int PIN_CTN = A0;
-const float R_FIXE = 10.0; // En kΩ (10 kΩ)
+        <pre><code class="language-text">// ============================================================================
+// PSEUDO-CODE : ACQUISITION & CALCUL DE TEMPÉRATURE SUR RASPBERRY PI PICO
+// ============================================================================
 
-// TODO: Renseigner ici les coefficients [a, b, c] obtenus lors de la courbe de tendance T = f(R)
-const float COEFF_A = 0.1571;  // Exemple pour R en kΩ (à adapter avec votre équation)
-const float COEFF_B = -7.6605; // Exemple (à adapter avec votre équation)
-const float COEFF_C = 87.1517; // Exemple (à adapter avec votre équation)
+Constantes :
+    BROCHE_ADC     ← GP26              // Entrée analogique ADC0 (broche 31 de la Pico)
+    VREF           ← 3.3               // Tension de référence ADC (3,3 V)
+    RESOLUTION_ADC ← 65535             // Pleine échelle 16 bits MicroPython (read_u16 : 0 à 65535)
+    R_FIXE         ← 10.0              // Résistance fixe du pont diviseur (en kΩ)
 
-void setup() {
-  Serial.begin(9600);
-  Serial.println("--- Capteur de Température CTN 10k (Modèle Tendance) ---");
-}
+    // Coefficients de la loi de tendance T = f(R) identifiée en 4.2 :
+    // Option A : Modèle Polynomial (degré 2) : T(R) = a·R² + b·R + c
+    COEFF_A        ← ...               // Valeur de 'a' relevée à la question Q10
+    COEFF_B        ← ...               // Valeur de 'b' relevée à la question Q10
+    COEFF_C        ← ...               // Valeur de 'c' relevée à la question Q10
+    // (Ou Option B si modèle Logarithmique retenu : T(R) = a·ln(R) + b)
 
-void loop() {
-  int adc = analogRead(PIN_CTN); // Lecture 0 à 1023
-  
-  // 1. Calcul de la tension analogique U_mes (V)
-  float u_mes = adc * (5.0 / 1023.0);
-  
-  // 2. Calcul de la résistance de la CTN en kΩ à partir de la loi du pont diviseur
-  float r_ctn_kohm = R_FIXE * ((5.0 / u_mes) - 1.0);
-  
-  // 3. TODO: Calcul de la température en appliquant l'équation de la courbe de tendance T = f(R)
-  float temp_celsius = COEFF_A * (r_ctn_kohm * r_ctn_kohm) + COEFF_B * r_ctn_kohm + COEFF_C;
+Initialisation :
+    Configurer BROCHE_ADC en entrée analogique
+    Initialiser la liaison série / moniteur console
 
-  // Affichage sur le moniteur série
-  Serial.print("U_mes: "); Serial.print(u_mes, 2);
-  Serial.print(" V | R_ctn: "); Serial.print(r_ctn_kohm, 2);
-  Serial.print(" kOhms | Temp: "); Serial.print(temp_celsius, 1);
-  Serial.println(" deg C");
-  
-  delay(1000);
-}</code></pre>
-    </div>
-
-    <div class="code-container">
-        <div class="code-header">
-            <span>Python 3 — script_4_2_capteur_simulation.py (À compléter)</span>
-            <span>Banc de test algorithmique</span>
-        </div>
-        <pre><code class="language-python"># Squelette de test de la fonction de conversion avec l'équation de tendance
-import numpy as np
-
-def acquisition_temperature(adc_valeur):
-    VCC = 5.0
-    R_FIXE_KOHM = 10.0
+Boucle principale (Répéter indéfiniment) :
+    // 1. Acquisition de la valeur brute du CAN (0 à 65535 sur Raspberry Pi Pico)
+    N ← Lire_ADC_16bits(BROCHE_ADC)
     
-    # 1. Calcul de la tension U_mes
-    u_mes = adc_valeur * (VCC / 1023.0)
-    if u_mes <= 0.05: return -999.0
+    // 2. Conversion de la valeur numérique brute en tension analogique (V)
+    U_mes ← N * (VREF / RESOLUTION_ADC)
     
-    # 2. Calcul de la résistance R_ctn en kΩ
-    r_ctn_kohm = R_FIXE_KOHM * ((VCC / u_mes) - 1.0)
-    
-    # 3. TODO: Appliquer l'équation de votre courbe de tendance T = a*R^2 + b*R + c
-    # Remplacez a, b et c par vos valeurs obtenues à la question Q10
-    a = 0.1571
-    b = -7.6605
-    c = 87.1517
-    temp_restituee = a * (r_ctn_kohm**2) + b * r_ctn_kohm + c
-    
-    return u_mes, r_ctn_kohm, temp_restituee
+    // 3. Calcul de la résistance de la CTN en kΩ (loi du pont diviseur sous 3,3 V)
+    Si U_mes > 0.05 alors
+        R_ctn ← R_FIXE * ((VREF / U_mes) - 1.0)
+        
+        // 4. Déduction de la température en °C par la courbe de tendance
+        // --- Si Modèle Polynomial (degré 2) ---
+        Temperature ← COEFF_A * (R_ctn ^ 2) + COEFF_B * R_ctn + COEFF_C
+        
+        // --- Si Modèle Logarithmique (forme T = a·ln(R) + b) ---
+        // Temperature ← COEFF_A * ln(R_ctn) + COEFF_B
+        
+        // 5. Affichage des grandeurs mesurées et calculées
+        Afficher "U_mes = " + U_mes + " V | R_ctn = " + R_ctn + " kΩ | T = " + Temperature + " °C"
+    Sinon
+        Afficher "Alerte : Tension anormale / sonde déconnectée"
+    Fin Si
 
-# Test pour quelques valeurs représentatives du convertisseur ADC
-echantillons_adc = [239, 342, 512, 667, 818, 937]
-
-print("="*65)
-print(f"{'ADC':^6} | {'U_mes (V)':^12} | {'R_ctn (kΩ)':^14} | {'Temp (°C)':^12}")
-print("="*65)
-for adc in echantillons_adc:
-    u, r, t = acquisition_temperature(adc)
-    print(f"{adc:^6d} | {u:^12.2f} | {r:^14.2f} | {t:^12.1f}")
-print("="*65)</code></pre>
+    Attendre 1 seconde
+Fin Boucle</code></pre>
     </div>
 
     <!-- ========================================================================= -->
@@ -979,7 +1020,7 @@ print("="*65)</code></pre>
                 <td class="bareme-points">/ 4</td>
             </tr>
             <tr>
-                <td><strong>5. Challenge Capteur CTN 10 k&Omega;</strong></td>
+                <td><strong>5. Challenge Capteur CTN 10 kΩ</strong></td>
                 <td>Courbe de tendance extraite du datasheet, équation injectée et code de conversion fonctionnel.</td>
                 <td class="bareme-points">/ 4</td>
             </tr>
