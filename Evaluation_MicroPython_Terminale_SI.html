@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Évaluation MicroPython — Terminale SI (Raspberry Pi Pico)</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #2563eb;
+            --secondary: #0f766e;
+            --accent: #b45309;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --text-muted: #475569;
+            --border: #94a3b8;
+            --code-bg: #f1f5f9;
+            --code-border: #cbd5e1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.45;
+            padding: 20px;
+        }
+
+        .no-print-bar {
+            max-width: 900px;
+            margin: 0 auto 15px auto;
+            background: #e0e7ff;
+            border: 1px solid #818cf8;
+            padding: 12px 18px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .btn {
+            background-color: var(--primary-light);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+        .btn-secondary:hover {
+            background-color: #115e59;
+        }
+
+        .page {
+            max-width: 900px;
+            margin: 0 auto 25px auto;
+            background: var(--card-bg);
+            padding: 35px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            border: 1px solid #e2e8f0;
+        }
+
+        /* En-tête sujet officiel */
+        .exam-header {
+            display: grid;
+            grid-template-columns: 2fr 1.2fr;
+            border: 2px solid var(--primary);
+            border-radius: 6px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .header-cell {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--primary);
+            background: #ffffff;
+            font-size: 0.92rem;
+        }
+
+        .header-cell:nth-child(odd) {
+            border-right: 1px solid var(--primary);
+        }
+
+        .header-cell.full {
+            grid-column: span 2;
+        }
+
+        .header-cell.title {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 12px;
+        }
+
+        .header-cell.title h1 {
+            font-size: 1.35rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .header-cell.title p {
+            font-size: 0.92rem;
+            opacity: 0.95;
+        }
+
+        /* Blocs titres & sections */
+        h2.part-title {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 4px;
+            margin: 22px 0 14px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 1.18rem;
+        }
+
+        .badge-pts {
+            background: var(--primary);
+            color: white;
+            font-size: 0.82rem;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .exo-title {
+            color: var(--secondary);
+            font-size: 1.05rem;
+            margin: 16px 0 8px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Cadre ressources */
+        .resource-box {
+            background-color: #f8fafc;
+            border: 1.5px solid #0284c7;
+            border-left: 6px solid #0284c7;
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-bottom: 18px;
+            font-size: 0.88rem;
+        }
+
+        .resource-box h3 {
+            color: #0369a1;
+            margin-bottom: 6px;
+            font-size: 0.98rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 18px;
+            margin-top: 6px;
+        }
+
+        .resource-item strong {
+            color: #0c4a6e;
+        }
+
+        /* Code snippets */
+        .code-block {
+            background: #f8fafc;
+            border: 1px solid var(--code-border);
+            border-left: 4px solid var(--primary-light);
+            border-radius: 4px;
+            padding: 10px 14px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.86rem;
+            line-height: 1.4;
+            color: #0f172a;
+            white-space: pre-wrap;
+            margin: 10px 0 14px 0;
+        }
+
+        .code-fill {
+            background: #ffffff;
+            border: 1px solid #475569;
+            border-left: 4px solid #d97706;
+            border-radius: 4px;
+            padding: 10px 14px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.45;
+            color: #0f172a;
+            white-space: pre-wrap;
+            margin: 10px 0 14px 0;
+        }
+
+        .fill-blank {
+            display: inline-block;
+            border-bottom: 2px dashed #b45309;
+            min-width: 90px;
+            height: 1.1em;
+            vertical-align: baseline;
+            background-color: #fef3c7;
+            font-weight: bold;
+            color: #78350f;
+            padding: 0 4px;
+        }
+
+        /* Questions et zones de réponses */
+        .question {
+            margin-bottom: 14px;
+            font-size: 0.93rem;
+            page-break-inside: avoid;
+        }
+
+        .question-label {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+
+        .answer-lines {
+            border: 1px solid #cbd5e1;
+            background: repeating-linear-gradient(
+                to bottom,
+                #ffffff,
+                #ffffff 22px,
+                #e2e8f0 23px
+            );
+            height: 70px;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+
+        .answer-lines.short {
+            height: 48px;
+        }
+
+        .answer-lines.tall {
+            height: 92px;
+        }
+
+        /* Corrigé */
+        .section-corrige {
+            border-top: 4px dashed #64748b;
+            padding-top: 20px;
+            margin-top: 35px;
+        }
+
+        .corrige-badge {
+            background-color: #15803d;
+            color: white;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        .corrige-box {
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            border-left: 4px solid #16a34a;
+            padding: 10px 14px;
+            border-radius: 4px;
+            margin: 8px 0 14px 0;
+            font-size: 0.9rem;
+        }
+
+        .code-sol {
+            background: #1e293b;
+            color: #f8fafc;
+            border-radius: 4px;
+            padding: 10px 14px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.83rem;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            margin: 6px 0;
+        }
+
+        .code-sol .hl {
+            color: #fde047;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        /* Règles pour l'impression A4 */
+        @media print {
+            body {
+                background: white !important;
+                padding: 0 !important;
+                color: black !important;
+                font-size: 9.5pt !important;
+            }
+
+            .no-print-bar {
+                display: none !important;
+            }
+
+            .page {
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+            }
+
+            .exam-header {
+                border-color: #000000 !important;
+            }
+
+            .header-cell {
+                border-color: #000000 !important;
+            }
+
+            .header-cell.title {
+                background-color: #1e3a8a !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                color: white !important;
+            }
+
+            .resource-box {
+                border-color: #0284c7 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .page-break {
+                page-break-before: always;
+                break-before: page;
+            }
+
+            .keep-together {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+
+            .answer-lines {
+                border-color: #94a3b8 !important;
+            }
+
+            /* Option si on ne veut pas imprimer le corrigé */
+            .hide-on-print-corrige {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barre d'outils écran (invisible à l'impression) -->
+    <div class="no-print-bar">
+        <div>
+            <strong>Document officiel — Évaluation MicroPython Terminale SI (1h30)</strong>
+            <p style="font-size: 0.82rem; color: #4338ca; margin-top: 2px;">Mise en page optimisée pour l'impression A4 recto-verso.</p>
+        </div>
+        <div style="display: flex; gap: 8px;">
+            <button class="btn" onclick="window.print()">🖨️ Imprimer le sujet</button>
+            <button class="btn btn-secondary" onclick="toggleCorrige()">👁️ Afficher / Masquer Corrigé</button>
+        </div>
+    </div>
+
+    <div class="page">
+        <!-- ================= EN-TÊTE OFFICIEL ================= -->
+        <div class="exam-header">
+            <div class="header-cell">
+                <strong>Lycée — Sciences de l'Ingénieur</strong><br>
+                Niveau : <strong>Terminale SI / Spécialité SI</strong>
+            </div>
+            <div class="header-cell">
+                Durée conseillée : <strong>1 h 30 min</strong><br>
+                Calculatrice autorisée
+            </div>
+            <div class="header-cell">
+                <strong>NOM & Prénom :</strong> ........................................................................<br>
+                Classe : ......................... Groupe : ....................
+            </div>
+            <div class="header-cell">
+                Date : ..............................................<br>
+                NOTE : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>/ 20</strong>
+            </div>
+            <div class="header-cell full title">
+                <h1>Évaluation Sommative : MicroPython sur Raspberry Pi Pico</h1>
+                <p>Chaîne d'information — GPIO TOR (Pull-Up/Down), Modulation PWM, Conversion CAN & Algorithmique</p>
+            </div>
+        </div>
+
+        <!-- ================= RESSOURCES UTILES ================= -->
+        <div class="resource-box">
+            <h3>📖 DOCUMENT RESSOURCE : Fonctions & Syntaxe MicroPython Utiles</h3>
+            <div class="resource-grid">
+                <div class="resource-item">
+                    • <code>from machine import Pin, ADC, PWM</code><br>
+                    • <code>led = Pin(15, Pin.OUT)</code> : sortie TOR<br>
+                    • <code>led.value(1)</code> / <code>led.value(0)</code> : 3.3V ou 0V<br>
+                    • <code>bp = Pin(14, Pin.IN, Pin.PULL_DOWN)</code> : 0V repos, 3.3V pressé<br>
+                    • <code>bp = Pin(14, Pin.IN, Pin.PULL_UP)</code> : 3.3V repos, 0V pressé<br>
+                    • <code>etat = bp.value()</code> : renvoie 0 ou 1
+                </div>
+                <div class="resource-item">
+                    • <code>pot = ADC(Pin(26))</code> ou <code>ADC(26)</code> : entrée CAN 12b (0 à 3.3V)<br>
+                    • <code>N = pot.read_u16()</code> : quantification 16 bits (0 à 65535)<br>
+                    • <code>V_in = (N / 65535) * 3.3</code> : tension mesurée<br>
+                    • <code>buz = PWM(Pin(16))</code> ; <code>buz.freq(440)</code> : fréquence en Hz<br>
+                    • <code>buz.duty_u16(val)</code> : rapport cyclique (0=0%, 32768=50%)<br>
+                    • <code>import time</code> ; <code>time.sleep(sec)</code> : tempo
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PARTIE 1 ================= -->
+        <h2 class="part-title">
+            <span>PARTIE 1 : Analyse et explication de codes existants</span>
+            <span class="badge-pts">8 POINTS</span>
+        </h2>
+
+        <!-- EXERCICE 1 -->
+        <div class="keep-together">
+            <div class="exo-title">
+                <strong>Exercice 1 : Gestion d'un bouton-poussoir et fonction de clignotement</strong>
+                <span style="font-weight: bold; color: var(--accent);">4 points</span>
+            </div>
+            <p style="font-size: 0.9rem; margin-bottom: 6px;">On considère le script MicroPython suivant chargé sur un Raspberry Pi Pico :</p>
+            
+            <div class="code-block">from machine import Pin
+import time
+
+btn = Pin(14, Pin.IN, Pin.PULL_UP)
+led = Pin(15, Pin.OUT)
+
+def clignoter(nb_fois, cadence):
+    for i in range(nb_fois):
+        led.value(1)
+        time.sleep(cadence)
+        led.value(0)
+        time.sleep(cadence)
+
+while True:
+    etat_bouton = btn.value()
+    if not etat_bouton:
+        clignoter(3, 0.2)
+    else:
+        led.value(0)
+    time.sleep(0.05)</div>
+
+            <div class="question">
+                <div class="question-label">1.1. (1 pt) Rôle de <code>Pin.PULL_UP</code> : Expliquez l'utilité matérielle d'une résistance de rappel interne (Pull-Up). Quelle est la valeur électrique (en Volts) et la valeur logique lue par <code>btn.value()</code> lorsque le bouton est <strong>relâché</strong> ?</div>
+                <div class="answer-lines"></div>
+            </div>
+
+            <div class="question">
+                <div class="question-label">1.2. (1 pt) Analyse logique : Justifiez précisément pourquoi la condition <code>if not etat_bouton:</code> est validée quand l'utilisateur <strong>appuie</strong> sur le bouton-poussoir.</div>
+                <div class="answer-lines short"></div>
+            </div>
+
+            <div class="question">
+                <div class="question-label">1.3. (1 pt) Fonctionnement temporel : Décrivez le comportement physique de la LED lors de l'appel <code>clignoter(3, 0.2)</code> (nombre d'éclats, durées d'état haut et bas, durée totale de l'animation).</div>
+                <div class="answer-lines short"></div>
+            </div>
+
+            <div class="question">
+                <div class="question-label">1.4. (1 pt) Bonnes pratiques de programmation : Quel est l'intérêt de créer la fonction <code>clignoter(...)</code> plutôt que de dupliquer la boucle <code>for</code> dans la boucle principale ? Citez un principe de conception logicielle vu en cours.</div>
+                <div class="answer-lines short"></div>
+            </div>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- EXERCICE 2 -->
+        <div class="keep-together">
+            <div class="exo-title">
+                <strong>Exercice 2 : Acquisition analogique (CAN) et asservissement PWM d'un buzzer</strong>
+                <span style="font-weight: bold; color: var(--accent);">4 points</span>
+            </div>
+            <p style="font-size: 0.9rem; margin-bottom: 6px;">Un capteur rotatif (potentiomètre) est branché sur GP26 (ADC0) et un avertisseur sonore sur GP16 (PWM) :</p>
+
+            <div class="code-block">from machine import Pin, ADC, PWM
+import time
+
+capteur = ADC(Pin(26))
+buzzer = PWM(Pin(16))
+buzzer.freq(500)
+
+while True:
+    mesure = capteur.read_u16()
+    tension = (mesure * 3.3) / 65535
+    
+    if tension >= 2.2:
+        buzzer.duty_u16(32768)
+    elif tension >= 1.1:
+        buzzer.duty_u16(16384)
+    else:
+        buzzer.duty_u16(0)
+        
+    time.sleep(0.1)</div>
+
+            <div class="question">
+                <div class="question-label">2.1. (1 pt) Conversion analogique-numérique : Lors d'un essai, la variable <code>mesure</code> vaut <strong>43690</strong>. Calculez la tension $V_{in}$ présente sur l'entrée GP26 (arrondir au centième). Posez la formule.</div>
+                <div class="answer-lines short"></div>
+            </div>
+
+            <div class="question">
+                <div class="question-label">2.2. (1 pt) Signal sonore & Fréquence : À quelle grandeur physique correspond la ligne <code>buzzer.freq(500)</code> ? Calculez la période $T$ du signal émis en millisecondes (ms).</div>
+                <div class="answer-lines short"></div>
+            </div>
+
+            <div class="question">
+                <div class="question-label">2.3. (1 pt) Modulation PWM : Que signifie la valeur <code>32768</code> passée à <code>buzzer.duty_u16()</code> ? Calculez le rapport cyclique $\alpha$ en % ainsi que la durée du temps haut $T_{haut}$ sur une période.</div>
+                <div class="answer-lines short"></div>
+            </div>
+
+            <div class="question">
+                <div class="question-label">2.4. (1 pt) Synthèse fonctionnelle : Complétez le tableau récapitulatif du comportement du buzzer selon la tension $V_{in}$ :</div>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 6px; font-size: 0.88rem;">
+                    <thead>
+                        <tr style="background-color: #f1f5f9;">
+                            <th style="border: 1px solid #94a3b8; padding: 6px;">Plage de Tension</th>
+                            <th style="border: 1px solid #94a3b8; padding: 6px;">Rapport cyclique &alpha; (%)</th>
+                            <th style="border: 1px solid #94a3b8; padding: 6px;">État / Volume perçu du buzzer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border: 1px solid #94a3b8; padding: 8px; text-align: center;">$V_{in} < 1.1\text{ V}$</td>
+                            <td style="border: 1px solid #94a3b8; padding: 8px; text-align: center;"></td>
+                            <td style="border: 1px solid #94a3b8; padding: 8px; text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #94a3b8; padding: 8px; text-align: center;">$1.1\text{ V} \le V_{in} < 2.2\text{ V}$</td>
+                            <td style="border: 1px solid #94a3b8; padding: 8px; text-align: center;"></td>
+                            <td style="border: 1px solid #94a3b8; padding: 8px; text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #94a3b8; padding: 8px; text-align: center;">$V_{in} \ge 2.2\text{ V}$</td>
+                            <td style="border: 1px solid #94a3b8; padding: 8px; text-align: center;"></td>
+                            <td style="border: 1px solid #94a3b8; padding: 8px; text-align: center;"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ================= PARTIE 2 ================= -->
+        <h2 class="part-title page-break">
+            <span>PARTIE 2 : Codes MicroPython à compléter</span>
+            <span class="badge-pts">12 POINTS</span>
+        </h2>
+
+        <!-- EXERCICE 3 -->
+        <div class="keep-together">
+            <div class="exo-title">
+                <strong>Exercice 3 : Feu tricolore carrefour avec appel piéton prioritaire</strong>
+                <span style="font-weight: bold; color: var(--accent);">6 points</span>
+            </div>
+            <p style="font-size: 0.88rem; margin-bottom: 8px;">
+                <strong>Cahier des charges :</strong> Le carrefour pilote 3 LED : Verte (GP13), Jaune (GP14), Rouge (GP15). Un bouton piéton est branché sur GP12 avec résistance <strong>Pull-Down</strong>.<br>
+                • <em>Fonction <code>activer_feu(rouge, jaune, vert)</code> :</em> positionne les 3 LED selon les arguments reçus (1=allumée, 0=éteinte).<br>
+                • <em>Cycle normal :</em> Vert pendant 4s &rarr; Jaune pendant 1s &rarr; Rouge pendant 3s.<br>
+                • <em>Priorité piéton :</em> Si le bouton est pressé, passage immédiat au Jaune pendant 1s, puis Rouge pendant 5s avant de reprendre le cycle normal.
+            </p>
+
+            <div class="code-fill">from machine import Pin
+import time
+
+# 1. Déclaration des broches (1.5 pt)
+led_v = Pin(13, Pin.OUT)
+led_j = Pin(<span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>, <span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>)
+led_r = Pin(<span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>, <span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>)
+bp_pieton = Pin(12, Pin.IN, Pin.<span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>)
+
+# 2. Fonction pour piloter simultanément les 3 LED (1.5 pt)
+def activer_feu(rouge, jaune, vert):
+    led_r.value(<span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>)
+    led_j.value(<span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>)
+    led_v.value(<span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>)
+
+# 3. Boucle principale de régulation (3 pts)
+while True:
+    # Test d'activation du bouton piéton
+    if bp_pieton.value() == <span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>:
+        # Phase priorité piéton : Jaune 1s puis Rouge 5s
+        activer_feu(0, 1, 0)
+        time.sleep(<span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>)
+        activer_feu(<span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>, <span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>, <span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>)
+        time.sleep(5)
+    else:
+        # Cycle classique : Vert (4s) -> Jaune (1s) -> Rouge (3s)
+        activer_feu(0, 0, 1)
+        time.sleep(<span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>)
+        activer_feu(0, 1, 0)
+        time.sleep(<span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>)
+        activer_feu(1, 0, 0)
+        time.sleep(<span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>)</div>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- EXERCICE 4 -->
+        <div class="keep-together">
+            <div class="exo-title">
+                <strong>Exercice 4 : Centrale d'alerte progressive multi-seuils avec PWM</strong>
+                <span style="font-weight: bold; color: var(--accent);">6 points</span>
+            </div>
+            <p style="font-size: 0.88rem; margin-bottom: 8px;">
+                <strong>Cahier des charges :</strong> Un capteur analogique surveille un paramètre physique sur <strong>GP27 (ADC1)</strong>. Deux LED signalent l'état (Verte sur GP18, Rouge sur GP19) et un Buzzer PWM est connecté sur GP20.<br>
+                • <strong>Normal ($N_{16} < 30000$) :</strong> LED Verte allumée, LED Rouge éteinte, Buzzer coupé.<br>
+                • <strong>Avertissement ($30000 \le N_{16} < 50000$) :</strong> LED Verte éteinte, LED Rouge allumée. Émission de <strong>2 bips successifs</strong> à 440 Hz (0.1s de son, 0.1s de silence).<br>
+                • <strong>Danger Critique ($N_{16} \ge 50000$) :</strong> LED Rouge allumée, Buzzer émet un son <strong>continu</strong> strident à <strong>880 Hz</strong> avec rapport cyclique de 50 %.
+            </p>
+
+            <div class="code-fill">from machine import Pin, ADC, PWM
+import time
+
+# 1. Initialisations matérielles (1.5 pt)
+capteur_analog = ADC(Pin(<span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>))
+led_verte = Pin(18, Pin.OUT)
+led_rouge = Pin(19, Pin.OUT)
+buzzer = PWM(Pin(<span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>))
+
+# 2. Fonction d'émission d'un bip sonore unitaire (1.5 pt)
+def emettre_bip(frequence, duree):
+    buzzer.freq(frequence)
+    buzzer.duty_u16(<span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>)   # Rapport cyclique de 50%
+    time.sleep(duree)
+    buzzer.duty_u16(<span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>)   # Extinction / silence
+    time.sleep(duree)
+
+# 3. Surveillance continue et régulation des alertes (3 pts)
+while True:
+    valeur = capteur_analog.<span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>()   # Lecture brute 16 bits
+    
+    if valeur < 30000:
+        # État Normal
+        led_verte.value(1)
+        led_rouge.value(0)
+        buzzer.duty_u16(0)
+        time.sleep(0.2)
+        
+    elif valeur >= 30000 <span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> valeur < 50000:
+        # État Avertissement
+        led_verte.value(0)
+        led_rouge.value(1)
+        # Générer 2 bips successifs à 440 Hz de 0.1 s chacun
+        for i in range(<span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>):
+            emettre_bip(440, 0.1)
+            
+    else:
+        # État Alerte Critique
+        led_verte.value(0)
+        led_rouge.value(1)
+        buzzer.freq(<span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>)
+        buzzer.duty_u16(<span class="fill-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>)   # Son continu à 50%
+        time.sleep(0.2)</div>
+        </div>
+
+        <!-- ================= CORRIGÉ & GRILLE DE NOTATION ================= -->
+        <div id="corrige-section" class="section-corrige page-break">
+            <span class="corrige-badge">DOCUMENT PROFESSEUR — CORRIGÉ DÉTAILLÉ & BARÈME (/20)</span>
+
+            <h3 style="color: var(--primary); margin: 12px 0 6px 0;">Exercice 1 : Analyse Bouton & Clignotement (4 points)</h3>
+            <div class="corrige-box">
+                <strong>1.1. Rôle de Pin.PULL_UP (1 pt) :</strong> Active la résistance de tirage interne reliant la broche au 3.3V. Cela évite l'état "flottant" (haute impédance sensible aux parasites électromagnétiques). Bouton relâché : potentiel = <strong>3.3 V</strong>, valeur renvoyée = <strong>1</strong>.<br>
+                <strong>1.2. Condition <code>if not etat_bouton:</code> (1 pt) :</strong> Lorsque le bouton est pressé, la broche est reliée au 0V (masse GND), donc <code>etat_bouton = 0</code> (False). L'opérateur <code>not</code> inverse l'état : <code>not 0</code> donne <code>True</code>. La condition est donc validée quand le bouton est <strong>pressé</strong>.<br>
+                <strong>1.3. Comportement de <code>clignoter(3, 0.2)</code> (1 pt) :</strong> La boucle <code>range(3)</code> exécute 3 cycles d'allumage (0.2s) et d'extinction (0.2s). Il y a donc <strong>3 éclats lumineux</strong>. Durée totale : $3 \times (0.2 + 0.2) = \mathbf{1.2\text{ secondes}}$.<br>
+                <strong>1.4. Principe DRY (1 pt) :</strong> Évite la répétition de code (*Don't Repeat Yourself*), modularité, facilite la maintenance et permet de changer la cadence ou le nombre d'éclats par un simple appel de paramètre.
+            </div>
+
+            <h3 style="color: var(--primary); margin: 12px 0 6px 0;">Exercice 2 : CAN & Asservissement PWM (4 points)</h3>
+            <div class="corrige-box">
+                <strong>2.1. Calcul de tension (1 pt) :</strong> $V_{in} = \frac{43690}{65535} \times 3.3\text{ V} = \mathbf{2.20\text{ V}}$.<br>
+                <strong>2.2. Fréquence et Période (1 pt) :</strong> Fréquence du son = 500 Hz (hauteur de note). Période $T = \frac{1}{f} = \frac{1}{500} = 0.002\text{ s} = \mathbf{2\text{ ms}}$.<br>
+                <strong>2.3. Rapport cyclique (1 pt) :</strong> 32768 correspond à $\frac{32768}{65535} \approx \mathbf{50\%}$ (puissance sonore maximale d'un signal carré). Temps haut : $T_{haut} = 0.5 \times 2\text{ ms} = \mathbf{1\text{ ms}}$.<br>
+                <strong>2.4. Tableau de comportement (1 pt) :</strong><br>
+                • $V_{in} < 1.1\text{ V}$ : $\alpha = 0\%$, Buzzer silencieux / éteint.<br>
+                • $1.1\text{ V} \le V_{in} < 2.2\text{ V}$ : $\alpha = 25\%$ (16384), Buzzer actif à volume modéré.<br>
+                • $V_{in} \ge 2.2\text{ V}$ : $\alpha = 50\%$ (32768), Buzzer actif à volume maximal.
+            </div>
+
+            <h3 style="color: var(--primary); margin: 12px 0 6px 0;">Exercice 3 : Feu Tricolore Complété (6 points)</h3>
+            <div class="code-sol">from machine import Pin
+import time
+
+# 1. Déclarations (1.5 pt -> 0.5 pt par ligne)
+led_v = Pin(13, Pin.OUT)
+led_j = Pin(<span class="hl">14</span>, <span class="hl">Pin.OUT</span>)
+led_r = Pin(<span class="hl">15</span>, <span class="hl">Pin.OUT</span>)
+bp_pieton = Pin(12, Pin.IN, Pin.<span class="hl">PULL_DOWN</span>)
+
+# 2. Fonction (1.5 pt -> 0.5 pt par ligne)
+def activer_feu(rouge, jaune, vert):
+    led_r.value(<span class="hl">rouge</span>)
+    led_j.value(<span class="hl">jaune</span>)
+    led_v.value(<span class="hl">vert</span>)
+
+# 3. Boucle de régulation (3 pts)
+while True:
+    if bp_pieton.value() == <span class="hl">1</span>:      # 0.5 pt
+        activer_feu(0, 1, 0)
+        time.sleep(<span class="hl">1</span>)             # 0.5 pt
+        activer_feu(<span class="hl">1</span>, <span class="hl">0</span>, <span class="hl">0</span>)     # 0.5 pt (Rouge piéton)
+        time.sleep(5)
+    else:
+        activer_feu(0, 0, 1)
+        time.sleep(<span class="hl">4</span>)             # 0.5 pt
+        activer_feu(0, 1, 0)
+        time.sleep(<span class="hl">1</span>)             # 0.5 pt
+        activer_feu(1, 0, 0)
+        time.sleep(<span class="hl">3</span>)             # 0.5 pt</div>
+
+            <h3 style="color: var(--primary); margin: 12px 0 6px 0;">Exercice 4 : Centrale d'Alerte Complétée (6 points)</h3>
+            <div class="code-sol">from machine import Pin, ADC, PWM
+import time
+
+# 1. Initialisations (1.5 pt -> 0.75 pt ADC, 0.75 pt PWM)
+capteur_analog = ADC(Pin(<span class="hl">27</span>))      # ou ADC(27)
+led_verte = Pin(18, Pin.OUT)
+led_rouge = Pin(19, Pin.OUT)
+buzzer = PWM(Pin(<span class="hl">20</span>))
+
+# 2. Fonction bip sonore (1.5 pt -> 0.75 pt duty ON, 0.75 pt duty OFF)
+def emettre_bip(frequence, duree):
+    buzzer.freq(frequence)
+    buzzer.duty_u16(<span class="hl">32768</span>)         # 50%
+    time.sleep(duree)
+    buzzer.duty_u16(<span class="hl">0</span>)             # silence
+    time.sleep(duree)
+
+# 3. Surveillance (3 pts)
+while True:
+    valeur = capteur_analog.<span class="hl">read_u16</span>()    # 0.5 pt
+    
+    if valeur < 30000:
+        led_verte.value(1)
+        led_rouge.value(0)
+        buzzer.duty_u16(0)
+        time.sleep(0.2)
+        
+    elif valeur >= 30000 <span class="hl">and</span> valeur < 50000:   # 0.5 pt
+        led_verte.value(0)
+        led_rouge.value(1)
+        for i in range(<span class="hl">2</span>):                 # 0.5 pt (2 bips)
+            emettre_bip(440, 0.1)
+            
+    else:
+        led_verte.value(0)
+        led_rouge.value(1)
+        buzzer.freq(<span class="hl">880</span>)                   # 0.5 pt
+        buzzer.duty_u16(<span class="hl">32768</span>)             # 0.5 pt
+        time.sleep(0.2)                    # 0.5 pt</div>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleCorrige() {
+            const sec = document.getElementById('corrige-section');
+            if (sec.style.display === 'none') {
+                sec.style.display = 'block';
+                sec.classList.remove('hide-on-print-corrige');
+            } else {
+                sec.style.display = 'none';
+                sec.classList.add('hide-on-print-corrige');
+            }
+        }
+    </script>
+</body>
+</html>
