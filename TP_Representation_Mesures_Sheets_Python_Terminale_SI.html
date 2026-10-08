@@ -266,8 +266,13 @@
         .methodo-card {
             border: 1px solid var(--border);
             border-radius: 6px;
-            padding: 0.9rem;
+            padding: 1.1rem;
             background: #fafafa;
+            min-width: 0;
+        }
+
+        .methodo-card.full-width {
+            margin: 1.2rem 0;
         }
 
         .methodo-card.sheets {
@@ -279,13 +284,145 @@
         }
 
         .methodo-card h4 {
-            margin-bottom: 0.4rem;
-            font-size: 0.95rem;
+            margin-bottom: 0.6rem;
+            font-size: 1rem;
         }
 
         .methodo-card ul {
             padding-left: 1.2rem;
             font-size: 0.88rem;
+        }
+
+        .sheets-step {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            background: #16a34a;
+            color: #ffffff;
+            border-radius: 50%;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-right: 6px;
+            flex-shrink: 0;
+        }
+
+        /* Synoptique Chaîne d'Acquisition (Partie 4) */
+        .synoptique-wrapper {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 1.4rem;
+            margin: 1.5rem 0 2rem;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+        }
+
+        .synoptique-title {
+            color: var(--primary);
+            font-size: 1.12rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .synoptique-intro {
+            font-size: 0.92rem;
+            color: #475569;
+            margin-bottom: 1.2rem;
+            line-height: 1.5;
+        }
+
+        .synoptique-svg-container {
+            width: 100%;
+            overflow-x: auto;
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            padding: 1rem 0.5rem;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
+            margin-bottom: 1.2rem;
+        }
+
+        .synoptique-svg-container svg {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .synoptique-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.75rem;
+        }
+
+        .synoptique-step-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 0.85rem 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-top: 4px solid #64748b;
+            display: flex;
+            flex-direction: column;
+            font-size: 0.82rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .synoptique-step-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .synoptique-step-card.step-1 { border-top-color: #2563eb; }
+        .synoptique-step-card.step-2 { border-top-color: #0284c7; }
+        .synoptique-step-card.step-3 { border-top-color: #d97706; }
+        .synoptique-step-card.step-4 { border-top-color: #7c3aed; }
+        .synoptique-step-card.step-5 { border-top-color: #16a34a; }
+
+        .synoptique-step-num {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+        .step-1 .synoptique-step-num { color: #2563eb; }
+        .step-2 .synoptique-step-num { color: #0284c7; }
+        .step-3 .synoptique-step-num { color: #d97706; }
+        .step-4 .synoptique-step-num { color: #7c3aed; }
+        .step-5 .synoptique-step-num { color: #16a34a; }
+
+        .synoptique-step-title {
+            font-weight: 700;
+            font-size: 0.86rem;
+            color: #1e293b;
+            margin-bottom: 0.35rem;
+            line-height: 1.25;
+        }
+
+        .synoptique-step-desc {
+            color: #64748b;
+            font-size: 0.78rem;
+            line-height: 1.4;
+            flex-grow: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .synoptique-step-formula {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 0.35rem 0.45rem;
+            font-family: 'Cambria Math', monospace;
+            font-size: 0.75rem;
+            color: #0f172a;
+            font-weight: 600;
+            text-align: center;
         }
 
         /* Formule mathématique HTML */
@@ -367,7 +504,7 @@
         @media print {
             body { background: white; padding: 0; }
             .container { box-shadow: none; border: none; padding: 0; }
-            .code-container, .schematic-box { page-break-inside: avoid; }
+            .code-container, .schematic-box, .synoptique-wrapper { page-break-inside: avoid; }
             .table-scroll-container { max-height: none !important; overflow: visible !important; border: none !important; }
         }
     </style>
@@ -756,6 +893,143 @@ plt.show()</code></pre>
 
     <p>On conçoit la chaîne d'acquisition de température d'un système embarqué (serre connectée ou imprimante 3D). Le capteur utilisé est une <strong>thermistance CTN MF52-103 (10 kΩ à 25 °C, B<sub>25/50</sub> = 3950 K)</strong>. Plutôt que d'utiliser une formule théorique complexe, vous allez <strong>extraire la relation mathématique réelle T = f(R) directement à partir des données constructeur (datasheet)</strong> à l'aide d'une <strong>courbe de tendance</strong>, puis l'intégrer dans le code du capteur.</p>
 
+    <!-- ========================================================================= -->
+    <!-- SYNOPTIQUE GRAPHIQUE DE LA CHAÎNE D'ACQUISITION (PARTIE 4) -->
+    <!-- ========================================================================= -->
+    <div class="synoptique-wrapper">
+        <div class="synoptique-title">
+            <span>🔄 Synoptique Global de la Chaîne d'Acquisition & de Traitement de la Température</span>
+        </div>
+        <p class="synoptique-intro">
+            Pour concevoir et programmer l'instrumentation du capteur CTN 10 kΩ sur le microcontrôleur Raspberry Pi Pico, la chaîne d'information articule <strong>5 étapes fondamentales</strong>, du phénomène physique à la restitution finale :
+        </p>
+
+        <div class="synoptique-svg-container">
+            <svg viewBox="0 0 980 160" width="980" height="160" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#475569"/>
+                    </marker>
+                    <filter id="shadow" x="-5%" y="-10%" width="115%" height="130%">
+                        <feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.08"/>
+                    </filter>
+                </defs>
+
+                <!-- Flèche d'entrée physique -->
+                <text x="18" y="24" font-size="11" font-weight="700" fill="#2563eb">Grandeur Physique</text>
+                <text x="18" y="38" font-size="10" fill="#64748b">Température T (°C)</text>
+
+                <!-- BLOC 1: Prélèvement analogique -->
+                <g filter="url(#shadow)">
+                    <rect x="15" y="46" width="165" height="95" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+                    <rect x="15" y="46" width="165" height="24" rx="8" fill="#2563eb"/>
+                    <rect x="15" y="62" width="165" height="8" fill="#2563eb"/>
+                    <text x="97" y="62" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">1. Prélèvement Pont Diviseur</text>
+                    <text x="97" y="86" font-size="10.5" font-weight="600" fill="#1e293b" text-anchor="middle">CTN 10 kΩ + Rfixe = 10 kΩ</text>
+                    <text x="97" y="103" font-size="9.5" fill="#475569" text-anchor="middle">Alimentation Vcc = 3,3 V</text>
+                    <text x="97" y="122" font-size="9.5" font-weight="700" fill="#2563eb" text-anchor="middle">CAN Pico ADC0 (GP26)</text>
+                </g>
+
+                <!-- FLECHE 1 -> 2 -->
+                <line x1="180" y1="93" x2="218" y2="93" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+                <text x="199" y="80" font-size="9.5" font-weight="700" fill="#0369a1" text-anchor="middle">Code N</text>
+                <text x="199" y="110" font-size="8.5" fill="#64748b" text-anchor="middle">0..65535</text>
+
+                <!-- BLOC 2: Calcul de tension -->
+                <g filter="url(#shadow)">
+                    <rect x="220" y="46" width="160" height="95" rx="8" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+                    <rect x="220" y="46" width="160" height="24" rx="8" fill="#0284c7"/>
+                    <rect x="220" y="62" width="160" height="8" fill="#0284c7"/>
+                    <text x="300" y="62" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">2. Calcul de Tension</text>
+                    <text x="300" y="86" font-size="10" font-weight="600" fill="#1e293b" text-anchor="middle">Conversion numérique</text>
+                    <text x="300" y="105" font-size="9.5" font-family="Cambria Math, serif" font-weight="700" fill="#0369a1" text-anchor="middle">Umes = N · (3.3 / 65535)</text>
+                    <text x="300" y="124" font-size="9" fill="#64748b" text-anchor="middle">Pleine échelle 16 bits</text>
+                </g>
+
+                <!-- FLECHE 2 -> 3 -->
+                <line x1="380" y1="93" x2="418" y2="93" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+                <text x="399" y="80" font-size="9.5" font-weight="700" fill="#d97706" text-anchor="middle">Tension</text>
+                <text x="399" y="110" font-size="8.5" fill="#64748b" text-anchor="middle">Umes (V)</text>
+
+                <!-- BLOC 3: Calcul résistance thermistance -->
+                <g filter="url(#shadow)">
+                    <rect x="420" y="46" width="165" height="95" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+                    <rect x="420" y="46" width="165" height="24" rx="8" fill="#d97706"/>
+                    <rect x="420" y="62" width="165" height="8" fill="#d97706"/>
+                    <text x="502" y="62" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">3. Calcul Résistance CTN</text>
+                    <text x="502" y="86" font-size="10" font-weight="600" fill="#1e293b" text-anchor="middle">Loi du pont diviseur</text>
+                    <text x="502" y="105" font-size="9.5" font-family="Cambria Math, serif" font-weight="700" fill="#b45309" text-anchor="middle">Rctn = Rfixe · (3.3/Umes - 1)</text>
+                    <text x="502" y="124" font-size="9" fill="#64748b" text-anchor="middle">Rfixe = 10 000 Ω</text>
+                </g>
+
+                <!-- FLECHE 3 -> 4 -->
+                <line x1="585" y1="93" x2="623" y2="93" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+                <text x="604" y="80" font-size="9.5" font-weight="700" fill="#7c3aed" text-anchor="middle">Résistance</text>
+                <text x="604" y="110" font-size="8.5" fill="#64748b" text-anchor="middle">Rctn (Ω)</text>
+
+                <!-- BLOC 4: Calcul température -->
+                <g filter="url(#shadow)">
+                    <rect x="625" y="46" width="165" height="95" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+                    <rect x="625" y="46" width="165" height="24" rx="8" fill="#7c3aed"/>
+                    <rect x="625" y="62" width="165" height="8" fill="#7c3aed"/>
+                    <text x="707" y="62" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">4. Calcul Température</text>
+                    <text x="707" y="86" font-size="10" font-weight="600" fill="#1e293b" text-anchor="middle">Courbe de tendance (4.2)</text>
+                    <text x="707" y="105" font-size="9.5" font-family="Cambria Math, serif" font-weight="700" fill="#6d28d9" text-anchor="middle">T = a·ln(Rctn) + b</text>
+                    <text x="707" y="124" font-size="9" fill="#64748b" text-anchor="middle">ou modèle polynomial</text>
+                </g>
+
+                <!-- FLECHE 4 -> 5 -->
+                <line x1="790" y1="93" x2="828" y2="93" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+                <text x="809" y="80" font-size="9.5" font-weight="700" fill="#16a34a" text-anchor="middle">Température</text>
+                <text x="809" y="110" font-size="8.5" fill="#64748b" text-anchor="middle">T (°C)</text>
+
+                <!-- BLOC 5: Affichage -->
+                <g filter="url(#shadow)">
+                    <rect x="830" y="46" width="135" height="95" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+                    <rect x="830" y="46" width="135" height="24" rx="8" fill="#16a34a"/>
+                    <rect x="830" y="62" width="135" height="8" fill="#16a34a"/>
+                    <text x="897" y="62" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">5. Affichage</text>
+                    <text x="897" y="86" font-size="10" font-weight="600" fill="#1e293b" text-anchor="middle">Restitution IHM</text>
+                    <text x="897" y="105" font-size="9" font-family="monospace" font-weight="700" fill="#15803d" text-anchor="middle">print("T = ... °C")</text>
+                    <text x="897" y="124" font-size="9" fill="#64748b" text-anchor="middle">Moniteur USB / OLED</text>
+                </g>
+            </svg>
+        </div>
+
+        <div class="synoptique-steps-grid">
+            <div class="synoptique-step-card step-1">
+                <span class="synoptique-step-num">Étape 1</span>
+                <div class="synoptique-step-title">Prélèvement Analogique</div>
+                <div class="synoptique-step-desc">Pont diviseur avec CTN 10 kΩ et R<sub>fixe</sub> = 10 000 Ω alimenté sous 3,3 V. Numérisation via l'ADC0 du Pico.</div>
+                <div class="synoptique-step-formula">N = read_u16() ∈ [0 ; 65535]</div>
+            </div>
+            <div class="synoptique-step-card step-2">
+                <span class="synoptique-step-num">Étape 2</span>
+                <div class="synoptique-step-title">Calcul de Tension</div>
+                <div class="synoptique-step-desc">Conversion numérique : restitution de la tension analogique réelle mesurée aux bornes de la CTN.</div>
+                <div class="synoptique-step-formula">U<sub>mes</sub> = N &times; (3,3 / 65535) V</div>
+            </div>
+            <div class="synoptique-step-card step-3">
+                <span class="synoptique-step-num">Étape 3</span>
+                <div class="synoptique-step-title">Calcul Résistance CTN</div>
+                <div class="synoptique-step-desc">Application inverse du pont diviseur pour déterminer la résistance ohmique de la CTN à l'instant t.</div>
+                <div class="synoptique-step-formula">R<sub>ctn</sub> = R<sub>fixe</sub> &times; ((3,3 / U<sub>mes</sub>) &minus; 1) Ω</div>
+            </div>
+            <div class="synoptique-step-card step-4">
+                <span class="synoptique-step-num">Étape 4</span>
+                <div class="synoptique-step-title">Calcul Température</div>
+                <div class="synoptique-step-desc">Injection de la résistance calculée dans l'équation de la courbe de tendance identifiée en 4.2.</div>
+                <div class="synoptique-step-formula">T = a&middot;ln(R<sub>ctn</sub>) + b (°C)</div>
+            </div>
+            <div class="synoptique-step-card step-5">
+                <span class="synoptique-step-num">Étape 5</span>
+                <div class="synoptique-step-title">Affichage & IHM</div>
+                <div class="synoptique-step-desc">Transmission périodique sur le moniteur série USB, console Thonny ou afficheur embarqué.</div>
+                <div class="synoptique-step-formula">print(f"T = {T:.1f} °C")</div>
+            </div>
+        </div>
+    </div>
+
     <h3 class="section-title">4.1. Tableau Résistance / Température (NTC 10K B3950 — MF52-103)</h3>
     <p>Le constructeur fournit dans sa documentation technique (datasheet) la caractéristique normalisée Résistance / Température pour la thermistance CTN <strong>MF52-103 (10 kΩ, valeur B<sub>25/50</sub> = 3950 K)</strong> de -30 °C à +125 °C :</p>
 
@@ -764,84 +1038,127 @@ plt.show()</code></pre>
             <thead>
                 <tr>
                     <th>Température T (°C)</th>
-                    <th>Résistance R<sub>CTN</sub> (kΩ)</th>
                     <th>Résistance R<sub>CTN</sub> (Ω)</th>
                     <th>Tension U<sub>mes</sub> au pont diviseur (V)</th>
                 </tr>
             </thead>
             <tbody>
-                <tr><td>-30 °C</td><td>200,20</td><td>200 204</td><td class="empty-cell">...</td></tr>
-                <tr><td>-25 °C</td><td>144,32</td><td>144 317</td><td class="empty-cell">...</td></tr>
-                <tr><td>-20 °C</td><td>105,38</td><td>105 385</td><td class="empty-cell">...</td></tr>
-                <tr><td>-15 °C</td><td>77,90</td><td>77 898</td><td class="empty-cell">...</td></tr>
-                <tr><td>-10 °C</td><td>58,25</td><td>58 246</td><td class="empty-cell">...</td></tr>
-                <tr><td>-5 °C</td><td>44,03</td><td>44 026</td><td class="empty-cell">...</td></tr>
-                <tr><td>0 °C</td><td>33,62</td><td>33 621</td><td class="empty-cell">...</td></tr>
-                <tr><td>5 °C</td><td>25,92</td><td>25 925</td><td class="empty-cell">...</td></tr>
-                <tr><td>10 °C</td><td>20,17</td><td>20 175</td><td class="empty-cell">...</td></tr>
-                <tr><td>15 °C</td><td>15,84</td><td>15 837</td><td class="empty-cell">...</td></tr>
-                <tr><td>20 °C</td><td>12,54</td><td>12 535</td><td class="empty-cell">...</td></tr>
-                <tr><td>25 °C</td><td>10,00</td><td>10 000</td><td class="empty-cell">...</td></tr>
-                <tr><td>30 °C</td><td>8,04</td><td>8 037</td><td class="empty-cell">...</td></tr>
-                <tr><td>35 °C</td><td>6,51</td><td>6 506</td><td class="empty-cell">...</td></tr>
-                <tr><td>40 °C</td><td>5,30</td><td>5 301</td><td class="empty-cell">...</td></tr>
-                <tr><td>45 °C</td><td>4,35</td><td>4 348</td><td class="empty-cell">...</td></tr>
-                <tr><td>50 °C</td><td>3,59</td><td>3 588</td><td class="empty-cell">...</td></tr>
-                <tr><td>55 °C</td><td>2,98</td><td>2 978</td><td class="empty-cell">...</td></tr>
-                <tr><td>60 °C</td><td>2,49</td><td>2 486</td><td class="empty-cell">...</td></tr>
-                <tr><td>65 °C</td><td>2,09</td><td>2 086</td><td class="empty-cell">...</td></tr>
-                <tr><td>70 °C</td><td>1,76</td><td>1 760</td><td class="empty-cell">...</td></tr>
-                <tr><td>75 °C</td><td>1,49</td><td>1 492</td><td class="empty-cell">...</td></tr>
-                <tr><td>80 °C</td><td>1,27</td><td>1 270</td><td class="empty-cell">...</td></tr>
-                <tr><td>85 °C</td><td>1,09</td><td>1 087</td><td class="empty-cell">...</td></tr>
-                <tr><td>90 °C</td><td>0,934</td><td>933,6</td><td class="empty-cell">...</td></tr>
-                <tr><td>95 °C</td><td>0,805</td><td>805,4</td><td class="empty-cell">...</td></tr>
-                <tr><td>100 °C</td><td>0,698</td><td>697,5</td><td class="empty-cell">...</td></tr>
-                <tr><td>105 °C</td><td>0,606</td><td>606,4</td><td class="empty-cell">...</td></tr>
-                <tr><td>110 °C</td><td>0,529</td><td>529,1</td><td class="empty-cell">...</td></tr>
-                <tr><td>115 °C</td><td>0,463</td><td>463,3</td><td class="empty-cell">...</td></tr>
-                <tr><td>120 °C</td><td>0,407</td><td>407,1</td><td class="empty-cell">...</td></tr>
-                <tr><td>125 °C</td><td>0,359</td><td>358,8</td><td class="empty-cell">...</td></tr>
+                <tr><td>-30 °C</td><td>200 204</td><td class="empty-cell">...</td></tr>
+                <tr><td>-25 °C</td><td>144 317</td><td class="empty-cell">...</td></tr>
+                <tr><td>-20 °C</td><td>105 385</td><td class="empty-cell">...</td></tr>
+                <tr><td>-15 °C</td><td>77 898</td><td class="empty-cell">...</td></tr>
+                <tr><td>-10 °C</td><td>58 246</td><td class="empty-cell">...</td></tr>
+                <tr><td>-5 °C</td><td>44 026</td><td class="empty-cell">...</td></tr>
+                <tr><td>0 °C</td><td>33 621</td><td class="empty-cell">...</td></tr>
+                <tr><td>5 °C</td><td>25 925</td><td class="empty-cell">...</td></tr>
+                <tr><td>10 °C</td><td>20 175</td><td class="empty-cell">...</td></tr>
+                <tr><td>15 °C</td><td>15 837</td><td class="empty-cell">...</td></tr>
+                <tr><td>20 °C</td><td>12 535</td><td class="empty-cell">...</td></tr>
+                <tr><td>25 °C</td><td>10 000</td><td class="empty-cell">...</td></tr>
+                <tr><td>30 °C</td><td>8 037</td><td class="empty-cell">...</td></tr>
+                <tr><td>35 °C</td><td>6 506</td><td class="empty-cell">...</td></tr>
+                <tr><td>40 °C</td><td>5 301</td><td class="empty-cell">...</td></tr>
+                <tr><td>45 °C</td><td>4 348</td><td class="empty-cell">...</td></tr>
+                <tr><td>50 °C</td><td>3 588</td><td class="empty-cell">...</td></tr>
+                <tr><td>55 °C</td><td>2 978</td><td class="empty-cell">...</td></tr>
+                <tr><td>60 °C</td><td>2 486</td><td class="empty-cell">...</td></tr>
+                <tr><td>65 °C</td><td>2 086</td><td class="empty-cell">...</td></tr>
+                <tr><td>70 °C</td><td>1 760</td><td class="empty-cell">...</td></tr>
+                <tr><td>75 °C</td><td>1 492</td><td class="empty-cell">...</td></tr>
+                <tr><td>80 °C</td><td>1 270</td><td class="empty-cell">...</td></tr>
+                <tr><td>85 °C</td><td>1 087</td><td class="empty-cell">...</td></tr>
+                <tr><td>90 °C</td><td>933,6</td><td class="empty-cell">...</td></tr>
+                <tr><td>95 °C</td><td>805,4</td><td class="empty-cell">...</td></tr>
+                <tr><td>100 °C</td><td>697,5</td><td class="empty-cell">...</td></tr>
+                <tr><td>105 °C</td><td>606,4</td><td class="empty-cell">...</td></tr>
+                <tr><td>110 °C</td><td>529,1</td><td class="empty-cell">...</td></tr>
+                <tr><td>115 °C</td><td>463,3</td><td class="empty-cell">...</td></tr>
+                <tr><td>120 °C</td><td>407,1</td><td class="empty-cell">...</td></tr>
+                <tr><td>125 °C</td><td>358,8</td><td class="empty-cell">...</td></tr>
             </tbody>
         </table>
     </div>
 
     <h3 class="section-title">4.2. Tracé de la Courbe et Extraction de la Relation T = f(R) par Courbe de Tendance</h3>
-    <p>Dans un système instrumenté réel, le microcontrôleur mesure la résistance de la thermistance et doit en déduire la température. Nous cherchons donc la relation : <strong>T = f(R)</strong> (avec la Résistance R en abscisse X, et la Température T en ordonnée Y).</p>
+    <p>Dans un système instrumenté réel, le microcontrôleur mesure la résistance de la thermistance et doit en déduire la température. Nous cherchons donc la relation : <strong>T = f(R)</strong> (avec la Résistance R en abscisse X exprimée en <strong>Ohms (Ω)</strong>, et la Température T en ordonnée Y en °C).</p>
 
-    <div class="methodo-grid">
-        <div class="methodo-card sheets">
-            <h4>🟢 Aide Google Sheets N°6 : Courbe de Tendance & Équation</h4>
-            <ul>
-                <li><span class="sheets-step">1</span> <strong>Organisation :</strong> Placez la colonne <em>Résistance R (kΩ)</em> à gauche (Axe X) et <em>Température T (°C)</em> à droite (Axe Y).</li>
-                <li><span class="sheets-step">2</span> <strong>Tracé :</strong> <code>Insertion</code> &gt; <code>Graphique</code> &gt; Type : <strong>Nuage de points</strong>.</li>
-                <li><span class="sheets-step">3</span> <strong>Courbe de tendance :</strong> Allez dans <code>Personnaliser</code> &gt; <em>Série</em> &gt; Cochez <strong>[x] Courbe de tendance</strong>.</li>
-                <li><span class="sheets-step">4</span> <strong>Choix du modèle :</strong> Dans <em>Type</em>, testez <strong>Polynôme (degré 2 ou 3)</strong>, <strong>Logarithmique</strong> ou <strong>Puissance</strong>.</li>
-                <li><span class="sheets-step">5</span> <strong>Extraction :</strong> Dans <em>Étiquette</em>, sélectionnez <strong>Utiliser l'équation</strong> et cochez <strong>[x] Afficher R²</strong>.</li>
-                <li><span class="sheets-step">6</span> <strong>Relevé :</strong> Notez précisément l'équation mathématique affichée sur le graphique et le coefficient R².</li>
-            </ul>
-        </div>
-        <div class="methodo-card python">
-            <h4>🐍 Méthode Python : Régressions Polynomiale & Logarithmique (`np.polyfit`)</h4>
-            <ul>
-                <li>Consultez la galerie : <a href="https://matplotlib.org/stable/gallery/lines_bars_and_markers/scatter_demo2.html" target="_blank" rel="noopener noreferrer">Scatter plot demo</a>.</li>
-                <li>Renseignez les tableaux <code>temp</code> et <code>r_kohm</code> d'après le datasheet MF52-103 :
-                    <pre style="background:#1e293b; color:#f1f5f9; padding:0.4rem; border-radius:4px; font-size:0.75rem; margin:0.3rem 0; overflow-x:auto;"><code>temp = np.array([-30, -25, -20, -15, -10, -5, 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125])
-r_kohm = np.array([200.20, 144.32, 105.38, 77.90, 58.25, 44.03, 33.62, 25.92, 20.17, 15.84, 12.54, 10.00, 8.04, 6.51, 5.30, 4.35, 3.59, 2.98, 2.49, 2.09, 1.76, 1.49, 1.27, 1.09, 0.934, 0.805, 0.698, 0.606, 0.529, 0.463, 0.407, 0.359])</code></pre>
-                </li>
-                <li><strong>Option 1 — Régression polynomiale (degré 2 ou 3) :</strong><br>
-                    <code>coeffs_poly = np.polyfit(r_kohm, temp, deg=2)</code><br>
-                    Modèle : <code>modele_poly = np.poly1d(coeffs_poly)</code> (forme <em>T(R) = a&middot;R² + b&middot;R + c</em>).<br>
-                    Évaluation : <code>y_poly = modele_poly(x_trace)</code>.
-                </li>
-                <li><strong>Option 2 — Régression logarithmique :</strong><br>
-                    On ajuste une droite sur le logarithme de la résistance (forme <em>T(R) = a&middot;ln(R) + b</em>) :<br>
-                    <code>coeffs_log = np.polyfit(np.log(r_kohm), temp, deg=1)</code><br>
-                    Évaluation : <code>y_log = coeffs_log[0] * np.log(x_trace) + coeffs_log[1]</code>.
-                </li>
-                <li>Superposez les points expérimentaux (<code>plt.scatter</code>) et la courbe du modèle retenu (<code>plt.plot</code>).</li>
-                <li>Affichez les coefficients obtenus dans la console pour votre programme microcontrôleur.</li>
-            </ul>
+    <!-- Méthode Google Sheets -->
+    <div class="methodo-card sheets full-width">
+        <h4>🟢 Méthode A : Google Sheets — Courbe de Tendance & Extraction de l'Équation</h4>
+        <ul style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.8rem; padding-left: 0.5rem; list-style: none;">
+            <li style="display: flex; align-items: flex-start; gap: 0.4rem;">
+                <span class="sheets-step">1</span>
+                <span><strong>Organisation :</strong> Placez la colonne <em>Résistance R (Ω)</em> à gauche (Axe X) et <em>Température T (°C)</em> à droite (Axe Y).</span>
+            </li>
+            <li style="display: flex; align-items: flex-start; gap: 0.4rem;">
+                <span class="sheets-step">2</span>
+                <span><strong>Tracé :</strong> Menu <code>Insertion</code> &gt; <code>Graphique</code> &gt; Type : <strong>Nuage de points</strong> (Scatter).</span>
+            </li>
+            <li style="display: flex; align-items: flex-start; gap: 0.4rem;">
+                <span class="sheets-step">3</span>
+                <span><strong>Courbe de tendance :</strong> Allez dans <code>Personnaliser</code> &gt; <em>Série</em> &gt; Cochez <strong>[x] Courbe de tendance</strong>.</span>
+            </li>
+            <li style="display: flex; align-items: flex-start; gap: 0.4rem;">
+                <span class="sheets-step">4</span>
+                <span><strong>Choix du modèle :</strong> Dans <em>Type</em>, comparez <strong>Logarithmique</strong> et <strong>Polynôme (degré 2 ou 3)</strong>.</span>
+            </li>
+            <li style="display: flex; align-items: flex-start; gap: 0.4rem;">
+                <span class="sheets-step">5</span>
+                <span><strong>Extraction :</strong> Dans <em>Étiquette</em>, sélectionnez <strong>Utiliser l'équation</strong> et cochez <strong>[x] Afficher R²</strong>.</span>
+            </li>
+            <li style="display: flex; align-items: flex-start; gap: 0.4rem;">
+                <span class="sheets-step">6</span>
+                <span><strong>Relevé :</strong> Notez précisément l'équation mathématique affichée sur le graphique et le coefficient R².</span>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Méthode Python -->
+    <div class="methodo-card python full-width">
+        <h4>🐍 Méthode B : Python (NumPy & Matplotlib) — Régressions Polynomiale & Logarithmique (`np.polyfit`)</h4>
+        <p style="font-size: 0.9rem; margin-bottom: 0.7rem;">
+            En Python, la bibliothèque <code>numpy</code> permet d'extraire directement la relation mathématique et d'évaluer la qualité du modèle (R²) avec les données de résistance en <strong>Ohms (Ω)</strong> :
+        </p>
+
+        <div class="code-container" style="margin: 0.5rem 0 0.8rem;">
+            <div class="code-header">
+                <span>Python 3 — script_4_2_tendance_ctn.py (Modélisation T = f(R))</span>
+                <span>NumPy polyfit & Matplotlib</span>
+            </div>
+            <pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+# 1. Données constructeur MF52-103 : Température (°C) et Résistance (Ω)
+temp = np.array([-30, -25, -20, -15, -10, -5, 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125])
+r_ohm = np.array([200204, 144317, 105385, 77898, 58246, 44026, 33621, 25925, 20175, 15837, 12535, 10000, 8037, 6506, 5301, 4348, 3588, 2978, 2486, 2086, 1760, 1492, 1270, 1087, 933.6, 805.4, 697.5, 606.4, 529.1, 463.3, 407.1, 358.8])
+
+# 2. Nuage de points expérimental
+plt.figure(figsize=(9, 5.2))
+plt.scatter(r_ohm, temp, color='crimson', label='Données constructeur (MF52-103)', zorder=5)
+
+# 3. OPTION A : Régression Logarithmique T(R) = a·ln(R) + b
+coeffs_log = np.polyfit(np.log(r_ohm), temp, deg=1)
+y_pred_log = coeffs_log[0] * np.log(r_ohm) + coeffs_log[1]
+r2_log = 1 - (np.sum((temp - y_pred_log)**2) / np.sum((temp - np.mean(temp))**2))
+print(f"Modèle Logarithmique : T(R) = {coeffs_log[0]:.4f}·ln(R) + {coeffs_log[1]:.4f} | R² = {r2_log:.4f}")
+
+# 4. OPTION B : Régression Polynomiale (degré 2) T(R) = a·R² + b·R + c
+coeffs_poly = np.polyfit(r_ohm, temp, deg=2)
+modele_poly = np.poly1d(coeffs_poly)
+y_pred_poly = modele_poly(r_ohm)
+r2_poly = 1 - (np.sum((temp - y_pred_poly)**2) / np.sum((temp - np.mean(temp))**2))
+print(f"Modèle Polynomial (deg 2) : T(R) = {coeffs_poly[0]:.4e}·R² + {coeffs_poly[1]:.4f}·R + {coeffs_poly[2]:.4f} | R² = {r2_poly:.4f}")
+
+# 5. Tracé de la courbe de tendance retenue
+r_trace = np.linspace(min(r_ohm), max(r_ohm), 300)
+plt.plot(r_trace, coeffs_log[0] * np.log(r_trace) + coeffs_log[1], 'b-', label=f'Modèle Logarithmique (R² = {r2_log:.3f})')
+
+plt.title("Caractérisation CTN 10 kΩ — Courbe de Tendance T = f(R)")
+plt.xlabel("Résistance CTN R (Ω)")
+plt.ylabel("Température T (°C)")
+plt.grid(True, linestyle=':', alpha=0.6)
+plt.legend()
+plt.show()</code></pre>
         </div>
     </div>
 
@@ -876,10 +1193,10 @@ r_kohm = np.array([200.20, 144.32, 105.38, 77.90, 58.25, 44.03, 33.62, 25.92, 20
     </div>
 
     <h3 class="section-title">4.3. Conditionnement en Pont Diviseur de Tension</h3>
-    <p>Pour mesurer la résistance de la CTN avec un microcontrôleur <strong>Raspberry Pi Pico</strong>, on réalise un pont diviseur alimenté sous <strong>3,3 V</strong> (tension de référence du convertisseur ADC du Pico) avec une résistance fixe R<sub>fixe</sub> = 10 kΩ. On prélève le potentiel entre les 2 résistances et on applique la formule du pont diviseur pour trouver la résistance R<sub>ctn</sub>.</p>
+    <p>Pour mesurer la résistance de la CTN avec un microcontrôleur <strong>Raspberry Pi Pico</strong>, on réalise un pont diviseur alimenté sous <strong>3,3 V</strong> (tension de référence du convertisseur ADC du Pico) avec une résistance fixe R<sub>fixe</sub> = 10 000 Ω (10 kΩ). On prélève le potentiel entre les 2 résistances et on applique la formule du pont diviseur pour trouver la résistance R<sub>ctn</sub>.</p>
 
-    <p>1. Complétez la 4<sup>e</sup> colonne (<strong>Tension U<sub>mes</sub> au pont diviseur</strong>) du tableau de mesures en calculant la tension théorique pour quelques températures clés (avec une alimentation V<sub>CC</sub> = 3,3 V et R<sub>fixe</sub> = 10 kΩ).<br>
-    2. Câblez le montage sous Tinkercad Circuits et vérifiez la tension obtenue pour 25 °C (R<sub>CTN</sub> = 10 kΩ, soit U<sub>mes</sub> = 1,65 V).</p>
+    <p>1. Complétez la 3<sup>e</sup> colonne (<strong>Tension U<sub>mes</sub> au pont diviseur</strong>) du tableau de mesures en calculant la tension théorique pour quelques températures clés (avec une alimentation V<sub>CC</sub> = 3,3 V et R<sub>fixe</sub> = 10 000 Ω).<br>
+    2. Câblez le montage sous Tinkercad Circuits et vérifiez la tension obtenue pour 25 °C (R<sub>CTN</sub> = 10 000 Ω, soit U<sub>mes</sub> = 1,65 V).</p>
 
     <div class="question-box">
         <h4>Question d'analyse :</h4>
@@ -887,11 +1204,13 @@ r_kohm = np.array([200.20, 144.32, 105.38, 77.90, 58.25, 44.03, 33.62, 25.92, 20
     </div>
 
     <h3 class="section-title">4.4. Intégration de la Relation de Tendance dans le Code du Capteur (Raspberry Pi Pico)</h3>
-    <p>Le microcontrôleur utilisé est un <strong>Raspberry Pi Pico (RP2040)</strong>. Son convertisseur analogique-numérique (CAN / ADC, broche GP26 / ADC0) mesure une tension analogique comprise entre 0 et 3,3 V. En MicroPython, la méthode standard <code>read_u16()</code> retourne une valeur numérique brute non signée <strong>N comprise entre 0 et 65 535</strong> (pleine échelle 16 bits, soit <code>N = (U<sub>mes</sub> / 3,3) &times; 65535</code>). Le programme doit réaliser les étapes suivantes :</p>
+    <p>Le microcontrôleur utilisé est un <strong>Raspberry Pi Pico (RP2040)</strong>. Son convertisseur analogique-numérique (CAN / ADC, broche GP26 / ADC0) mesure une tension analogique comprise entre 0 et 3,3 V. En MicroPython, la méthode standard <code>read_u16()</code> retourne une valeur numérique brute non signée <strong>N comprise entre 0 et 65 535</strong> (pleine échelle 16 bits, soit <code>N = (U<sub>mes</sub> / 3,3) &times; 65535</code>). Le programme doit réaliser les 5 étapes du synoptique :</p>
     <ol style="margin-left: 2rem; margin-bottom: 1rem; font-size: 0.95rem;">
+        <li>Lire la valeur brute du CAN (16 bits) : <code>N = adc.read_u16()</code></li>
         <li>Calculer la tension analogique mesurée : <code>U_mes = N &times; (3.3 / 65535.0)</code></li>
-        <li>Calculer la résistance de la CTN en kΩ à partir de la loi du pont diviseur : <code>R_ctn_kohm = R_fixe &times; ((3.3 / U_mes) - 1.0)</code></li>
-        <li><strong>Appliquer directement l'équation de la courbe de tendance retenue en 4.2</strong> (modèle polynomial ou logarithmique) pour déduire la température réelle en °C !</li>
+        <li>Calculer la résistance de la CTN en Ω à partir de la loi du pont diviseur : <code>R_ctn = R_fixe &times; ((3.3 / U_mes) - 1.0)</code></li>
+        <li><strong>Appliquer directement l'équation de la courbe de tendance retenue en 4.2</strong> (modèle logarithmique ou polynomial) pour déduire la température réelle en °C !</li>
+        <li>Afficher les résultats sur le moniteur série USB / console Thonny.</li>
     </ol>
 
     <div class="code-container">
@@ -907,14 +1226,15 @@ Constantes :
     BROCHE_ADC     ← GP26              // Entrée analogique ADC0 (broche 31 de la Pico)
     VREF           ← 3.3               // Tension de référence ADC (3,3 V)
     RESOLUTION_ADC ← 65535             // Pleine échelle 16 bits MicroPython (read_u16 : 0 à 65535)
-    R_FIXE         ← 10.0              // Résistance fixe du pont diviseur (en kΩ)
+    R_FIXE         ← 10000.0           // Résistance fixe du pont diviseur (en Ω, soit 10 kΩ)
 
     // Coefficients de la loi de tendance T = f(R) identifiée en 4.2 :
-    // Option A : Modèle Polynomial (degré 2) : T(R) = a·R² + b·R + c
+    // Option A : Modèle Logarithmique (forme T = a·ln(R) + b)
     COEFF_A        ← ...               // Valeur de 'a' relevée à la question Q10
     COEFF_B        ← ...               // Valeur de 'b' relevée à la question Q10
-    COEFF_C        ← ...               // Valeur de 'c' relevée à la question Q10
-    // (Ou Option B si modèle Logarithmique retenu : T(R) = a·ln(R) + b)
+
+    // (Ou Option B si modèle Polynomial degré 2 retenu : T(R) = a·R² + b·R + c)
+    // COEFF_C     ← ...               // Valeur de 'c' relevée à la question Q10
 
 Initialisation :
     Configurer BROCHE_ADC en entrée analogique
@@ -927,19 +1247,19 @@ Boucle principale (Répéter indéfiniment) :
     // 2. Conversion de la valeur numérique brute en tension analogique (V)
     U_mes ← N * (VREF / RESOLUTION_ADC)
     
-    // 3. Calcul de la résistance de la CTN en kΩ (loi du pont diviseur sous 3,3 V)
+    // 3. Calcul de la résistance de la CTN en Ω (loi du pont diviseur sous 3,3 V)
     Si U_mes > 0.05 alors
         R_ctn ← R_FIXE * ((VREF / U_mes) - 1.0)
         
         // 4. Déduction de la température en °C par la courbe de tendance
-        // --- Si Modèle Polynomial (degré 2) ---
-        Temperature ← COEFF_A * (R_ctn ^ 2) + COEFF_B * R_ctn + COEFF_C
-        
         // --- Si Modèle Logarithmique (forme T = a·ln(R) + b) ---
-        // Temperature ← COEFF_A * ln(R_ctn) + COEFF_B
+        Temperature ← COEFF_A * ln(R_ctn) + COEFF_B
+        
+        // --- Si Modèle Polynomial (degré 2 : T = a·R² + b·R + c) ---
+        // Temperature ← COEFF_A * (R_ctn ^ 2) + COEFF_B * R_ctn + COEFF_C
         
         // 5. Affichage des grandeurs mesurées et calculées
-        Afficher "U_mes = " + U_mes + " V | R_ctn = " + R_ctn + " kΩ | T = " + Temperature + " °C"
+        Afficher "U_mes = " + U_mes + " V | R_ctn = " + R_ctn + " Ω | T = " + Temperature + " °C"
     Sinon
         Afficher "Alerte : Tension anormale / sonde déconnectée"
     Fin Si
