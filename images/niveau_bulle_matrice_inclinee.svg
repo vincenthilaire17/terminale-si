@@ -1,0 +1,181 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 500" width="100%" height="100%">
+  <defs>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.12"/>
+    </filter>
+    <!-- Motif DEL rouge éteinte -->
+    <radialGradient id="led-off" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </radialGradient>
+    <!-- Motif DEL rouge allumée -->
+    <radialGradient id="led-on" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#fca5a5"/>
+      <stop offset="40%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#991b1b"/>
+    </radialGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Fond -->
+  <rect width="950" height="500" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+
+  <!-- Titre et sous-titre -->
+  <text x="475" y="34" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="18" font-weight="bold" fill="#1e3a8a">
+    Principe du Niveau à Bulle Électronique / Horizon Artificiel sur Matrice DEL 8×8
+  </text>
+  <text x="475" y="55" text-anchor="middle" font-family="'Segoe UI', system-ui, sans-serif" font-size="13" fill="#64748b">
+    L'accéléromètre fixé au dos mesure l'inclinaison θ : la ligne affichée compense l'angle pour rester toujours horizontale dans l'espace
+  </text>
+
+  <!-- Horizon terrestre global (ligne de référence en tirets) -->
+  <line x1="40" y1="260" x2="910" y2="260" stroke="#0284c7" stroke-width="2.5" stroke-dasharray="8,5"/>
+  <text x="900" y="250" text-anchor="end" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="bold" fill="#0284c7">
+    HORIZON TERRESTRE RÉEL (LIGNE DE GRAVITÉ ZÉRO)
+  </text>
+
+  <!-- ================= CAS 1 : MATRICE HORIZONTALE (θ = 0°) ================= -->
+  <g transform="translate(160, 260)">
+    <!-- Texte d'état -->
+    <text x="0" y="-160" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="14" font-weight="bold" fill="#1e293b">Cas 1 : Matrice Horizontale</text>
+    <rect x="-65" y="-150" width="130" height="24" rx="4" fill="#eff6ff" stroke="#bfdbfe"/>
+    <text x="0" y="-134" text-anchor="middle" font-family="'Consolas', monospace" font-size="12" font-weight="bold" fill="#2563eb">θ = 0° | ax = 0</text>
+
+    <!-- Boîtier Matrice 8x8 (carré 150x150, centré) -->
+    <rect x="-75" y="-75" width="150" height="150" rx="8" fill="#0f172a" stroke="#334155" stroke-width="3" filter="url(#shadow)"/>
+    <!-- PCB vert extérieur visible en bordure -->
+    <rect x="-82" y="-82" width="164" height="164" rx="10" fill="none" stroke="#16a34a" stroke-width="2.5"/>
+
+    <!-- Grille 8x8 de DELs -->
+    <!-- rangée 0 à 7 : rangée 3 et 4 allumées (ligne médiane) -->
+    <!-- Coordonnées des leds : espacement 16px, de -56 à +56 -->
+    <!-- Leds éteintes rangées 0, 1, 2, 5, 6, 7 -->
+    <!-- Leds allumées rangées 3 et 4 -->
+    <!-- Dessin des 8x8 leds avec boucle représentée en dur -->
+    <g transform="translate(-52.5, -52.5)">
+      <!-- Lignes 0, 1, 2 -->
+      <!-- x=0..7, y=0..2 -->
+      <circle cx="0" cy="0" r="4.5" fill="url(#led-off)"/><circle cx="15" cy="0" r="4.5" fill="url(#led-off)"/><circle cx="30" cy="0" r="4.5" fill="url(#led-off)"/><circle cx="45" cy="0" r="4.5" fill="url(#led-off)"/><circle cx="60" cy="0" r="4.5" fill="url(#led-off)"/><circle cx="75" cy="0" r="4.5" fill="url(#led-off)"/><circle cx="90" cy="0" r="4.5" fill="url(#led-off)"/><circle cx="105" cy="0" r="4.5" fill="url(#led-off)"/>
+      <circle cx="0" cy="15" r="4.5" fill="url(#led-off)"/><circle cx="15" cy="15" r="4.5" fill="url(#led-off)"/><circle cx="30" cy="15" r="4.5" fill="url(#led-off)"/><circle cx="45" cy="15" r="4.5" fill="url(#led-off)"/><circle cx="60" cy="15" r="4.5" fill="url(#led-off)"/><circle cx="75" cy="15" r="4.5" fill="url(#led-off)"/><circle cx="90" cy="15" r="4.5" fill="url(#led-off)"/><circle cx="105" cy="15" r="4.5" fill="url(#led-off)"/>
+      <circle cx="0" cy="30" r="4.5" fill="url(#led-off)"/><circle cx="15" cy="30" r="4.5" fill="url(#led-off)"/><circle cx="30" cy="30" r="4.5" fill="url(#led-off)"/><circle cx="45" cy="30" r="4.5" fill="url(#led-off)"/><circle cx="60" cy="30" r="4.5" fill="url(#led-off)"/><circle cx="75" cy="30" r="4.5" fill="url(#led-off)"/><circle cx="90" cy="30" r="4.5" fill="url(#led-off)"/><circle cx="105" cy="30" r="4.5" fill="url(#led-off)"/>
+
+      <!-- LIGNE 3 ALLUMÉE (Rouge vif éclatant) -->
+      <circle cx="0" cy="45" r="5.5" fill="url(#led-on)" filter="url(#glow)"/><circle cx="15" cy="45" r="5.5" fill="url(#led-on)" filter="url(#glow)"/><circle cx="30" cy="45" r="5.5" fill="url(#led-on)" filter="url(#glow)"/><circle cx="45" cy="45" r="5.5" fill="url(#led-on)" filter="url(#glow)"/><circle cx="60" cy="45" r="5.5" fill="url(#led-on)" filter="url(#glow)"/><circle cx="75" cy="45" r="5.5" fill="url(#led-on)" filter="url(#glow)"/><circle cx="90" cy="45" r="5.5" fill="url(#led-on)" filter="url(#glow)"/><circle cx="105" cy="45" r="5.5" fill="url(#led-on)" filter="url(#glow)"/>
+
+      <!-- LIGNES 4, 5, 6, 7 éteintes -->
+      <circle cx="0" cy="60" r="4.5" fill="url(#led-off)"/><circle cx="15" cy="60" r="4.5" fill="url(#led-off)"/><circle cx="30" cy="60" r="4.5" fill="url(#led-off)"/><circle cx="45" cy="60" r="4.5" fill="url(#led-off)"/><circle cx="60" cy="60" r="4.5" fill="url(#led-off)"/><circle cx="75" cy="60" r="4.5" fill="url(#led-off)"/><circle cx="90" cy="60" r="4.5" fill="url(#led-off)"/><circle cx="105" cy="60" r="4.5" fill="url(#led-off)"/>
+      <circle cx="0" cy="75" r="4.5" fill="url(#led-off)"/><circle cx="15" cy="75" r="4.5" fill="url(#led-off)"/><circle cx="30" cy="75" r="4.5" fill="url(#led-off)"/><circle cx="45" cy="75" r="4.5" fill="url(#led-off)"/><circle cx="60" cy="75" r="4.5" fill="url(#led-off)"/><circle cx="75" cy="75" r="4.5" fill="url(#led-off)"/><circle cx="90" cy="75" r="4.5" fill="url(#led-off)"/><circle cx="105" cy="75" r="4.5" fill="url(#led-off)"/>
+      <circle cx="0" cy="90" r="4.5" fill="url(#led-off)"/><circle cx="15" cy="90" r="4.5" fill="url(#led-off)"/><circle cx="30" cy="90" r="4.5" fill="url(#led-off)"/><circle cx="45" cy="90" r="4.5" fill="url(#led-off)"/><circle cx="60" cy="90" r="4.5" fill="url(#led-off)"/><circle cx="75" cy="90" r="4.5" fill="url(#led-off)"/><circle cx="90" cy="90" r="4.5" fill="url(#led-off)"/><circle cx="105" cy="90" r="4.5" fill="url(#led-off)"/>
+      <circle cx="0" cy="105" r="4.5" fill="url(#led-off)"/><circle cx="15" cy="105" r="4.5" fill="url(#led-off)"/><circle cx="30" cy="105" r="4.5" fill="url(#led-off)"/><circle cx="45" cy="105" r="4.5" fill="url(#led-off)"/><circle cx="60" cy="105" r="4.5" fill="url(#led-off)"/><circle cx="75" cy="105" r="4.5" fill="url(#led-off)"/><circle cx="90" cy="105" r="4.5" fill="url(#led-off)"/><circle cx="105" cy="105" r="4.5" fill="url(#led-off)"/>
+    </g>
+
+    <!-- Légende Cas 1 -->
+    <text x="0" y="115" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="12" fill="#166534" font-weight="bold">
+      Ligne centrée sur la rangée 3
+    </text>
+    <text x="0" y="132" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#475569">
+      Parallèle au boîtier et au sol
+    </text>
+  </g>
+
+  <!-- ================= CAS 2 : MATRICE PENCHÉE À GAUCHE (θ = +20°) ================= -->
+  <!-- On applique une rotation de +20° sur le groupe boîtier, et les DELs allumées sont compensées de -20° -->
+  <g transform="translate(475, 260)">
+    <text x="0" y="-160" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="14" font-weight="bold" fill="#1e293b">Cas 2 : Matrice Penchée à Gauche</text>
+    <rect x="-75" y="-150" width="150" height="24" rx="4" fill="#fef3c7" stroke="#fde68a"/>
+    <text x="0" y="-134" text-anchor="middle" font-family="'Consolas', monospace" font-size="12" font-weight="bold" fill="#b45309">θ = +20° | ax &lt; 0</text>
+
+    <!-- BOÎTIER TOURNÉ DE +20 DEG -->
+    <g transform="rotate(20)">
+      <rect x="-82" y="-82" width="164" height="164" rx="10" fill="none" stroke="#16a34a" stroke-width="2.5"/>
+      <rect x="-75" y="-75" width="150" height="150" rx="8" fill="#0f172a" stroke="#334155" stroke-width="3" filter="url(#shadow)"/>
+
+      <!-- Repère propre au boîtier (en pointillé vert) -->
+      <line x1="-70" y1="0" x2="70" y2="0" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+      <!-- Grille 8x8 de DELs -->
+      <!-- Pour compenser +20°, la ligne allumée monte de gauche à droite sur la matrice physique ! -->
+      <!-- Coordonnées des LEDs allumées dans le repère matrice : (col 0: y=6, col 1: y=5, col 2: y=5, col 3: y=4, col 4: y=3, col 5: y=3, col 6: y=2, col 7: y=1) -->
+      <g transform="translate(-52.5, -52.5)">
+        <!-- Toutes les 64 leds éteintes d'abord -->
+        <!-- Rangées 0 à 7 -->
+        <!-- Rangée 0 -->
+        <circle cx="0" cy="0" r="4.5" fill="url(#led-off)"/><circle cx="15" cy="0" r="4.5" fill="url(#led-off)"/><circle cx="30" cy="0" r="4.5" fill="url(#led-off)"/><circle cx="45" cy="0" r="4.5" fill="url(#led-off)"/><circle cx="60" cy="0" r="4.5" fill="url(#led-off)"/><circle cx="75" cy="0" r="4.5" fill="url(#led-off)"/><circle cx="90" cy="0" r="4.5" fill="url(#led-off)"/><circle cx="105" cy="0" r="4.5" fill="url(#led-off)"/>
+        <!-- Rangée 1 : led col 7 allumée -->
+        <circle cx="0" cy="15" r="4.5" fill="url(#led-off)"/><circle cx="15" cy="15" r="4.5" fill="url(#led-off)"/><circle cx="30" cy="15" r="4.5" fill="url(#led-off)"/><circle cx="45" cy="15" r="4.5" fill="url(#led-off)"/><circle cx="60" cy="15" r="4.5" fill="url(#led-off)"/><circle cx="75" cy="15" r="4.5" fill="url(#led-off)"/><circle cx="90" cy="15" r="4.5" fill="url(#led-off)"/><circle cx="105" cy="15" r="5.5" fill="url(#led-on)" filter="url(#glow)"/>
+        <!-- Rangée 2 : led col 6 allumée -->
+        <circle cx="0" cy="30" r="4.5" fill="url(#led-off)"/><circle cx="15" cy="30" r="4.5" fill="url(#led-off)"/><circle cx="30" cy="30" r="4.5" fill="url(#led-off)"/><circle cx="45" cy="30" r="4.5" fill="url(#led-off)"/><circle cx="60" cy="30" r="4.5" fill="url(#led-off)"/><circle cx="75" cy="30" r="4.5" fill="url(#led-off)"/><circle cx="90" cy="30" r="5.5" fill="url(#led-on)" filter="url(#glow)"/><circle cx="105" cy="30" r="4.5" fill="url(#led-off)"/>
+        <!-- Rangée 3 : leds col 4 et 5 allumées -->
+        <circle cx="0" cy="45" r="4.5" fill="url(#led-off)"/><circle cx="15" cy="45" r="4.5" fill="url(#led-off)"/><circle cx="30" cy="45" r="4.5" fill="url(#led-off)"/><circle cx="45" cy="45" r="4.5" fill="url(#led-off)"/><circle cx="60" cy="45" r="5.5" fill="url(#led-on)" filter="url(#glow)"/><circle cx="75" cy="45" r="5.5" fill="url(#led-on)" filter="url(#glow)"/><circle cx="90" cy="45" r="4.5" fill="url(#led-off)"/><circle cx="105" cy="45" r="4.5" fill="url(#led-off)"/>
+        <!-- Rangée 4 : led col 3 allumée -->
+        <circle cx="0" cy="60" r="4.5" fill="url(#led-off)"/><circle cx="15" cy="60" r="4.5" fill="url(#led-off)"/><circle cx="30" cy="60" r="4.5" fill="url(#led-off)"/><circle cx="45" cy="60" r="5.5" fill="url(#led-on)" filter="url(#glow)"/><circle cx="60" cy="60" r="4.5" fill="url(#led-off)"/><circle cx="75" cy="60" r="4.5" fill="url(#led-off)"/><circle cx="90" cy="60" r="4.5" fill="url(#led-off)"/><circle cx="105" cy="60" r="4.5" fill="url(#led-off)"/>
+        <!-- Rangée 5 : leds col 1 et 2 allumées -->
+        <circle cx="0" cy="75" r="4.5" fill="url(#led-off)"/><circle cx="15" cy="75" r="5.5" fill="url(#led-on)" filter="url(#glow)"/><circle cx="30" cy="75" r="5.5" fill="url(#led-on)" filter="url(#glow)"/><circle cx="45" cy="75" r="4.5" fill="url(#led-off)"/><circle cx="60" cy="75" r="4.5" fill="url(#led-off)"/><circle cx="75" cy="75" r="4.5" fill="url(#led-off)"/><circle cx="90" cy="75" r="4.5" fill="url(#led-off)"/><circle cx="105" cy="75" r="4.5" fill="url(#led-off)"/>
+        <!-- Rangée 6 : led col 0 allumée -->
+        <circle cx="0" cy="90" r="5.5" fill="url(#led-on)" filter="url(#glow)"/><circle cx="15" cy="90" r="4.5" fill="url(#led-off)"/><circle cx="30" cy="90" r="4.5" fill="url(#led-off)"/><circle cx="45" cy="90" r="4.5" fill="url(#led-off)"/><circle cx="60" cy="90" r="4.5" fill="url(#led-off)"/><circle cx="75" cy="90" r="4.5" fill="url(#led-off)"/><circle cx="90" cy="90" r="4.5" fill="url(#led-off)"/><circle cx="105" cy="90" r="4.5" fill="url(#led-off)"/>
+        <!-- Rangée 7 -->
+        <circle cx="0" cy="105" r="4.5" fill="url(#led-off)"/><circle cx="15" cy="105" r="4.5" fill="url(#led-off)"/><circle cx="30" cy="105" r="4.5" fill="url(#led-off)"/><circle cx="45" cy="105" r="4.5" fill="url(#led-off)"/><circle cx="60" cy="105" r="4.5" fill="url(#led-off)"/><circle cx="75" cy="105" r="4.5" fill="url(#led-off)"/><circle cx="90" cy="105" r="4.5" fill="url(#led-off)"/><circle cx="105" cy="105" r="4.5" fill="url(#led-off)"/>
+      </g>
+    </g>
+
+    <!-- Légende Cas 2 -->
+    <text x="0" y="115" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="12" fill="#b45309" font-weight="bold">
+      Ligne compensée d'un angle -θ
+    </text>
+    <text x="0" y="132" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#475569">
+      Reste strictement HORIZONTALE dans l'espace !
+    </text>
+  </g>
+
+  <!-- ================= VUE ÉCLATÉE DU DOS : ACCÉLÉROMÈTRE MONTÉ AU DOS ================= -->
+  <g transform="translate(775, 260)">
+    <text x="0" y="-160" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="14" font-weight="bold" fill="#1e3a8a">Vue Arrière (Au Dos)</text>
+    <rect x="-75" y="-150" width="150" height="24" rx="4" fill="#eff6ff" stroke="#bfdbfe"/>
+    <text x="0" y="-134" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11.5" font-weight="bold" fill="#1e40af">Capteur Accéléromètre</text>
+
+    <!-- Circuit imprimé vue arrière (PCB vert) -->
+    <rect x="-65" y="-75" width="130" height="150" rx="6" fill="#15803d" stroke="#166534" stroke-width="2" filter="url(#shadow)"/>
+    <text x="0" y="-55" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="10" font-weight="bold" fill="#bbf7d0">PCB MATRICE (DOS)</text>
+
+    <!-- Module Accéléromètre Grove fixé au dos -->
+    <rect x="-42" y="-35" width="84" height="85" rx="5" fill="#f8fafc" stroke="#0284c7" stroke-width="2"/>
+    <rect x="-42" y="-35" width="84" height="20" rx="4" fill="#0284c7"/>
+    <text x="0" y="-21" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="9" font-weight="bold" fill="#ffffff">GROVE MMA7660</text>
+
+    <!-- Puce MMA7660 -->
+    <rect x="-14" y="-3" width="28" height="28" rx="2" fill="#1e293b"/>
+    <text x="0" y="15" text-anchor="middle" font-family="'Consolas', monospace" font-size="7.5" fill="#f8fafc">MMA</text>
+
+    <!-- Connecteur Grove 4 pins -->
+    <rect x="-24" y="32" width="48" height="14" rx="2" fill="#ffffff" stroke="#94a3b8"/>
+    <text x="0" y="42" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="8" fill="#475569">I²C Bus</text>
+
+    <!-- Repère x_c, y_c sur la puce -->
+    <line x1="0" y1="11" x2="22" y2="11" stroke="#dc2626" stroke-width="1.8"/>
+    <text x="25" y="14" font-family="'Segoe UI', sans-serif" font-size="8.5" font-weight="bold" fill="#dc2626">x</text>
+    <line x1="0" y1="11" x2="0" y2="-10" stroke="#16a34a" stroke-width="1.8"/>
+    <text x="4" y="-8" font-family="'Segoe UI', sans-serif" font-size="8.5" font-weight="bold" fill="#16a34a">y</text>
+
+    <!-- Légende Vue Arrière -->
+    <text x="0" y="115" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11.5" font-weight="bold" fill="#0369a1">
+      Mesure temps réel de θ
+    </text>
+    <text x="0" y="132" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" fill="#475569">
+      Solidaire de l'afficheur
+    </text>
+  </g>
+
+  <!-- Encart d'explication pédagogique en bas -->
+  <rect x="40" y="425" width="870" height="58" rx="6" fill="#eff6ff" stroke="#93c5fd"/>
+  <text x="55" y="446" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="bold" fill="#1e3a8a">
+    🎯 Défi d'Ingénierie pour l'élève (Algorithme de l'Horizon Artificiel) :
+  </text>
+  <text x="55" y="466" font-family="'Segoe UI', sans-serif" font-size="11.5" fill="#1e293b">
+    Pour chaque colonne x ∈ [0..7], le numéro de ligne à allumer y est calculé par la relation affine inverse :
+    <tspan font-family="'Cambria Math', monospace" font-weight="bold" fill="#2563eb"> y = round( 3.5 - (x - 3.5) · tan(θ) ) </tspan>
+    &nbsp;&rarr; Quelle que soit la rotation physique imposée au boîtier, le rayon lumineux reste parfaitement horizontal aux yeux de l'utilisateur !
+  </text>
+</svg>

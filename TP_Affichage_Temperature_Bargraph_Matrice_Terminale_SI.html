@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP Terminale SI — Chaîne d'Information : Restitution Visuelle & IHM Embarquée (Bargraph & Matrice DEL 8×8)</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #2563eb;
+            --secondary: #0d9488;
+            --secondary-dark: #0f766e;
+            --accent: #d97706;
+            --accent-red: #dc2626;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+            --code-bg: #0f172a;
+            --code-text: #f1f5f9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.55;
+            padding: 1.5rem 1rem;
+        }
+
+        .container {
+            max-width: 1020px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 2.2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
+        }
+
+        /* En-tête officiel du TP */
+        .tp-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            margin-bottom: 1.8rem;
+            overflow: hidden;
+        }
+
+        .header-cell {
+            padding: 0.9rem 1rem;
+            border-bottom: 1px solid var(--primary);
+            background: #ffffff;
+        }
+
+        .header-cell:nth-child(odd) {
+            border-right: 1px solid var(--primary);
+        }
+
+        .header-cell.full {
+            grid-column: span 2;
+        }
+
+        .header-cell.title {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 1.15rem 1rem;
+        }
+
+        .header-cell.title h1 {
+            font-size: 1.35rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.35rem;
+        }
+
+        .header-cell.title p {
+            font-size: 0.92rem;
+            opacity: 0.92;
+        }
+
+        /* Encadré Compétences */
+        .competences-box {
+            background-color: #eff6ff;
+            border-left: 5px solid var(--primary-light);
+            padding: 1.1rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1.8rem;
+        }
+
+        .competences-box h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        .competences-box ul {
+            padding-left: 1.4rem;
+            font-size: 0.92rem;
+        }
+
+        .competences-box li {
+            margin-bottom: 0.35rem;
+        }
+
+        /* Titres */
+        h2.part-title {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.35rem;
+            margin: 2.2rem 0 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 1.25rem;
+        }
+
+        .duration-badge {
+            background: var(--primary-light);
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+        }
+
+        h3.section-title {
+            color: var(--secondary);
+            margin: 1.3rem 0 0.6rem;
+            font-size: 1.1rem;
+        }
+
+        /* Boîte Documentation & Liens */
+        .doc-link-box {
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            border-left: 5px solid #22c55e;
+            padding: 0.85rem 1.1rem;
+            margin: 1.1rem 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.92rem;
+        }
+
+        .doc-link-box a {
+            color: #15803d;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        /* Boîte Concept / Théorie */
+        .concept-box {
+            background-color: #fefce8;
+            border: 1px solid #fef08a;
+            border-left: 5px solid #eab308;
+            padding: 0.95rem 1.15rem;
+            margin: 1.1rem 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.92rem;
+        }
+
+        .concept-box h4 {
+            color: #a16207;
+            margin-bottom: 0.45rem;
+            font-size: 1rem;
+        }
+
+        .concept-box ul {
+            padding-left: 1.3rem;
+            margin: 0.4rem 0;
+        }
+
+        .concept-box li {
+            margin-bottom: 0.35rem;
+        }
+
+        /* Tableaux */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0 1.4rem;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.65rem 0.6rem;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        td.empty-cell {
+            background-color: #ffffff;
+            color: var(--text-muted);
+            font-style: italic;
+            height: 2.2rem;
+        }
+
+        .bareme-points {
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        /* Blocs de Code */
+        .code-container {
+            margin: 1.1rem 0 1.5rem;
+            border-radius: 6px;
+            overflow: hidden;
+            background: var(--code-bg);
+            border: 1px solid #1e293b;
+        }
+
+        .code-header {
+            background: #1e293b;
+            color: #94a3b8;
+            padding: 0.4rem 0.95rem;
+            font-size: 0.82rem;
+            font-family: monospace;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+        }
+
+        pre {
+            padding: 0.95rem;
+            overflow-x: auto;
+            color: var(--code-text);
+            font-family: 'Fira Code', 'Consolas', 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.46;
+        }
+
+        .code-comment {
+            color: #94a3b8;
+        }
+
+        .code-todo {
+            color: #fde047;
+            font-weight: bold;
+        }
+
+        /* Boîte Questions */
+        .question-box {
+            background-color: #fdf4ff;
+            border-left: 4px solid #c084fc;
+            padding: 0.95rem 1.15rem;
+            margin: 1.15rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .question-box h4 {
+            color: #7e22ce;
+            margin-bottom: 0.4rem;
+            font-size: 0.98rem;
+        }
+
+        .question-box p {
+            margin-bottom: 0.45rem;
+            font-size: 0.92rem;
+        }
+
+        /* Grilles Méthodologiques */
+        .methodo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.1rem;
+            margin: 1.1rem 0;
+        }
+
+        .methodo-card {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.1rem;
+            background: #fafafa;
+        }
+
+        .methodo-card.bargraph {
+            border-top: 4px solid #0d9488;
+        }
+
+        .methodo-card.matrix {
+            border-top: 4px solid #dc2626;
+        }
+
+        .methodo-card h4 {
+            margin-bottom: 0.55rem;
+            font-size: 0.98rem;
+        }
+
+        .methodo-card ul {
+            padding-left: 1.25rem;
+            font-size: 0.88rem;
+        }
+
+        .methodo-card li {
+            margin-bottom: 0.35rem;
+        }
+
+        /* Synoptique SVG & Schémas */
+        .synoptique-wrapper {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 1.4rem;
+            margin: 1.5rem 0 2rem;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+        }
+
+        .synoptique-title {
+            color: var(--primary);
+            font-size: 1.12rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .synoptique-intro {
+            font-size: 0.92rem;
+            color: #475569;
+            margin-bottom: 1.2rem;
+            line-height: 1.5;
+        }
+
+        .synoptique-svg-container {
+            width: 100%;
+            overflow-x: auto;
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            padding: 1rem 0.5rem;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
+            margin-bottom: 1.2rem;
+        }
+
+        .synoptique-svg-container svg {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .synoptique-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+
+        .synoptique-step-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 0.85rem 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-top: 4px solid #64748b;
+            display: flex;
+            flex-direction: column;
+            font-size: 0.82rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+        }
+
+        .synoptique-step-card.step-1 { border-top-color: #2563eb; }
+        .synoptique-step-card.step-2 { border-top-color: #0d9488; }
+        .synoptique-step-card.step-3 { border-top-color: #d97706; }
+        .synoptique-step-card.step-4 { border-top-color: #dc2626; }
+
+        .synoptique-step-num {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+        .step-1 .synoptique-step-num { color: #2563eb; }
+        .step-2 .synoptique-step-num { color: #0d9488; }
+        .step-3 .synoptique-step-num { color: #d97706; }
+        .step-4 .synoptique-step-num { color: #dc2626; }
+
+        .synoptique-step-title {
+            font-weight: 700;
+            font-size: 0.86rem;
+            color: #1e293b;
+            margin-bottom: 0.35rem;
+            line-height: 1.25;
+        }
+
+        .synoptique-step-desc {
+            color: #64748b;
+            font-size: 0.78rem;
+            line-height: 1.4;
+            flex-grow: 1;
+            margin-bottom: 0.4rem;
+        }
+
+        /* Schémas ASCII ou encadrés de câblage */
+        .wiring-box {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-left: 5px solid #0284c7;
+            border-radius: 0 6px 6px 0;
+            padding: 1rem;
+            margin: 1.1rem 0;
+            font-size: 0.9rem;
+        }
+
+        .pin-tag {
+            display: inline-block;
+            background: #e2e8f0;
+            color: #0f172a;
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: 600;
+            font-size: 0.84rem;
+            border: 1px solid #cbd5e1;
+        }
+
+        .pin-tag.vcc { background: #fee2e2; color: #b91c1c; border-color: #fca5a5; }
+        .pin-tag.gnd { background: #e2e8f0; color: #1e293b; border-color: #94a3b8; }
+        .pin-tag.sig { background: #dbeafe; color: #1d4ed8; border-color: #93c5fd; }
+        .pin-tag.clk { background: #fef3c7; color: #b45309; border-color: #fde68a; }
+
+        /* Conteneurs d'images mutualisées (dossier images/) */
+        .tp-image-container {
+            text-align: center;
+            margin: 1.4rem 0 1.6rem;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .tp-image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .tp-image-caption {
+            font-size: 0.86rem;
+            color: var(--text-muted);
+            margin-top: 0.75rem;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .tp-header { grid-template-columns: 1fr; }
+            .header-cell:nth-child(odd) { border-right: none; }
+            .header-cell.full { grid-column: span 1; }
+            .methodo-grid { grid-template-columns: 1fr; }
+            .synoptique-steps-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; border: none; padding: 0; }
+            .code-container, .synoptique-wrapper { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- En-tête officiel du TP -->
+    <div class="tp-header">
+        <div class="header-cell">
+            <strong>Lycée — Section Sciences de l'Ingénieur</strong><br>
+            Niveau : <strong>Terminale SI / Spécialité SI</strong>
+        </div>
+        <div class="header-cell">
+            <strong>TRAVAUX PRATIQUES</strong><br>
+            Durée conseillée : <strong>3h30 à 4h00</strong>
+        </div>
+        <div class="header-cell">
+            Nom(s) & Prénom(s) : ....................................................<br>
+            Poste / Binôme : ..................
+        </div>
+        <div class="header-cell">
+            Date : ..............................<br>
+            Évaluation : <strong>..... / 20</strong>
+        </div>
+        <div class="header-cell full title">
+            <h1>Chaîne d'Information : Restitution Visuelle & IHM Embarquée</h1>
+            <p>Bargraph LED Bar, Matrice 8×8 (Pictogrammes &amp; Niveau à Bulle avec Accéléromètre 3 Axes) et Pilotage Joystick — MicroPython (Raspberry Pi Pico)</p>
+        </div>
+    </div>
+
+    <!-- Objectifs et compétences du programme -->
+    <div class="competences-box">
+        <h3>📌 Objectifs & Compétences du Programme de Terminale SI</h3>
+        <ul>
+            <li><strong>Compétence B2 / CO2.1 :</strong> Caractériser les échanges d'information entre composants (liaison série synchrone propriétaire 2 fils et bus normalisé I²C).</li>
+            <li><strong>Compétence B3 / CO2.4 :</strong> Modéliser et exploiter la projection vectorielle de la pesanteur dans un repère incliné pour déterminer un angle d'inclinaison (niveau à bulle / horizon artificiel).</li>
+            <li><strong>Compétence C1 / CO3.1 :</strong> Concevoir et implanter une structure algorithmique de restitution et d'acquisition en langage MicroPython sur microcontrôleur <strong>Raspberry Pi Pico (RP2040)</strong>.</li>
+            <li><strong>Compétence C2 / CO3.2 :</strong> Mettre en œuvre une Interface Homme-Machine (IHM) adaptée aux contraintes d'exploitation (jauge analogique discrétisée, pictogrammes d'alerte, horizon artificiel et curseur interactif).</li>
+            <li><strong>Compétence D1 / CO4.1 :</strong> Exploiter la documentation technique constructeur pour configurer un périphérique numérique (recherche de l'adresse I²C, chronogrammes, registres de commande).</li>
+            <li><strong>Compétence D2 / CO4.2 :</strong> Valider expérimentalement le fonctionnement de la chaîne d'information complète : <em>Acquérir (Capteurs) &rarr; Traiter (Pico RP2040) &rarr; Restituer (Afficheurs)</em>.</li>
+        </ul>
+    </div>
+
+    <!-- Contexte et continuité pédagogique -->
+    <div class="concept-box">
+        <h4>🧭 Contexte & Continuité avec le TP Précédent</h4>
+        <p>Lors du TP précédent (<em>Représentation & Modélisation des Mesures Physiques</em>), vous avez :</p>
+        <ul>
+            <li>Conditionné une thermistance <strong>CTN 10 kΩ</strong> dans un pont diviseur de tension alimenté sous 3,3 V.</li>
+            <li>Modélisé mathématiquement la loi de comportement thermique de la sonde ($T = f(R)$ sous forme logarithmique ou polynomiale) avec un coefficient $R^2 \ge 0{,}98$.</li>
+            <li>Implanté ce modèle mathématique dans un programme MicroPython sur Raspberry Pi Pico afin de calculer et d'afficher la température en °C dans la console texte de <strong>Thonny</strong>.</li>
+        </ul>
+        <p style="margin-top: 0.5rem;">
+            <strong>Problématique d'Ingénierie :</strong> Dans un système autonome réel (armoire électrique industrielle, serre agricole régulée, couveuse néonatale ou centrale de traitement d'air), il n'y a pas d'ordinateur connecté en permanence. Le système doit communiquer son état à l'opérateur via des organes de restitution instantanés, intuitifs et visibles à distance :
+        </p>
+        <ol style="margin-left: 1.4rem; margin-top: 0.4rem;">
+            <li><strong>Un niveau quantitatif discrétisé :</strong> Un afficheur bargraph à 10 DELs (<strong>Grove LED Bar v2.0</strong>) dont la hauteur s'allume en proportion de la température.</li>
+            <li><strong>Un état qualitatif d'alerte :</strong> Une <strong>matrice à DELs 8×8 (Grove Red LED Matrix I²C)</strong> affichant des pictogrammes expressifs (icône <em>Froid / Flocon</em>, icône <em>Confort / Smiley</em>, icône <em>Alerte / Flamme</em>) pour alerter immédiatement en cas de dérive thermique.</li>
+        </ol>
+    </div>
+
+    <!-- Synoptique global de la chaîne d'information -->
+    <div class="synoptique-wrapper">
+        <div class="synoptique-title">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            Synoptique Global de la Chaîne d'Information à Réaliser
+        </div>
+        <p class="synoptique-intro">
+            Le microcontrôleur Raspberry Pi Pico échantillonne la tension analogique de la CTN, calcule la température en °C, puis pilote simultanément deux afficheurs numériques distincts à travers deux protocoles de communication série différents.
+        </p>
+
+        <div class="synoptique-svg-container">
+            <svg viewBox="0 0 920 220" width="100%" height="220" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb"/>
+                    </marker>
+                    <marker id="arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 1 L 10 5 L 0 9 z" fill="#0d9488"/>
+                    </marker>
+                    <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 1 L 10 5 L 0 9 z" fill="#dc2626"/>
+                    </marker>
+                </defs>
+
+                <!-- Bloc 1: Grandeur Physique -->
+                <rect x="10" y="70" width="120" height="75" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-width="2"/>
+                <text x="70" y="95" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">GRANDEUR</text>
+                <text x="70" y="112" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">PHYSIQUE</text>
+                <text x="70" y="132" text-anchor="middle" font-size="11" fill="#2563eb">Température θ (°C)</text>
+
+                <!-- Flèche 1 -->
+                <line x1="130" y1="107" x2="168" y2="107" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow)"/>
+
+                <!-- Bloc 2: Capteur CTN & Pont Diviseur -->
+                <rect x="170" y="60" width="160" height="95" rx="6" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+                <text x="250" y="85" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e3a8a">1. ACQUÉRIR</text>
+                <text x="250" y="103" text-anchor="middle" font-size="10.5" fill="#1e293b">Sonde CTN 10 kΩ</text>
+                <text x="250" y="120" text-anchor="middle" font-size="10" fill="#475569">+ Pont R_fixe 10 kΩ</text>
+                <text x="250" y="142" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">U_mes ∈ [0 ; 3,3 V]</text>
+
+                <!-- Flèche 2 -->
+                <line x1="330" y1="107" x2="378" y2="107" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow)"/>
+                <text x="354" y="98" text-anchor="middle" font-size="9" fill="#64748b">GP26 (ADC0)</text>
+
+                <!-- Bloc 3: Raspberry Pi Pico (Traitement) -->
+                <rect x="380" y="45" width="200" height="130" rx="8" fill="#1e293b" stroke="#0f172a" stroke-width="2"/>
+                <text x="480" y="72" text-anchor="middle" font-size="12" font-weight="bold" fill="#38bdf8">2. TRAITER (RP2040)</text>
+                <text x="480" y="92" text-anchor="middle" font-size="10.5" fill="#f1f5f9">MicroPython (Thonny)</text>
+                <rect x="395" y="105" width="170" height="52" rx="4" fill="#0f172a"/>
+                <text x="480" y="123" text-anchor="middle" font-size="9.5" fill="#fde047">• Calcul R_ctn (pont div.)</text>
+                <text x="480" y="138" text-anchor="middle" font-size="9.5" fill="#fde047">• Modèle : T = a·ln(R) + b</text>
+                <text x="480" y="152" text-anchor="middle" font-size="9.5" fill="#fde047">• Calcul niveau &amp; icône</text>
+
+                <!-- Flèche Sortie Haute : Vers Bargraph -->
+                <path d="M 580 85 L 630 85 L 630 55 L 668 55" fill="none" stroke="#0d9488" stroke-width="2" marker-end="url(#arrow-green)"/>
+                <text x="625" y="45" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#0d9488">2 fils : GP16/17</text>
+
+                <!-- Bloc 4A: Grove LED Bar v2.0 -->
+                <rect x="670" y="15" width="235" height="80" rx="6" fill="#f0fdf4" stroke="#0d9488" stroke-width="2"/>
+                <text x="787" y="36" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f766e">3A. RESTITUER QUANTITATIF</text>
+                <text x="787" y="54" text-anchor="middle" font-size="10.5" fill="#1e293b">Grove LED Bar v2.0 (MY9221)</text>
+                <!-- Mini dessin Bargraph -->
+                <g transform="translate(712, 65)">
+                    <rect x="0" y="0" width="12" height="18" fill="#16a34a" rx="1"/>
+                    <rect x="15" y="0" width="12" height="18" fill="#16a34a" rx="1"/>
+                    <rect x="30" y="0" width="12" height="18" fill="#16a34a" rx="1"/>
+                    <rect x="45" y="0" width="12" height="18" fill="#16a34a" rx="1"/>
+                    <rect x="60" y="0" width="12" height="18" fill="#16a34a" rx="1"/>
+                    <rect x="75" y="0" width="12" height="18" fill="#16a34a" rx="1"/>
+                    <rect x="90" y="0" width="12" height="18" fill="#16a34a" rx="1"/>
+                    <rect x="105" y="0" width="12" height="18" fill="#84cc16" rx="1"/>
+                    <rect x="120" y="0" width="12" height="18" fill="#eab308" rx="1"/>
+                    <rect x="135" y="0" width="12" height="18" fill="#dc2626" rx="1"/>
+                </g>
+
+                <!-- Flèche Sortie Basse : Vers Matrice 8x8 -->
+                <path d="M 580 135 L 630 135 L 630 165 L 668 165" fill="none" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow-red)"/>
+                <text x="625" y="180" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#dc2626">Bus I²C : GP8/9</text>
+
+                <!-- Bloc 4B: Matrice DEL 8x8 -->
+                <rect x="670" y="125" width="235" height="80" rx="6" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+                <text x="787" y="146" text-anchor="middle" font-size="11" font-weight="bold" fill="#991b1b">3B. RESTITUER QUALITATIF</text>
+                <text x="787" y="163" text-anchor="middle" font-size="10.5" fill="#1e293b">Grove Red LED Matrix (HT16K33)</text>
+                <text x="787" y="182" text-anchor="middle" font-size="9.5" fill="#475569">Pictogrammes : ❄️ Froid | 😊 Normal | 🔥 Chaud</text>
+            </svg>
+        </div>
+
+        <div class="synoptique-steps-grid">
+            <div class="synoptique-step-card step-1">
+                <span class="synoptique-step-num">Étape 1</span>
+                <span class="synoptique-step-title">Mesure & Calcul</span>
+                <span class="synoptique-step-desc">Lecture ADC 16 bits sur GP26, conversion en tension $U_{mes}$, déduction de $R_{ctn}$ et calcul de la température réelle $T$ (°C).</span>
+            </div>
+            <div class="synoptique-step-card step-2">
+                <span class="synoptique-step-num">Étape 2</span>
+                <span class="synoptique-step-title">Bargraph 10 DELs</span>
+                <span class="synoptique-step-desc">Prise en main du module MY9221 en MicroPython, puis discrétisation de la plage thermique en un niveau de 0 à 10 DELs.</span>
+            </div>
+            <div class="synoptique-step-card step-3">
+                <span class="synoptique-step-num">Étape 3</span>
+                <span class="synoptique-step-title">Matrice 8×8 I²C</span>
+                <span class="synoptique-step-desc">Recherche documentaire de l'adresse I²C du HT16K33, test matériel avec une diagonale et création d'icônes avec l'éditeur web.</span>
+            </div>
+            <div class="synoptique-step-card step-4">
+                <span class="synoptique-step-num">Étape 4</span>
+                <span class="synoptique-step-title">Station Intégrée</span>
+                <span class="synoptique-step-desc">Fusion dans une boucle de contrôle temps réel : affichage synchronisé du niveau et de l'icône selon la température mesurée.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- PARTIE 1 : GROVE LED BAR V2.0 -->
+    <!-- ========================================================================= -->
+    <h2 class="part-title">
+        <span>Partie 1 : Jauge Thermique avec le Grove LED Bar v2.0 (MY9221)</span>
+        <span class="duration-badge">Durée : 1h15</span>
+    </h2>
+
+    <p>
+        Le module <strong>Grove - LED Bar v2.0</strong> est un composant d'affichage composé de <strong>10 segments à DELs</strong> : 1 DEL rouge, 1 DEL jaune/orange, 1 DEL vert clair et 7 DELs vertes. Il est piloté par un circuit intégré spécialisé <strong>MY9221</strong> (pilote de DELs à courant constant 12 canaux).
+    </p>
+
+    <div class="doc-link-box">
+        📚 <strong>Documentation officielle du composant :</strong> Consultez la fiche technique constructeur Seeed Studio :<br>
+        <a href="https://www.seeedstudio.com/Grove-LED-Bar-v2-0.html?srsltid=AU7gw4WGQHkRqt15akv3KRb4E-LA5NnzlOI5CYAWgyCkb4E0kf_Ed0Wt" target="_blank" rel="noopener noreferrer">https://www.seeedstudio.com/Grove-LED-Bar-v2-0.html</a>
+    </div>
+
+    <h3 class="section-title">1.1. Câblage Matériel du Module sur Raspberry Pi Pico</h3>
+    <p>
+        Contrairement à des composants analogiques ou I²C standards, le MY9221 utilise une <strong>liaison série synchrone propriétaire à 2 fils</strong> (horloge <em>DCKI</em> et données <em>DI</em>) :
+    </p>
+
+    <div class="wiring-box">
+        <strong>🔌 Tableau des connexions Grove LED Bar &harr; Raspberry Pi Pico :</strong><br><br>
+        • Broche Grove 1 (Fil Jaune) : <span class="pin-tag sig">DI (Data In)</span> &rarr; Relier à la broche <span class="pin-tag sig">GP16</span> (broche physique 21)<br>
+        • Broche Grove 2 (Fil Blanc) : <span class="pin-tag clk">DCKI (Clock In)</span> &rarr; Relier à la broche <span class="pin-tag clk">GP17</span> (broche physique 22)<br>
+        • Broche Grove 3 (Fil Rouge) : <span class="pin-tag vcc">VCC (Alimentation)</span> &rarr; Relier au <span class="pin-tag vcc">3V3 (Pin 36)</span> ou 5V (VBUS Pin 40)<br>
+        • Broche Grove 4 (Fil Noir) : <span class="pin-tag gnd">GND (Masse)</span> &rarr; Relier à un <span class="pin-tag gnd">GND (Pin 18, 23 ou 38)</span>
+    </div>
+
+    <h3 class="section-title">1.2. Principe de Fonctionnement du Contrôleur MY9221</h3>
+    <p>
+        Le circuit MY9221 contient un registre à décalage interne de 208 bits. À chaque impulsion sur la broche d'horloge <code>DCKI</code>, un bit présent sur la ligne <code>DI</code> est mémorisé. Une fois les données transmises (1 mot de commande + 12 canaux de luminosité), un signal spécifique appelé <strong>latch</strong> (maintien à 0 puis 4 impulsions consécutives sur <code>DI</code>) applique l'état aux DELs physiques.
+    </p>
+
+    <h3 class="section-title">1.3. Installation &amp; Utilisation de la Bibliothèque Pilote <code>my9221.py</code></h3>
+    <p>
+        Plutôt que de reprogrammer manuellement le protocole série bas niveau et le registre à décalage de 208 bits dans chaque script, nous allons utiliser en ingénierie une <strong>bibliothèque pilote (driver)</strong> éprouvée et modulaire : <strong><code>micropython-my9221</code></strong>.
+    </p>
+
+    <div class="methodo-card bargraph" style="margin: 1.1rem 0;">
+        <h4>📦 Procédure d'Installation de la Bibliothèque sur la Raspberry Pi Pico</h4>
+        <ol style="padding-left: 1.3rem; font-size: 0.91rem; line-height: 1.6;">
+            <li><strong>Extraire l'archive fournie :</strong> Décompressez sur votre ordinateur l'archive <code>micropython-my9221-master.zip</code>. Repérez le fichier source <strong><code>my9221.py</code></strong>.</li>
+            <li><strong>Ouvrir dans Thonny :</strong> Lancez le logiciel Thonny en vous assurant que votre Raspberry Pi Pico est bien connectée en USB. Ouvrez le fichier <code>my9221.py</code> depuis votre ordinateur (menu <em>Fichier</em> &gt; <em>Ouvrir...</em>).</li>
+            <li><strong>Téléverser sur la carte Raspberry Pi Pico :</strong> Allez dans le menu <em>Fichier</em> &gt; <em>Enregistrer sous...</em> &gt; Sélectionnez <strong>Raspberry Pi Pico</strong> &gt; Nommez le fichier exactement <strong><code>my9221.py</code></strong> (à la racine de la carte).</li>
+            <li><strong>Vérification :</strong> Dans Thonny, affichez l'explorateur (menu <em>Affichage</em> &gt; cochez <em>Fichiers</em>). Le fichier <code>my9221.py</code> doit impérativement figurer dans la fenêtre inférieure <em>Raspberry Pi Pico</em> !</li>
+        </ol>
+    </div>
+
+    <div class="concept-box">
+        <h4>📚 Interface de Programmation (API) de la Bibliothèque <code>my9221</code></h4>
+        <p>Une fois <code>my9221.py</code> présent sur la carte, vous disposez d'une classe très simple d'emploi :</p>
+        <ul>
+            <li><code>from my9221 import MY9221</code> : Importation du pilote.</li>
+            <li><code>barre = MY9221(di=Pin(16), dcki=Pin(17), reverse=False)</code> : Instanciation de l'objet sur les broches matérielles. Le paramètre <code>reverse=True</code> permet d'inverser le sens de lecture si nécessaire.</li>
+            <li><code>barre.level(val, brightness=255)</code> : <strong>Méthode principale de jauge.</strong> Allume <code>val</code> DELs consécutives (avec <code>val</code> entier de 0 à 10).</li>
+            <li><code>barre.bits(masque, brightness=255)</code> : Allume individuellement les DELs selon un masque binaire (ex. <code>0b1000000001</code> pour allumer la première et la dernière).</li>
+        </ul>
+    </div>
+
+    <h3 class="section-title">1.4. Code de Base Fourni : Chenillard &amp; Allumage des DELs une par une</h3>
+    <p>
+        Créez un nouveau fichier dans Thonny nommé <code>test_led_bar_base.py</code>. Vous remarquerez que le code est désormais beaucoup plus court et lisible grâce à l'importation de la bibliothèque :
+    </p>
+
+    <div class="code-container">
+        <div class="code-header">
+            <span>MicroPython — test_led_bar_base.py (Code de Base Fourni)</span>
+            <span>Utilisation de la Bibliothèque my9221</span>
+        </div>
+        <pre><code class="language-python"># ==============================================================================
+# TP TERMINALE SI — TEST DU GROVE LED BAR v2.0 (MY9221)
+# Matériel : Raspberry Pi Pico + Grove LED Bar v2.0
+# Prérequis : Le fichier my9221.py doit être téléversé sur la Pico !
+# ==============================================================================
+import time
+from machine import Pin
+from my9221 import MY9221
+
+# 1. Initialisation du bargraph avec les broches DI (GP16) et DCKI (GP17)
+barre = MY9221(di=Pin(16), dcki=Pin(17), reverse=False)
+
+print("=== TEST DU GROVE LED BAR (LIBRAIRIE MY9221) : CHENILLARD ===")
+
+# Boucle de démonstration : Allumage progressif de 0 à 10 DELs
+while True:
+    print("\n--- Montée de la jauge (0 à 10 DELs) ---")
+    for nb_leds in range(11):
+        print(f"DELs allumées : {nb_leds} / 10")
+        barre.level(nb_leds)  # Commande directe du nombre de DELs
+        time.sleep(0.3)
+    
+    time.sleep(1.0)
+    
+    print("--- Extinction complète ---")
+    barre.level(0)
+    time.sleep(0.8)</code></pre>
+    </div>
+
+    <div class="question-box">
+        <h4>Questions d'Analyse — Partie 1 :</h4>
+        <p><strong>Q1.</strong> Exécutez le script ci-dessus. Observez la disposition des couleurs des DELs lorsque <code>nb_leds = 10</code>. Quelle est la couleur de la première DEL allumée ? Quelle est la couleur de la 10<sup>e</sup> DEL ? Quel paramètre de l'instruction <code>MY9221(...)</code> permet d'inverser le sens d'allumage ?</p>
+        <p><strong>Q2.</strong> Pourquoi le module Grove LED Bar nécessite-t-il un circuit spécialisé comme le MY9221 au lieu de relier directement les 10 DELs aux broches du microcontrôleur ? Justifiez en termes de <em>nombre d'entrées/sorties (GPIO)</em> et de <em>courant électrique consommé</em>.</p>
+    </div>
+
+    <h3 class="section-title">1.5. Travail Demandé aux Élèves : Asservissement du Bargraph à la Température</h3>
+    <p>
+        Vous devez à présent modifier le programme afin que le nombre de DELs allumées reflète fidèlement la température mesurée par la CTN. On définit le cahier des charges d'affichage suivant pour une surveillance d'ambiance :
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Température mesurée T (°C)</th>
+                <th>Nombre de DELs à allumer</th>
+                <th>Segments visuels actifs</th>
+                <th>Signification industrielle</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>$T &lt; 16\,^\circ\text{C}$</td>
+                <td><strong>0 DEL</strong></td>
+                <td>Aucune DEL</td>
+                <td>Température anormalement basse / froid</td>
+            </tr>
+            <tr>
+                <td>$16\,^\circ\text{C} \le T &lt; 18\,^\circ\text{C}$</td>
+                <td><strong>1 à 2 DELs</strong></td>
+                <td>Vertes (base)</td>
+                <td>Frais</td>
+            </tr>
+            <tr>
+                <td>$18\,^\circ\text{C} \le T \le 24\,^\circ\text{C}$</td>
+                <td><strong>3 à 6 DELs</strong></td>
+                <td>Vertes (zone centrale)</td>
+                <td>Zone de confort thermique optimale</td>
+            </tr>
+            <tr>
+                <td>$24\,^\circ\text{C} &lt; T \le 28\,^\circ\text{C}$</td>
+                <td><strong>7 à 8 DELs</strong></td>
+                <td>Vert clair + Jaune/Orange</td>
+                <td>Avertissement réchauffement</td>
+            </tr>
+            <tr>
+                <td>$T &gt; 28\,^\circ\text{C}$</td>
+                <td><strong>9 à 10 DELs</strong></td>
+                <td>Orange + Rouge sommital</td>
+                <td>Surchauffe / Alerte critique</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="code-container">
+        <div class="code-header">
+            <span>MicroPython — Exercice 1 : Fonction de Conversion Température &rarr; Niveau</span>
+            <span>À compléter par l'élève dans son script</span>
+        </div>
+        <pre><code class="language-python">def temperature_vers_niveau(temp_celsius, t_min=15.0, t_max=30.0):
+    """
+    TODO ÉLÈVE : Calcule le nombre de DELs à allumer (entier de 0 à 10)
+    en effectuant une interpolation linéaire entre t_min et t_max.
+    - Si temp_celsius <= t_min -> retourne 0
+    - Si temp_celsius >= t_max -> retourne 10
+    - Entre les deux : échelonner proportionnellement sur 10 segments !
+    """
+    if temp_celsius <= t_min:
+        return 0
+    elif temp_celsius >= t_max:
+        return 10
+    else:
+        # TODO : Formule de proportionnalité mathématique (arrondir à l'entier)
+        niveau = int(...)
+        return niveau</code></pre>
+    </div>
+
+    <div class="question-box">
+        <h4>Question d'Analyse :</h4>
+        <p><strong>Q3.</strong> Écrivez la relation mathématique exacte qui exprime <code>niveau</code> en fonction de <code>temp_celsius</code>, <code>t_min</code> et <code>t_max</code>. Validez votre formule en calculant à la main le niveau obtenu pour $T = 22{,}5\,^\circ\text{C}$ avec $T_{min} = 15\,^\circ\text{C}$ et $T_{max} = 30\,^\circ\text{C}$.</p>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- PARTIE 2 : GROVE RED LED MATRIX W/ DRIVER (HT16K33) -->
+    <!-- ========================================================================= -->
+    <h2 class="part-title">
+        <span>Partie 2 : Pictogrammes d'Alerte sur Matrice DEL 8×8 I²C (HT16K33)</span>
+        <span class="duration-badge">Durée : 1h30</span>
+    </h2>
+
+    <p>
+        Le composant <strong>Grove - Red LED Matrix w/Driver</strong> associe une matrice carrée de 64 DELs rouges ($8 \times 8$) à un contrôleur spécialisé <strong>Holtek HT16K33</strong> communiquant via le bus <strong>I²C</strong>.
+    </p>
+
+    <div class="doc-link-box">
+        📚 <strong>Documentation officielle du composant (Wiki Seeed Studio) :</strong><br>
+        <a href="https://wiki.seeedstudio.com/Grove-Red_LED_Matrix_w_Driver/" target="_blank" rel="noopener noreferrer">https://wiki.seeedstudio.com/Grove-Red_LED_Matrix_w_Driver/</a><br>
+        <em>Consultez impérativement cette page pour répondre aux questions de recherche documentaire ci-après !</em>
+    </div>
+
+    <h3 class="section-title">2.1. Recherche Documentaire &amp; Configuration du Bus I²C (Mission Élève)</h3>
+    <p>
+        Sur un bus I²C, chaque composant esclave (<em>slave</em>) doit posséder une <strong>adresse matérielle unique</strong> sur 7 bits pour être reconnu et piloté par le microcontrôleur maître (Raspberry Pi Pico).
+    </p>
+
+    <div class="question-box">
+        <h4>Mission Documentaire — Analyse du Wiki Constructeur :</h4>
+        <p><strong>Q4.</strong> En explorant le wiki officiel du produit (tableau des spécifications et section <em>I²C Address</em>) :</p>
+        <ul style="padding-left: 1.3rem; margin-top: 0.3rem;">
+            <li>Quelle est la tension d'alimentation admissible (<em>Supply Voltage</em>) du module ?</li>
+            <li>Quelle est l'<strong>adresse I²C par défaut</strong> (<em>default I²C address</em>) du module en sortie d'usine ? Exprimez-la en notation hexadécimale.</li>
+            <li>Combien d'adresses I²C différentes peut-on attribuer à ce module au maximum ?</li>
+            <li>Comment modifie-t-on physiquement cette adresse sur le circuit imprimé (observez les cavaliers/pads à souder A0, A1, A2 au dos du module) ? Donnez l'état des cavaliers pour obtenir l'adresse <code>0x73</code>.</li>
+        </ul>
+    </div>
+
+    <h3 class="section-title">2.2. Câblage Matériel &amp; Détection par Scanner I²C</h3>
+    <p>
+        Le module se raccorde sur le port <strong>I²C(0)</strong> de la Raspberry Pi Pico :
+    </p>
+
+    <div class="wiring-box">
+        <strong>🔌 Connexions Grove Red LED Matrix &harr; Raspberry Pi Pico :</strong><br><br>
+        • Broche Grove 1 (Fil Jaune) : <span class="pin-tag sig">SCL (Horloge I²C)</span> &rarr; Relier à la broche <span class="pin-tag sig">GP9</span> (I2C0 SCL, broche physique 12)<br>
+        • Broche Grove 2 (Fil Blanc) : <span class="pin-tag sig">SDA (Données I²C)</span> &rarr; Relier à la broche <span class="pin-tag sig">GP8</span> (I2C0 SDA, broche physique 11)<br>
+        • Broche Grove 3 (Fil Rouge) : <span class="pin-tag vcc">VCC</span> &rarr; Relier à <span class="pin-tag vcc">3V3 (Pin 36)</span> ou 5V (VBUS)<br>
+        • Broche Grove 4 (Fil Noir) : <span class="pin-tag gnd">GND</span> &rarr; Relier à un <span class="pin-tag gnd">GND</span>
+    </div>
+
+    <p>
+        Avant de tenter d'afficher quoi que ce soit, validons la présence matérielle du composant en exécutant le script de détection <strong>Scanner I²C</strong> ci-dessous dans Thonny :
+    </p>
+
+    <div class="code-container">
+        <div class="code-header">
+            <span>MicroPython — scan_i2c_pico.py (Validation Matérielle)</span>
+            <span>Détection Automatique d'Adresses I²C</span>
+        </div>
+        <pre><code class="language-python"># ==============================================================================
+# SCRIPT DE RECHERCHE D'ADRESSES SUR LE BUS I2C (RASPBERRY PI PICO)
+# Broches : GP8 (SDA) | GP9 (SCL) sur I2C(0)
+# ==============================================================================
+from machine import Pin, I2C
+
+# Initialisation du bus I2C(0) à 100 kHz
+i2c = I2C(0, scl=Pin(9), sda=Pin(8), freq=100000)
+
+print("Scan du bus I2C en cours...")
+peripheriques = i2c.scan()
+
+if peripheriques:
+    print(f"Périphérique(s) I2C détecté(s) : {len(peripheriques)}")
+    for adresse in peripheriques:
+        print(f" -> Adresse décimale : {adresse} | Adresse hexadécimale : {hex(adresse)}")
+else:
+    print("❌ Aucun périphérique I2C détecté !")
+    print("Vérifiez vos 4 fils : SDA (GP8), SCL (GP9), 3V3 et GND.")</code></pre>
+    </div>
+
+    <div class="question-box">
+        <h4>Question d'Analyse :</h4>
+        <p><strong>Q5.</strong> Exécutez le script <code>scan_i2c_pico.py</code>. Quelle adresse hexadécimale s'affiche sur la console Thonny ? Correspond-elle bien à l'adresse relevée dans la documentation à la question Q4 ? Que se passe-t-il si vous débranchez le fil jaune (SCL) et relancez le scan ?</p>
+    </div>
+
+    <h3 class="section-title">2.3. Structure des Registres et Pilotage du Contrôleur HT16K33</h3>
+    <p>
+        Le circuit intégré <strong>HT16K33</strong> nécessite une séquence d'initialisation précise via le bus I²C :
+    </p>
+    <ul style="margin-left: 2rem; margin-bottom: 0.8rem; font-size: 0.92rem;">
+        <li><strong>0x21 :</strong> Allumage de l'oscillateur interne système (<em>System setup register &rarr; Normal operation</em>).</li>
+        <li><strong>0x81 :</strong> Activation de l'affichage sans clignotement (<em>Display setup &rarr; Display ON, Blinking OFF</em>).</li>
+        <li><strong>0xE0 à 0xEF :</strong> Réglage de la luminosité (<em>Dimming register</em>, 16 niveaux de 0 à 15).</li>
+        <li><strong>Mémoire d'affichage (Display RAM) :</strong> La mémoire interne contient 16 octets débutant à l'adresse <code>0x00</code>. Pour une matrice $8 \times 8$, chaque ligne $i$ (de 0 à 7) est stockée à l'octet pair <code>2 * i</code> (les octets impairs ne sont pas connectés).</li>
+    </ul>
+
+    <h3 class="section-title">2.4. Code de Base Fourni : Allumage d'une Diagonale de DELs</h3>
+    <p>
+        Voici le script de base fourni. Ce code allume précisément les 8 DELs formant la <strong>diagonale principale</strong> de la matrice :
+    </p>
+
+    <div class="code-container">
+        <div class="code-header">
+            <span>MicroPython — test_matrice_diagonale_base.py (Code de Base Fourni)</span>
+            <span>Pilote HT16K33 + Affichage Diagonale</span>
+        </div>
+        <pre><code class="language-python"># ==============================================================================
+# TP TERMINALE SI — PILOTAGE DE LA MATRICE DEL 8x8 GROVE (HT16K33)
+# Broches : GP8 (SDA) | GP9 (SCL) | VCC -> 3V3 | GND -> GND
+# ==============================================================================
+import time
+from machine import Pin, I2C
+
+class GroveMatrixHT16K33:
+    """Pilote MicroPython autonome pour la matrice à DEL 8x8 Grove (HT16K33)"""
+    def __init__(self, bus_i2c, address=0x70):
+        self.i2c = bus_i2c
+        self.address = address
+        self.init_hardware()
+
+    def init_hardware(self):
+        """Séquence d'initialisation matérielle du HT16K33"""
+        # 1. Démarrer l'oscillateur interne
+        self.i2c.writeto(self.address, b'\x21')
+        # 2. Allumer l'affichage (Display ON, Clignotement désactivé)
+        self.i2c.writeto(self.address, b'\x81')
+        # 3. Luminosité intermédiaire (niveau 7 sur 15)
+        self.set_brightness(7)
+        # 4. Effacer l'affichage initial
+        self.clear()
+
+    def set_brightness(self, level):
+        """Règle la luminosité de 0 (très faible) à 15 (maximale)"""
+        level = max(0, min(15, int(level)))
+        self.i2c.writeto(self.address, bytes([0xE0 | level]))
+
+    def clear(self):
+        """Éteint toutes les DELs de la matrice"""
+        self.show([0x00] * 8)
+
+    def show(self, pattern_8_lignes):
+        """
+        Affiche un motif 8x8 défini par une liste de 8 octets.
+        Chaque octet contrôle l'état des 8 DELs d'une ligne (1 = Allumée, 0 = Éteinte).
+        """
+        # Trame I2C : registre 0x00 suivi des 16 octets du buffer d'affichage
+        buffer = bytearray(17)
+        buffer[0] = 0x00  # Adresse mémoire initiale du contrôleur
+        for i in range(8):
+            buffer[1 + 2 * i] = pattern_8_lignes[i]  # Donnée de la ligne i
+            buffer[2 + 2 * i] = 0x00                 # Octet haut non utilisé
+        self.i2c.writeto(self.address, buffer)
+
+# ------------------------------------------------------------------------------
+# PROGRAMME DE BASE FOURNI : ALLUMAGE D'UNE DIAGONALE DE DELs
+# ------------------------------------------------------------------------------
+# 1. Initialisation de la liaison I2C(0)
+i2c = I2C(0, scl=Pin(9), sda=Pin(8), freq=100000)
+
+# 2. Définition de l'adresse I2C (relevée à la question Q4 / Q5)
+ADRESSE_MATRICE = 0x70  # Modifiez cette valeur si votre scan a révélé 0x77
+
+# 3. Création de l'objet matrice
+matrice = GroveMatrixHT16K33(i2c, address=ADRESSE_MATRICE)
+
+print("=== TEST MATRICE 8x8 : ALLUMAGE DE LA DIAGONALE PRINCIPALE ===")
+
+# Motif de test : 1 DEL allumée par ligne (décalée d'un bit à chaque ligne)
+# Notations binaires 0b : bit à 1 = DEL allumée, bit à 0 = DEL éteinte
+DIAGONALE = [
+    0b10000000,  # Ligne 0 : bit 7 allumé (DEL en haut à gauche)
+    0b01000000,  # Ligne 1 : bit 6 allumé
+    0b00100000,  # Ligne 2 : bit 5 allumé
+    0b00010000,  # Ligne 3 : bit 4 allumé
+    0b00001000,  # Ligne 4 : bit 3 allumé
+    0b00000100,  # Ligne 5 : bit 2 allumé
+    0b00000010,  # Ligne 6 : bit 1 allumé
+    0b00000001   # Ligne 7 : bit 0 allumé (DEL en bas à droite)
+]
+
+# Affichage du motif
+matrice.show(DIAGONALE)
+print("Diagonale affichée avec succès !")</code></pre>
+    </div>
+
+    <div class="question-box">
+        <h4>Questions d'Analyse :</h4>
+        <p><strong>Q6.</strong> Exécutez le script. Observez la diagonale affichée. En déduire le rôle de chaque bit dans un octet de ligne. Comment s'écrirait la liste de 8 octets pour afficher la <strong>seconde diagonale (antidiagonale)</strong> allant du coin haut-droit au coin bas-gauche ?</p>
+        <p><strong>Q7.</strong> Comment s'écrirait le motif pour afficher une <strong>croix complète (X)</strong> combinant les deux diagonales ?</p>
+    </div>
+
+    <h3 class="section-title">2.5. Conception des Pictogrammes avec LED Matrix Editor</h3>
+    <p>
+        Pour dessiner facilement des icônes complexes et expressives sans calculer manuellement chaque octet, vous utiliserez l'outil en ligne <strong>LED Matrix Editor</strong> :
+    </p>
+
+    <div class="doc-link-box">
+        🎨 <strong>Éditeur interactif en ligne :</strong> Ouvrez dans votre navigateur :<br>
+        <a href="https://xantorohara.github.io/led-matrix-editor/" target="_blank" rel="noopener noreferrer">https://xantorohara.github.io/led-matrix-editor/</a>
+    </div>
+
+    <div class="methodo-grid">
+        <div class="methodo-card matrix">
+            <h4>🛠️ Guide d'Utilisation de LED Matrix Editor</h4>
+            <ul>
+                <li>1. Dans le sélecteur en haut à droite, choisissez la couleur <strong>Red</strong>.</li>
+                <li>2. Cliquez sur les cases de la grille $8 \times 8$ pour allumer ou éteindre les DELs et former votre dessin.</li>
+                <li>3. Pour récupérer le code :
+                    <ul>
+                        <li>Dans le menu déroulant de génération, sélectionnez <strong>Arduino (byte array)</strong>.</li>
+                        <li>Copiez la liste des 8 valeurs (ex : <code>{ B00111100, B01000010, ... }</code> ou en hexadécimal).</li>
+                    </ul>
+                </li>
+                <li>4. Dans votre code MicroPython, collez simplement ces 8 valeurs sous forme d'une liste Python : <code>[0x3C, 0x42, ...]</code> ou <code>[0b00111100, ...]</code>.</li>
+            </ul>
+        </div>
+        <div class="methodo-card bargraph">
+            <h4>🎯 Pictogrammes Obligatoires à Concevoir</h4>
+            <ul>
+                <li><strong>1. Icône FROID ($T &lt; 18\,^\circ\text{C}$) :</strong> Symbole Flocon de neige, flèche vers le bas ou thermomètre bas.</li>
+                <li><strong>2. Icône CONFORT ($18\,^\circ\text{C} \le T \le 25\,^\circ\text{C}$) :</strong> Visage souriant (Smiley "happy") ou mot "OK".</li>
+                <li><strong>3. Icône ALERTE / CHAUD ($T &gt; 25\,^\circ\text{C}$) :</strong> Symbole Flamme, point d'exclamation dans un triangle ou mot "HOT".</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="code-container">
+        <div class="code-header">
+            <span>MicroPython — Exemples de Motifs 8x8 (À Personnaliser par l'Élève)</span>
+            <span>Représentations Binaires Explicites</span>
+        </div>
+        <pre><code class="language-python"># Exemple 1 : Flocon / Étoile (Température Froide)
+ICONE_FROID = [
+    0b00011000,
+    0b10011001,
+    0b01011010,
+    0b00111100,
+    0b00111100,
+    0b01011010,
+    0b10011001,
+    0b00011000
+]
+
+# Exemple 2 : Smiley Souriant (Température de Confort Idéale)
+ICONE_CONFORT = [
+    0b00111100,  # . . # # # # . .
+    0b01000010,  # . # . . . . # .
+    0b10100101,  # # . # . . # . # (Yeux)
+    0b10000001,  # # . . . . . . #
+    0b10100101,  # # . # . . # . # (Sourire)
+    0b10011001,  # # . . # # . . #
+    0b01000010,  # . # . . . . # .
+    0b00111100   # . . # # # # . .
+]
+
+# Exemple 3 : Flamme / Alerte Surchauffe (Température Élevée)
+ICONE_CHAUD = [
+    0b00010000,
+    0b00011000,
+    0b00111100,
+    0b01101110,
+    0b01111110,
+    0b01111110,
+    0b00111100,
+    0b00011000
+]</code></pre>
+    </div>
+
+    <div class="question-box">
+        <h4>Questions d'Analyse :</h4>
+        <p><strong>Q8.</strong> Dessinez vos 3 pictogrammes sur l'éditeur en ligne. Relevez ci-dessous la liste des 8 octets de chaque motif (en hexadécimal ou en binaire). Justifiez le choix graphique de vos pictogrammes du point de vue de l'expérience utilisateur et de la lisibilité à distance.</p>
+        <p><strong>Q9.</strong> Testez l'affichage successif de vos 3 icônes sur la matrice avec une temporisation de 1,5 seconde entre chaque image dans une boucle de test.</p>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- PARTIE 3 : SYNTHÈSE & DÉFI COMPLET -->
+    <!-- ========================================================================= -->
+    <h2 class="part-title">
+        <span>Partie 3 : Défi d'Ingénierie — Station de Surveillance Thermique Autonome</span>
+        <span class="duration-badge">Durée : 1h00</span>
+    </h2>
+
+    <p>
+        Vous allez maintenant fusionner l'ensemble des modules dans un <strong>programme principal complet</strong> (<code>main.py</code>). La station doit fonctionner de manière 100 % autonome dès la mise sous tension de la carte :
+    </p>
+    <ol style="margin-left: 2rem; margin-bottom: 1rem; font-size: 0.95rem;">
+        <li>Lire la tension du pont diviseur CTN 10 kΩ sur l'entrée analogique <code>GP26 / ADC0</code>.</li>
+        <li>Calculer la résistance $R_{ctn}$ et en déduire la température réelle $T$ en °C à l'aide de l'équation logarithmique déterminée lors du TP précédent :<br>
+            <span style="font-family: 'Cambria Math', monospace; color: var(--primary); font-weight: bold;">T = a &times; ln(R_ctn) + b</span> (ou modèle polynomial).
+        </li>
+        <li>Mettre à jour le <strong>Grove LED Bar</strong> avec le nombre de DELs proportionnel à la température.</li>
+        <li>Mettre à jour la <strong>Matrice DEL 8×8</strong> avec le pictogramme d'état approprié (<em>Froid</em>, <em>Confort</em> ou <em>Alerte</em>).</li>
+        <li>Afficher simultanément les valeurs mesurées sur la console série (pour diagnostic) et cadencer la boucle à une période d'échantillonnage de <strong>1 seconde</strong>.</li>
+    </ol>
+
+    <div class="code-container">
+        <div class="code-header">
+            <span>MicroPython — station_thermique_complete.py (Squelette à Compléter)</span>
+            <span>Intégration Chaîne d'Information Complète</span>
+        </div>
+        <pre><code class="language-python"># ==============================================================================
+# TP TERMINALE SI — STATION DE SURVEILLANCE THERMIQUE COMPLÈTE
+# Acquérir : CTN 10 kΩ (GP26) | Traiter : Pico RP2040
+# Restituer : Grove LED Bar (GP16/17) + Matrice DEL 8x8 I2C (GP8/9)
+# ==============================================================================
+import time
+import math
+from machine import Pin, ADC, I2C
+from my9221 import MY9221  # Bibliothèque du Grove LED Bar (my9221.py)
+
+# ------------------------------------------------------------------------------
+# 1. CONSTANTES & ÉTALONNAGE CTN 10 kΩ (RELEVÉ DU TP PRÉCÉDENT)
+# ------------------------------------------------------------------------------
+VREF = 3.3              # Tension de référence CAN (V)
+PLEINE_ECHELLE = 65535  # Résolution 16 bits MicroPython
+R_FIXE = 10000.0        # Résistance fixe du pont diviseur (10 kΩ)
+
+# TODO ÉLÈVE : Insérez les coefficients a et b obtenus lors du TP modélisation
+# Modèle Logarithmique : T = a * ln(R) + b
+COEFF_A = -21.5         # <-- À REMPLACER par votre coefficient 'a'
+COEFF_B = 223.4         # <-- À REMPLACER par votre coefficient 'b'
+
+# ------------------------------------------------------------------------------
+# 2. INITIALISATION MATÉRIELLE DES PÉRIPHÉRIQUES
+# ------------------------------------------------------------------------------
+# Entrée analogique CTN
+adc_ctn = ADC(Pin(26))
+
+# Bargraph Grove LED Bar (MY9221 via la bibliothèque externe)
+barre = MY9221(di=Pin(16), dcki=Pin(17), reverse=False)
+
+# Matrice DEL 8x8 (HT16K33)
+i2c = I2C(0, scl=Pin(9), sda=Pin(8), freq=100000)
+# (Insérez ici la classe GroveMatrixHT16K33 définie en Partie 2)
+matrice = GroveMatrixHT16K33(i2c, address=0x70)
+
+# Définition des motifs d'icônes conçus par l'élève
+ICONE_FROID   = [ ... ]  # <-- Vos 8 octets
+ICONE_CONFORT = [ ... ]  # <-- Vos 8 octets
+ICONE_CHAUD   = [ ... ]  # <-- Vos 8 octets
+
+# ------------------------------------------------------------------------------
+# 3. FONCTIONS DE TRAITEMENT ET DE RESTITUTION
+# ------------------------------------------------------------------------------
+def lire_temperature():
+    """Acquiert la tension, calcule la résistance CTN et retourne la température en °C"""
+    val_brute = adc_ctn.read_u16()
+    u_mes = val_brute * (VREF / PLEINE_ECHELLE)
+    
+    if u_mes > 0.05:
+        r_ctn = R_FIXE * ((VREF / u_mes) - 1.0)
+        # TODO : Appliquer la formule de régression logarithmique
+        temperature = COEFF_A * math.log(r_ctn) + COEFF_B
+        return u_mes, r_ctn, temperature
+    else:
+        return u_mes, 0.0, -99.0
+
+# ------------------------------------------------------------------------------
+# 4. BOUCLE PRINCIPALE DE RÉGULATION & DE RESTITUTION VISUELLE
+# ------------------------------------------------------------------------------
+print("=== DÉMARRAGE DE LA STATION DE SURVEILLANCE THERMIQUE ===")
+
+while True:
+    u_mes, r_ctn, temp = lire_temperature()
+    
+    # 1. Calcul du niveau pour la jauge LED Bar (0 à 10 segments)
+    niveau_leds = temperature_vers_niveau(temp, t_min=16.0, t_max=28.0)
+    barre.level(niveau_leds)  # Pilotage direct du niveau via my9221
+    
+    # 2. Sélection et affichage de l'icône sur la matrice 8x8
+    if temp < 18.0:
+        matrice.show(ICONE_FROID)
+        etat = "FROID"
+    elif temp <= 24.0:
+        matrice.show(ICONE_CONFORT)
+        etat = "CONFORT"
+    else:
+        matrice.show(ICONE_CHAUD)
+        etat = "ALERTE CHAUD"
+    
+    # 3. Message de contrôle sur la console
+    print(f"U = {u_mes:.2f} V | R = {r_ctn:6.0f} Ω | T = {temp:5.1f} °C | Jauge : {niveau_leds}/10 | État : {etat}")
+    
+    # Cadencement temporel
+    time.sleep(1.0)</code></pre>
+    </div>
+
+    <div class="question-box">
+        <h4>Validation Expérimentale &amp; Questions de Synthèse :</h4>
+        <p><strong>Q10. Test en direct :</strong> Faites chauffer la sonde CTN en la serrant fermement entre vos doigts pendant 20 secondes. Observez l'évolution conjointe du bargraph et de la matrice à DELs. Relevez la température maximale atteinte et décrivez les transitions observées.</p>
+        <p><strong>Q11. Analyse comparative des liaisons série :</strong> Complétez le tableau comparatif ci-dessous pour synthétiser les différences entre les deux technologies de communication mises en œuvre :</p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Critère de comparaison</th>
+                <th>Grove LED Bar (MY9221)</th>
+                <th>Grove Red LED Matrix (HT16K33)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Type de bus / protocole</strong></td>
+                <td>Série synchrone propriétaire 2 fils</td>
+                <td>Bus normalisé I²C (Inter-Integrated Circuit)</td>
+            </tr>
+            <tr>
+                <td><strong>Nombre de lignes de signaux</strong></td>
+                <td>2 fils (DI + DCKI)</td>
+                <td>2 fils (SDA + SCL)</td>
+            </tr>
+            <tr>
+                <td><strong>Adressage des périphériques</strong></td>
+                <td class="empty-cell">... (Possible ou impossible ?)</td>
+                <td class="empty-cell">... (Oui / Non ? De 0x... à 0x...)</td>
+            </tr>
+            <tr>
+                <td><strong>Partage des broches avec d'autres capteurs</strong></td>
+                <td class="empty-cell">...</td>
+                <td class="empty-cell">...</td>
+            </tr>
+            <tr>
+                <td><strong>Débit &amp; Synchronisation</strong></td>
+                <td>Bit-banging manuel par programme</td>
+                <td>Horloge matérielle cadencée (100 à 400 kHz)</td>
+            </tr>
+            <tr>
+                <td><strong>Nature de l'information restituée</strong></td>
+                <td>Quantitatif discrétisé (Niveau / Jauge 0-10)</td>
+                <td>Qualitatif &amp; Symbolique (Graphisme 64 pixels)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ========================================================================= -->
+    <!-- PARTIE 4 : NIVEAU À BULLE ÉLECTRONIQUE & HORIZON ARTIFICIEL -->
+    <!-- ========================================================================= -->
+    <h2 class="part-title">
+        <span>Partie 4 : Niveau à Bulle Électronique &amp; Horizon Artificiel (Accéléromètre 3 Axes)</span>
+        <span class="duration-badge">Durée : 1h00 (Étude Théorique &amp; Modélisation)</span>
+    </h2>
+
+    <p>
+        Dans de nombreux systèmes embarqués (drones, smartphones, engins de chantier ou outillage laser de précision pour le BTP), la matrice d'affichage est solidaire d'un boîtier mobile. On souhaite créer un <strong>niveau à bulle électronique (ou horizon artificiel)</strong> : la ligne lumineuse affichée sur la matrice doit <strong>paraître constamment horizontale dans le monde réel</strong> par rapport au sol terrestre, même lorsque l'opérateur incline physiquement la matrice dans ses mains !
+    </p>
+    <p>
+        L'inclinaison de la matrice est mesurée en continu par un capteur accélérométrique fixé mécaniquement à son dos : le <strong>Grove - 3-Axis Digital Accelerometer (±1.5g)</strong> basé sur le composant numérique <strong>Freescale MMA7660FC</strong>.
+    </p>
+
+    <div class="doc-link-box">
+        📚 <strong>Documentation officielle de l'accéléromètre 3 axes Grove :</strong><br>
+        <a href="https://wiki.seeedstudio.com/Grove-3-Axis_Digital_Accelerometer-1.5g/" target="_blank" rel="noopener noreferrer">https://wiki.seeedstudio.com/Grove-3-Axis_Digital_Accelerometer-1.5g/</a><br>
+        <em>Ce composant communique également sur le bus I²C (adresse <code>0x4C</code>) et mesure les accélérations selon 3 axes orthogonaux $(x, y, z)$.</em>
+    </div>
+
+    <h3 class="section-title">4.1. Modélisation Vectorielle : Mesure de l'Inclinaison par la Pesanteur</h3>
+    <p>
+        Dans un état statique ou quasi-statique (vitesse de déplacement faible sans accélération dynamique violente), le capteur ne subit que l'<strong>accélération de la pesanteur terrestre $\vec{g}$</strong>, dirigée selon la verticale descendante locale ($g \approx 9{,}81\,\text{m/s}^2$, soit $1\,\text{g}$).
+    </p>
+    <p>
+        Lorsque la matrice et son accéléromètre sont inclinés d'un angle $\theta$ (angle de roulis) par rapport à l'horizontale, le repère orthonormé lié au capteur $(O, \vec{x}_c, \vec{y}_c)$ tourne de cet angle $\theta$. Le vecteur fixe $\vec{g}$ se projette alors sur les axes sensibles internes de l'accéléromètre :
+    </p>
+
+    <div class="tp-image-container">
+        <img src="images/projection_pesanteur_angle.svg" alt="Projection vectorielle de l'accélération de la pesanteur dans un repère incliné">
+        <p class="tp-image-caption">
+            <strong>Figure 1 :</strong> Projection vectorielle de l'accélération de la pesanteur $\vec{g}$ dans le repère $(O, \vec{x}_c, \vec{y}_c)$ incliné de l'angle $\theta$. Les composantes mesurées par le capteur sont $a_x = -g\cdot\sin(\theta)$ et $a_y = g\cdot\cos(\theta)$.
+        </p>
+    </div>
+
+    <div class="concept-box">
+        <h4>📐 Démonstration Mathématique du Calcul de l'Angle $\theta$</h4>
+        <p>En observant le triangle rectangle formé par le vecteur pesanteur $\vec{g}$ et ses deux projections orthogonales :</p>
+        <ul>
+            <li>Composante sur l'axe transverse $\vec{x}_c$ : $a_x = -g \cdot \sin(\theta)$</li>
+            <li>Composante sur l'axe longitudinal $\vec{y}_c$ : $a_y = g \cdot \cos(\theta)$</li>
+        </ul>
+        <p>En calculant le quotient membre à membre de ces deux projections :</p>
+        <div style="text-align: center; margin: 0.8rem 0; font-family: 'Cambria Math', serif; font-size: 1.15rem; color: var(--primary);">
+            $\dfrac{a_x}{a_y} = \dfrac{-g \cdot \sin(\theta)}{g \cdot \cos(\theta)} = -\tan(\theta) \quad \iff \quad \tan(\theta) = -\dfrac{a_x}{a_y}$
+        </div>
+        <p>On en déduit l'expression de l'angle d'inclinaison $\theta$ :</p>
+        <div style="text-align: center; margin: 0.8rem 0; font-family: 'Cambria Math', serif; font-size: 1.25rem; font-weight: bold; color: var(--secondary-dark);">
+            $\theta = \arctan\left(-\dfrac{a_x}{a_y}\right) = \operatorname{atan2}(-a_x, \, a_y)$
+        </div>
+        <p>
+            💡 <strong>Avantage majeur en ingénierie :</strong> L'accélération $g$ s'élimine naturellement dans le quotient ! La mesure d'angle $\theta$ est ainsi <strong>insensible aux variations d'échelle ou d'étalonnage absolu</strong> du capteur, ce qui confère au système une robustesse exemplaire.
+        </p>
+    </div>
+
+    <h3 class="section-title">4.2. Principe du Niveau à Bulle &amp; Horizon Artificiel sur la Matrice 8×8</h3>
+    <p>
+        L'accéléromètre est solidaire du dos de la matrice à DELs. Si l'utilisateur fait pivoter physiquement le boîtier d'un angle $+\theta$ dans le sens trigonométrique :
+    </p>
+    <ol style="margin-left: 2rem; margin-bottom: 1rem; font-size: 0.95rem;">
+        <li>L'accéléromètre mesure instantanément les accélérations $a_x$ et $a_y$ et le microcontrôleur calcule l'angle d'inclinaison physique $\theta$.</li>
+        <li>Pour que la ligne de DELs allumées reste <strong>parfaitement horizontale aux yeux d'un observateur terrestre</strong>, le programme doit tracer sur la matrice une ligne inclinée d'un angle opposé $-\theta$ dans le repère propre de l'afficheur !</li>
+    </ol>
+
+    <div class="tp-image-container">
+        <img src="images/niveau_bulle_matrice_inclinee.svg" alt="Principe du niveau à bulle et de l'horizon artificiel sur matrice DEL 8x8">
+        <p class="tp-image-caption">
+            <strong>Figure 2 :</strong> Principe de compensation de l'horizon artificiel. Quel que soit le roulis imposé à la matrice physique, la ligne rouge formée par les DELs allumées reste parallèle à l'horizon terrestre réel.
+        </p>
+    </div>
+
+    <div class="question-box">
+        <h4>Questions d'Ingénierie &amp; Analyse Algorithmique — Partie 4 :</h4>
+        <p><em>(Rappel : Vous ne devez pas coder cette partie sur la Pico, mais mener la démarche d'analyse et concevoir l'algorithme sous forme d'équations et d'organigramme).</em></p>
+        <p><strong>Q12.</strong> On repère chaque DEL de la matrice par ses coordonnées entières $(x, y) \in \{0, 1, \dots, 7\}^2$, le centre géométrique de la matrice étant le point $(x_0, y_0) = (3{,}5\,;\,3{,}5)$. Établissez l'équation cartésienne de la droite de pente $m = -\tan(\theta)$ passant par ce centre : $y - y_0 = m \cdot (x - x_0)$.</p>
+        <p><strong>Q13.</strong> La matrice étant discrète (8 rangées de DELs physiques), comment calcule-t-on le numéro de ligne entier $y_{DEL}(x)$ à allumer pour chaque colonne $x \in \{0, 1, \dots, 7\}$ ? Que doit faire l'algorithme si la valeur calculée $y$ sort de l'intervalle $[0\,;\,7]$ (par exemple pour une forte inclinaison $\theta = 60^\circ$) ?</p>
+        <p><strong>Q14.</strong> Rédigez en français ou sous forme d'organigramme (pseudo-code) l'algorithme complet de la boucle d'asservissement d'horizon artificiel : <em>Lecture I²C MMA7660 &rarr; Calcul de $\theta$ &rarr; Calcul des 8 octets de la matrice &rarr; Rafraîchissement I²C HT16K33</em>.</p>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- PARTIE 5 : CONTRÔLE D'UN PIXEL PAR JOYSTICK GROVE -->
+    <!-- ========================================================================= -->
+    <h2 class="part-title">
+        <span>Partie 5 : Pilotage Interactif d'un Pixel par Joystick Analogique (Grove Thumb Joystick)</span>
+        <span class="duration-badge">Durée : 45 min</span>
+    </h2>
+
+    <p>
+        Pour enrichir l'Interface Homme-Machine (IHM) et permettre à un opérateur de sélectionner une consigne, de déplacer un curseur ou de naviguer dans un menu graphique sur la matrice, on intègre un module de commande analogique bidirectionnel : le <strong>Grove - Thumb Joystick</strong>.
+    </p>
+
+    <div class="doc-link-box">
+        📚 <strong>Documentation officielle du Joystick Grove :</strong><br>
+        <a href="https://wiki.seeedstudio.com/Grove-Thumb_Joystick/" target="_blank" rel="noopener noreferrer">https://wiki.seeedstudio.com/Grove-Thumb_Joystick/</a>
+    </div>
+
+    <h3 class="section-title">5.1. Fonctionnement Matériel du Joystick &amp; Câblage Pico</h3>
+    <p>
+        Le Thumb Joystick Grove intègre deux potentiomètres de 10 kΩ montés orthogonalement (axe X et axe Y). Lorsqu'on incline le manche, les curseurs des deux potentiomètres se déplacent et délivrent deux tensions analogiques continues $U_X$ et $U_Y$ comprises entre $0\,\text{V}$ et $V_{CC}$ ($3{,}3\,\text{V}$). Au repos (manche au centre), les deux tensions sont centrées autour de $V_{CC}/2 \approx 1{,}65\,\text{V}$.
+    </p>
+
+    <div class="tp-image-container">
+        <img src="images/joystick_grove_matrice_pixel.svg" alt="Synoptique du pilotage d'un pixel par joystick Grove sur matrice 8x8">
+        <p class="tp-image-caption">
+            <strong>Figure 3 :</strong> Chaîne d'information du contrôle de pixel : Joystick (CAN0 GP26 &amp; CAN1 GP27) &rarr; Traitement MicroPython &rarr; Affichage dynamique du pixel actif sur la matrice DEL 8×8 via I²C.
+        </p>
+    </div>
+
+    <div class="wiring-box">
+        <strong>🔌 Connexions du Grove Thumb Joystick sur la Raspberry Pi Pico :</strong><br><br>
+        • Fil Jaune (Sortie Analogique Axe X) &rarr; Relier à <span class="pin-tag sig">GP26 (ADC0)</span> (broche physique 31)<br>
+        • Fil Blanc (Sortie Analogique Axe Y) &rarr; Relier à <span class="pin-tag sig">GP27 (ADC1)</span> (broche physique 32)<br>
+        • Fil Rouge (Alimentation VCC) &rarr; Relier au <span class="pin-tag vcc">3V3 (Pin 36)</span><br>
+        • Fil Noir (Masse GND) &rarr; Relier à un <span class="pin-tag gnd">GND</span>
+    </div>
+
+    <h3 class="section-title">5.2. Code MicroPython Fourni : Déplacement Temps Réel du Pixel Lumineux</h3>
+    <p>
+        Voici le programme complet permettant de piloter en direct la position du pixel lumineux sur la matrice $8 \times 8$ en fonction de la position du joystick. Ouvrez un nouveau script dans Thonny nommé <code>joystick_matrice_pixel.py</code> :
+    </p>
+
+    <div class="code-container">
+        <div class="code-header">
+            <span>MicroPython — joystick_matrice_pixel.py (Code Complet Fourni)</span>
+            <span>Contrôle Interactif d'un Pixel 2D</span>
+        </div>
+        <pre><code class="language-python"># ==============================================================================
+# TP TERMINALE SI — PILOTAGE D'UN PIXEL PAR JOYSTICK ANALOGIQUE SUR MATRICE 8x8
+# Entrées : Joystick Axe X sur GP26 (ADC0) | Axe Y sur GP27 (ADC1)
+# Sortie  : Matrice DEL 8x8 Grove HT16K33 sur I2C(0) GP8/GP9
+# ==============================================================================
+import time
+from machine import Pin, ADC, I2C
+
+# 1. Configuration des entrées analogiques du Joystick
+adc_x = ADC(Pin(26))  # Tensions de 0 à 3,3 V (valeur numérique 0 à 65535)
+adc_y = ADC(Pin(27))
+
+# 2. Configuration du bus I2C et de la matrice DEL 8x8
+i2c = I2C(0, scl=Pin(9), sda=Pin(8), freq=100000)
+ADRESSE_MATRICE = 0x70
+
+# Initialisation du contrôleur HT16K33
+i2c.writeto(ADRESSE_MATRICE, b'\x21')  # Allumage oscillateur
+i2c.writeto(ADRESSE_MATRICE, b'\x81')  # Affichage ON
+i2c.writeto(ADRESSE_MATRICE, bytes([0xE0 | 7]))  # Luminosité moyenne
+
+def afficher_pixel(colonne, ligne):
+    """
+    Allume un unique pixel lumineux aux coordonnées (colonne, ligne) sur la matrice 8x8.
+    - colonne : entier entre 0 (gauche) et 7 (droite)
+    - ligne   : entier entre 0 (haut) et 7 (bas)
+    """
+    buffer = bytearray(17)
+    buffer[0] = 0x00  # Pointeur registre mémoire RAM
+    
+    # Construction du motif : seule la ligne ciblée a un bit allumé
+    for i in range(8):
+        if i == ligne:
+            # Allumer le bit correspondant à la colonne (bit 7 = gauche, bit 0 = droite)
+            buffer[1 + 2 * i] = (1 << (7 - colonne))
+        else:
+            buffer[1 + 2 * i] = 0x00
+        buffer[2 + 2 * i] = 0x00
+    
+    i2c.writeto(ADRESSE_MATRICE, buffer)
+
+print("=== PILOTAGE JOYSTICK -> PIXEL MATRICE 8x8 ACTIF ===")
+print("Inclinez le joystick pour déplacer le point lumineux...")
+
+while True:
+    # 1. Lecture des valeurs analogiques brutes 16 bits (0 à 65535)
+    val_x = adc_x.read_u16()
+    val_y = adc_y.read_u16()
+    
+    # 2. Discrétisation spatiale sur 8 colonnes (0 à 7) et 8 lignes (0 à 7)
+    # Formule de mapping : val * 8 // 65536 donne un entier de 0 à 7
+    col = min(7, max(0, val_x * 8 // 65536))
+    lig = min(7, max(0, val_y * 8 // 65536))
+    
+    # Optionnel : Inverser le sens vertical si le joystick monte quand lig descend
+    # lig = 7 - lig
+    
+    # 3. Mise à jour instantanée de l'afficheur
+    afficher_pixel(col, lig)
+    
+    # Petite temporisation pour fluidifier l'affichage (environ 30 rafraîchissements / s)
+    time.sleep_ms(30)</code></pre>
+    </div>
+
+    <div class="question-box">
+        <h4>Questions d'Analyse — Partie 5 :</h4>
+        <p><strong>Q15.</strong> Exécutez le script ci-dessus. Déplacez le manche du joystick et observez la réactivité du pixel. Que constatez-vous lorsque le manche est au repos ? Y a-t-il des micro-oscillations ou hésitations du pixel entre deux DELs adjacentes ? Expliquez ce phénomène lié au bruit de mesure du convertisseur analogique-numérique.</p>
+        <p><strong>Q16 (Défi d'Approfondissement).</strong> Dans un jeu vidéo (type <em>Snake</em> ou curseur de sélection), le joystick ne commande pas la <em>position absolue</em> du pixel, mais sa <em>vitesse de déplacement</em> :</p>
+        <ul style="padding-left: 1.3rem; margin-top: 0.3rem;">
+            <li>Si le manche est au centre (zone morte, par exemple $28000 \le N \le 37000$), le pixel reste immobile à sa position actuelle.</li>
+            <li>Si le manche est poussé vers la droite ($N_X > 50000$), le pixel se décale d'une case vers la droite à chaque pas de temps.</li>
+        </ul>
+        <p>Modifiez le script pour implémenter ce <strong>mode curseur mobile incrémental</strong> avec gestion de zone morte.</p>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- GRILLE D'ÉVALUATION -->
+    <!-- ========================================================================= -->
+    <h2 class="part-title">Grille d'Évaluation des Compétences (20 Points)</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Compétences &amp; Domaines Évalués</th>
+                <th>Indicateurs de Réussite &amp; Critères d'Évaluation</th>
+                <th>Barème</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>1. Câblage matériel &amp; Sécurité électrique</strong></td>
+                <td>Raccordements corrects des 4 périphériques sur la Raspberry Pi Pico (CTN, LED Bar, Matrice 8×8, Joystick) sans faux contact ni court-circuit.</td>
+                <td class="bareme-points">/ 3 pts</td>
+            </tr>
+            <tr>
+                <td><strong>2. Maîtrise du Grove LED Bar (MY9221)</strong></td>
+                <td>Compréhension de la liaison 2 fils série, test du chenillard réussi, formule d'interpolation linéaire <code>temperature_vers_niveau</code> fonctionnelle.</td>
+                <td class="bareme-points">/ 3 pts</td>
+            </tr>
+            <tr>
+                <td><strong>3. Recherche documentaire I²C &amp; Matrice 8×8</strong></td>
+                <td>Recherche efficace sur le wiki Seeed Studio, identification de l'adresse 0x70, utilisation de LED Matrix Editor pour créer les 3 pictogrammes.</td>
+                <td class="bareme-points">/ 4 pts</td>
+            </tr>
+            <tr>
+                <td><strong>4. Station de surveillance thermique intégrée</strong></td>
+                <td>Fonctionnement autonome de la station complète, affichage simultané de la jauge et de l'icône, validation de la réactivité au contact thermique.</td>
+                <td class="bareme-points">/ 3 pts</td>
+            </tr>
+            <tr>
+                <td><strong>5. Modélisation Niveau à Bulle &amp; Horizon Artificiel</strong></td>
+                <td>Analyse vectorielle de la pesanteur $\vec{g}$, justification rigoureuse de la formule $\theta = \arctan(-a_x / a_y)$, équation de compensation de la ligne de DELs.</td>
+                <td class="bareme-points">/ 4 pts</td>
+            </tr>
+            <tr>
+                <td><strong>6. Pilotage du pixel par Joystick (IHM)</strong></td>
+                <td>Acquisition analogique 2 voies ADC, discrétisation spatiale sur 8×8, réactivité temps réel et analyse du filtrage de zone morte.</td>
+                <td class="bareme-points">/ 3 pts</td>
+            </tr>
+            <tr style="background:#f1f5f9; font-weight:bold;">
+                <td colspan="2" style="text-align:right;">NOTE GLOBALE DU TP :</td>
+                <td class="bareme-points">/ 20 pts</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>
