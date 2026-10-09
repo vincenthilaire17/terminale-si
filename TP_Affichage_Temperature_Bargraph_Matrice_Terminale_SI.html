@@ -525,7 +525,7 @@
         <p>Lors du TP précédent (<em>Représentation & Modélisation des Mesures Physiques</em>), vous avez :</p>
         <ul>
             <li>Conditionné une thermistance <strong>CTN 10 kΩ</strong> dans un pont diviseur de tension alimenté sous 3,3 V.</li>
-            <li>Modélisé mathématiquement la loi de comportement thermique de la sonde ($T = f(R)$ sous forme logarithmique ou polynomiale) avec un coefficient $R^2 \ge 0{,}98$.</li>
+            <li>Modélisé mathématiquement la loi de comportement thermique de la sonde (<em>T</em> = <em>f</em>(<em>R</em>) sous forme logarithmique ou polynomiale) avec un coefficient <em>R</em>&sup2; &ge; 0,98.</li>
             <li>Implanté ce modèle mathématique dans un programme MicroPython sur Raspberry Pi Pico afin de calculer et d'afficher la température en °C dans la console texte de <strong>Thonny</strong>.</li>
         </ul>
         <p style="margin-top: 0.5rem;">
@@ -628,7 +628,7 @@
             <div class="synoptique-step-card step-1">
                 <span class="synoptique-step-num">Étape 1</span>
                 <span class="synoptique-step-title">Mesure & Calcul</span>
-                <span class="synoptique-step-desc">Lecture ADC 16 bits sur GP26, conversion en tension $U_{mes}$, déduction de $R_{ctn}$ et calcul de la température réelle $T$ (°C).</span>
+                <span class="synoptique-step-desc">Lecture ADC 16 bits sur GP26, conversion en tension <em>U</em><sub>mes</sub>, déduction de <em>R</em><sub>ctn</sub> et calcul de la température réelle <em>T</em> (°C).</span>
             </div>
             <div class="synoptique-step-card step-2">
                 <span class="synoptique-step-num">Étape 2</span>
@@ -770,31 +770,31 @@ while True:
         </thead>
         <tbody>
             <tr>
-                <td>$T &lt; 16\,^\circ\text{C}$</td>
+                <td><em>T</em> &lt; 16 °C</td>
                 <td><strong>0 DEL</strong></td>
                 <td>Aucune DEL</td>
                 <td>Température anormalement basse / froid</td>
             </tr>
             <tr>
-                <td>$16\,^\circ\text{C} \le T &lt; 18\,^\circ\text{C}$</td>
+                <td>16 °C &le; <em>T</em> &lt; 18 °C</td>
                 <td><strong>1 à 2 DELs</strong></td>
                 <td>Vertes (base)</td>
                 <td>Frais</td>
             </tr>
             <tr>
-                <td>$18\,^\circ\text{C} \le T \le 24\,^\circ\text{C}$</td>
+                <td>18 °C &le; <em>T</em> &le; 24 °C</td>
                 <td><strong>3 à 6 DELs</strong></td>
                 <td>Vertes (zone centrale)</td>
                 <td>Zone de confort thermique optimale</td>
             </tr>
             <tr>
-                <td>$24\,^\circ\text{C} &lt; T \le 28\,^\circ\text{C}$</td>
+                <td>24 °C &lt; <em>T</em> &le; 28 °C</td>
                 <td><strong>7 à 8 DELs</strong></td>
                 <td>Vert clair + Jaune/Orange</td>
                 <td>Avertissement réchauffement</td>
             </tr>
             <tr>
-                <td>$T &gt; 28\,^\circ\text{C}$</td>
+                <td><em>T</em> &gt; 28 °C</td>
                 <td><strong>9 à 10 DELs</strong></td>
                 <td>Orange + Rouge sommital</td>
                 <td>Surchauffe / Alerte critique</td>
@@ -827,7 +827,7 @@ while True:
 
     <div class="question-box">
         <h4>Question d'Analyse :</h4>
-        <p><strong>Q3.</strong> Écrivez la relation mathématique exacte qui exprime <code>niveau</code> en fonction de <code>temp_celsius</code>, <code>t_min</code> et <code>t_max</code>. Validez votre formule en calculant à la main le niveau obtenu pour $T = 22{,}5\,^\circ\text{C}$ avec $T_{min} = 15\,^\circ\text{C}$ et $T_{max} = 30\,^\circ\text{C}$.</p>
+        <p><strong>Q3.</strong> Écrivez la relation mathématique exacte qui exprime <code>niveau</code> en fonction de <code>temp_celsius</code>, <code>t_min</code> et <code>t_max</code>. Validez votre formule en calculant à la main le niveau obtenu pour <em>T</em> = 22,5 °C avec <em>T</em><sub>min</sub> = 15 °C et <em>T</em><sub>max</sub> = 30 °C.</p>
     </div>
 
     <!-- ========================================================================= -->
@@ -839,7 +839,7 @@ while True:
     </h2>
 
     <p>
-        Le composant <strong>Grove - Red LED Matrix w/Driver</strong> associe une matrice carrée de 64 DELs rouges ($8 \times 8$) à un contrôleur spécialisé <strong>Holtek HT16K33</strong> communiquant via le bus <strong>I²C</strong>.
+        Le composant <strong>Grove - Red LED Matrix w/Driver</strong> associe une matrice carrée de 64 DELs rouges (8 &times; 8) à un contrôleur spécialisé <strong>Holtek HT16K33</strong> communiquant via le bus <strong>I²C</strong>.
     </p>
 
     <div class="doc-link-box">
@@ -920,7 +920,7 @@ else:
         <li><strong>0x21 :</strong> Allumage de l'oscillateur interne système (<em>System setup register &rarr; Normal operation</em>).</li>
         <li><strong>0x81 :</strong> Activation de l'affichage sans clignotement (<em>Display setup &rarr; Display ON, Blinking OFF</em>).</li>
         <li><strong>0xE0 à 0xEF :</strong> Réglage de la luminosité (<em>Dimming register</em>, 16 niveaux de 0 à 15).</li>
-        <li><strong>Mémoire d'affichage (Display RAM) :</strong> La mémoire interne contient 16 octets débutant à l'adresse <code>0x00</code>. Pour une matrice $8 \times 8$, chaque ligne $i$ (de 0 à 7) est stockée à l'octet pair <code>2 * i</code> (les octets impairs ne sont pas connectés).</li>
+        <li><strong>Mémoire d'affichage (Display RAM) :</strong> La mémoire interne contient 16 octets débutant à l'adresse <code>0x00</code>. Pour une matrice 8 &times; 8, chaque ligne <em>i</em> (de 0 à 7) est stockée à l'octet pair <code>2 * i</code> (les octets impairs ne sont pas connectés).</li>
     </ul>
 
     <h3 class="section-title">2.4. Code de Base Fourni : Allumage d'une Diagonale de DELs</h3>
@@ -1033,7 +1033,7 @@ print("Diagonale affichée avec succès !")</code></pre>
             <h4>🛠️ Guide d'Utilisation de LED Matrix Editor</h4>
             <ul>
                 <li>1. Dans le sélecteur en haut à droite, choisissez la couleur <strong>Red</strong>.</li>
-                <li>2. Cliquez sur les cases de la grille $8 \times 8$ pour allumer ou éteindre les DELs et former votre dessin.</li>
+                <li>2. Cliquez sur les cases de la grille 8 &times; 8 pour allumer ou éteindre les DELs et former votre dessin.</li>
                 <li>3. Pour récupérer le code :
                     <ul>
                         <li>Dans le menu déroulant de génération, sélectionnez <strong>Arduino (byte array)</strong>.</li>
@@ -1046,9 +1046,9 @@ print("Diagonale affichée avec succès !")</code></pre>
         <div class="methodo-card bargraph">
             <h4>🎯 Pictogrammes Obligatoires à Concevoir</h4>
             <ul>
-                <li><strong>1. Icône FROID ($T &lt; 18\,^\circ\text{C}$) :</strong> Symbole Flocon de neige, flèche vers le bas ou thermomètre bas.</li>
-                <li><strong>2. Icône CONFORT ($18\,^\circ\text{C} \le T \le 25\,^\circ\text{C}$) :</strong> Visage souriant (Smiley "happy") ou mot "OK".</li>
-                <li><strong>3. Icône ALERTE / CHAUD ($T &gt; 25\,^\circ\text{C}$) :</strong> Symbole Flamme, point d'exclamation dans un triangle ou mot "HOT".</li>
+                <li><strong>1. Icône FROID (<em>T</em> &lt; 18 °C) :</strong> Symbole Flocon de neige, flèche vers le bas ou thermomètre bas.</li>
+                <li><strong>2. Icône CONFORT (18 °C &le; <em>T</em> &le; 25 °C) :</strong> Visage souriant (Smiley "happy") ou mot "OK".</li>
+                <li><strong>3. Icône ALERTE / CHAUD (<em>T</em> &gt; 25 °C) :</strong> Symbole Flamme, point d'exclamation dans un triangle ou mot "HOT".</li>
             </ul>
         </div>
     </div>
@@ -1114,7 +1114,7 @@ ICONE_CHAUD = [
     </p>
     <ol style="margin-left: 2rem; margin-bottom: 1rem; font-size: 0.95rem;">
         <li>Lire la tension du pont diviseur CTN 10 kΩ sur l'entrée analogique <code>GP26 / ADC0</code>.</li>
-        <li>Calculer la résistance $R_{ctn}$ et en déduire la température réelle $T$ en °C à l'aide de l'équation logarithmique déterminée lors du TP précédent :<br>
+        <li>Calculer la résistance <em>R</em><sub>ctn</sub> et en déduire la température réelle <em>T</em> en °C à l'aide de l'équation logarithmique déterminée lors du TP précédent :<br>
             <span style="font-family: 'Cambria Math', monospace; color: var(--primary); font-weight: bold;">T = a &times; ln(R_ctn) + b</span> (ou modèle polynomial).
         </li>
         <li>Mettre à jour le <strong>Grove LED Bar</strong> avec le nombre de DELs proportionnel à la température.</li>
@@ -1280,51 +1280,51 @@ while True:
     <div class="doc-link-box">
         📚 <strong>Documentation officielle de l'accéléromètre 3 axes Grove :</strong><br>
         <a href="https://wiki.seeedstudio.com/Grove-3-Axis_Digital_Accelerometer-1.5g/" target="_blank" rel="noopener noreferrer">https://wiki.seeedstudio.com/Grove-3-Axis_Digital_Accelerometer-1.5g/</a><br>
-        <em>Ce composant communique également sur le bus I²C (adresse <code>0x4C</code>) et mesure les accélérations selon 3 axes orthogonaux $(x, y, z)$.</em>
+        <em>Ce composant communique également sur le bus I²C (adresse <code>0x4C</code>) et mesure les accélérations selon 3 axes orthogonaux (<em>x</em>, <em>y</em>, <em>z</em>).</em>
     </div>
 
     <h3 class="section-title">4.1. Modélisation Vectorielle : Mesure de l'Inclinaison par la Pesanteur</h3>
     <p>
-        Dans un état statique ou quasi-statique (vitesse de déplacement faible sans accélération dynamique violente), le capteur ne subit que l'<strong>accélération de la pesanteur terrestre $\vec{g}$</strong>, dirigée selon la verticale descendante locale ($g \approx 9{,}81\,\text{m/s}^2$, soit $1\,\text{g}$).
+        Dans un état statique ou quasi-statique (vitesse de déplacement faible sans accélération dynamique violente), le capteur ne subit que l'<strong>accélération de la pesanteur terrestre <em>g&#x20D7;</em></strong>, dirigée selon la verticale descendante locale (<em>g</em> &approx; 9,81 m/s&sup2;, soit 1 g).
     </p>
     <p>
-        Lorsque la matrice et son accéléromètre sont inclinés d'un angle $\theta$ (angle de roulis) par rapport à l'horizontale, le repère orthonormé lié au capteur $(O, \vec{x}_c, \vec{y}_c)$ tourne de cet angle $\theta$. Le vecteur fixe $\vec{g}$ se projette alors sur les axes sensibles internes de l'accéléromètre :
+        Lorsque la matrice et son accéléromètre sont inclinés d'un angle &theta; (angle de roulis) par rapport à l'horizontale, le repère orthonormé lié au capteur (<em>O</em>, <em>x&#x20D7;</em><sub>c</sub>, <em>y&#x20D7;</em><sub>c</sub>) tourne de cet angle &theta;. Le vecteur fixe <em>g&#x20D7;</em> se projette alors sur les axes sensibles internes de l'accéléromètre :
     </p>
 
     <div class="tp-image-container">
         <img src="images/projection_pesanteur_angle.svg" alt="Projection vectorielle de l'accélération de la pesanteur dans un repère incliné">
         <p class="tp-image-caption">
-            <strong>Figure 1 :</strong> Projection vectorielle de l'accélération de la pesanteur $\vec{g}$ dans le repère $(O, \vec{x}_c, \vec{y}_c)$ incliné de l'angle $\theta$. Les composantes mesurées par le capteur sont $a_x = -g\cdot\sin(\theta)$ et $a_y = g\cdot\cos(\theta)$.
+            <strong>Figure 1 :</strong> Projection vectorielle de l'accélération de la pesanteur <em>g&#x20D7;</em> dans le repère (<em>O</em>, <em>x&#x20D7;</em><sub>c</sub>, <em>y&#x20D7;</em><sub>c</sub>) incliné de l'angle &theta;. Les composantes mesurées par le capteur sont <em>a</em><sub>x</sub> = &minus;<em>g</em> &middot; sin(&theta;) et <em>a</em><sub>y</sub> = <em>g</em> &middot; cos(&theta;).
         </p>
     </div>
 
     <div class="concept-box">
-        <h4>📐 Démonstration Mathématique du Calcul de l'Angle $\theta$</h4>
-        <p>En observant le triangle rectangle formé par le vecteur pesanteur $\vec{g}$ et ses deux projections orthogonales :</p>
+        <h4>📐 Démonstration Mathématique du Calcul de l'Angle &theta;</h4>
+        <p>En observant le triangle rectangle formé par le vecteur pesanteur <em>g&#x20D7;</em> et ses deux projections orthogonales :</p>
         <ul>
-            <li>Composante sur l'axe transverse $\vec{x}_c$ : $a_x = -g \cdot \sin(\theta)$</li>
-            <li>Composante sur l'axe longitudinal $\vec{y}_c$ : $a_y = g \cdot \cos(\theta)$</li>
+            <li>Composante sur l'axe transverse <em>x&#x20D7;</em><sub>c</sub> : <em>a</em><sub>x</sub> = &minus;<em>g</em> &middot; sin(&theta;)</li>
+            <li>Composante sur l'axe longitudinal <em>y&#x20D7;</em><sub>c</sub> : <em>a</em><sub>y</sub> = <em>g</em> &middot; cos(&theta;)</li>
         </ul>
         <p>En calculant le quotient membre à membre de ces deux projections :</p>
         <div style="text-align: center; margin: 0.8rem 0; font-family: 'Cambria Math', serif; font-size: 1.15rem; color: var(--primary);">
-            $\dfrac{a_x}{a_y} = \dfrac{-g \cdot \sin(\theta)}{g \cdot \cos(\theta)} = -\tan(\theta) \quad \iff \quad \tan(\theta) = -\dfrac{a_x}{a_y}$
+            <em>a</em><sub>x</sub> / <em>a</em><sub>y</sub> = (&minus;<em>g</em> &middot; sin(&theta;)) / (<em>g</em> &middot; cos(&theta;)) = &minus;tan(&theta;) &emsp;&hArr;&emsp; tan(&theta;) = &minus;(<em>a</em><sub>x</sub> / <em>a</em><sub>y</sub>)
         </div>
-        <p>On en déduit l'expression de l'angle d'inclinaison $\theta$ :</p>
+        <p>On en déduit l'expression de l'angle d'inclinaison &theta; :</p>
         <div style="text-align: center; margin: 0.8rem 0; font-family: 'Cambria Math', serif; font-size: 1.25rem; font-weight: bold; color: var(--secondary-dark);">
-            $\theta = \arctan\left(-\dfrac{a_x}{a_y}\right) = \operatorname{atan2}(-a_x, \, a_y)$
+            &theta; = arctan(&minus;<em>a</em><sub>x</sub> / <em>a</em><sub>y</sub>) = atan2(&minus;<em>a</em><sub>x</sub>, <em>a</em><sub>y</sub>)
         </div>
         <p>
-            💡 <strong>Avantage majeur en ingénierie :</strong> L'accélération $g$ s'élimine naturellement dans le quotient ! La mesure d'angle $\theta$ est ainsi <strong>insensible aux variations d'échelle ou d'étalonnage absolu</strong> du capteur, ce qui confère au système une robustesse exemplaire.
+            💡 <strong>Avantage majeur en ingénierie :</strong> L'accélération <em>g</em> s'élimine naturellement dans le quotient ! La mesure d'angle &theta; est ainsi <strong>insensible aux variations d'échelle ou d'étalonnage absolu</strong> du capteur, ce qui confère au système une robustesse exemplaire.
         </p>
     </div>
 
     <h3 class="section-title">4.2. Principe du Niveau à Bulle &amp; Horizon Artificiel sur la Matrice 8×8</h3>
     <p>
-        L'accéléromètre est solidaire du dos de la matrice à DELs. Si l'utilisateur fait pivoter physiquement le boîtier d'un angle $+\theta$ dans le sens trigonométrique :
+        L'accéléromètre est solidaire du dos de la matrice à DELs. Si l'utilisateur fait pivoter physiquement le boîtier d'un angle +&theta; dans le sens trigonométrique :
     </p>
     <ol style="margin-left: 2rem; margin-bottom: 1rem; font-size: 0.95rem;">
-        <li>L'accéléromètre mesure instantanément les accélérations $a_x$ et $a_y$ et le microcontrôleur calcule l'angle d'inclinaison physique $\theta$.</li>
-        <li>Pour que la ligne de DELs allumées reste <strong>parfaitement horizontale aux yeux d'un observateur terrestre</strong>, le programme doit tracer sur la matrice une ligne inclinée d'un angle opposé $-\theta$ dans le repère propre de l'afficheur !</li>
+        <li>L'accéléromètre mesure instantanément les accélérations <em>a</em><sub>x</sub> et <em>a</em><sub>y</sub> et le microcontrôleur calcule l'angle d'inclinaison physique &theta;.</li>
+        <li>Pour que la ligne de DELs allumées reste <strong>parfaitement horizontale aux yeux d'un observateur terrestre</strong>, le programme doit tracer sur la matrice une ligne inclinée d'un angle opposé &minus;&theta; dans le repère propre de l'afficheur !</li>
     </ol>
 
     <div class="tp-image-container">
@@ -1337,9 +1337,9 @@ while True:
     <div class="question-box">
         <h4>Questions d'Ingénierie &amp; Analyse Algorithmique — Partie 4 :</h4>
         <p><em>(Rappel : Vous ne devez pas coder cette partie sur la Pico, mais mener la démarche d'analyse et concevoir l'algorithme sous forme d'équations et d'organigramme).</em></p>
-        <p><strong>Q12.</strong> On repère chaque DEL de la matrice par ses coordonnées entières $(x, y) \in \{0, 1, \dots, 7\}^2$, le centre géométrique de la matrice étant le point $(x_0, y_0) = (3{,}5\,;\,3{,}5)$. Établissez l'équation cartésienne de la droite de pente $m = -\tan(\theta)$ passant par ce centre : $y - y_0 = m \cdot (x - x_0)$.</p>
-        <p><strong>Q13.</strong> La matrice étant discrète (8 rangées de DELs physiques), comment calcule-t-on le numéro de ligne entier $y_{DEL}(x)$ à allumer pour chaque colonne $x \in \{0, 1, \dots, 7\}$ ? Que doit faire l'algorithme si la valeur calculée $y$ sort de l'intervalle $[0\,;\,7]$ (par exemple pour une forte inclinaison $\theta = 60^\circ$) ?</p>
-        <p><strong>Q14.</strong> Rédigez en français ou sous forme d'organigramme (pseudo-code) l'algorithme complet de la boucle d'asservissement d'horizon artificiel : <em>Lecture I²C MMA7660 &rarr; Calcul de $\theta$ &rarr; Calcul des 8 octets de la matrice &rarr; Rafraîchissement I²C HT16K33</em>.</p>
+        <p><strong>Q12.</strong> On repère chaque DEL de la matrice par ses coordonnées entières (<em>x</em>, <em>y</em>) &isin; {0, 1, &hellip;, 7}&sup2;, le centre géométrique de la matrice étant le point (<em>x</em><sub>0</sub>, <em>y</em><sub>0</sub>) = (3,5 ; 3,5). Établissez l'équation cartésienne de la droite de pente <em>m</em> = &minus;tan(&theta;) passant par ce centre : <em>y</em> &minus; <em>y</em><sub>0</sub> = <em>m</em> &middot; (<em>x</em> &minus; <em>x</em><sub>0</sub>).</p>
+        <p><strong>Q13.</strong> La matrice étant discrète (8 rangées de DELs physiques), comment calcule-t-on le numéro de ligne entier <em>y</em><sub>DEL</sub>(<em>x</em>) à allumer pour chaque colonne <em>x</em> &isin; {0, 1, &hellip;, 7} ? Que doit faire l'algorithme si la valeur calculée <em>y</em> sort de l'intervalle [0 ; 7] (par exemple pour une forte inclinaison &theta; = 60°) ?</p>
+        <p><strong>Q14.</strong> Rédigez en français ou sous forme d'organigramme (pseudo-code) l'algorithme complet de la boucle d'asservissement d'horizon artificiel : <em>Lecture I²C MMA7660 &rarr; Calcul de &theta; &rarr; Calcul des 8 octets de la matrice &rarr; Rafraîchissement I²C HT16K33</em>.</p>
     </div>
 
     <!-- ========================================================================= -->
@@ -1361,7 +1361,7 @@ while True:
 
     <h3 class="section-title">5.1. Fonctionnement Matériel du Joystick &amp; Câblage Pico</h3>
     <p>
-        Le Thumb Joystick Grove intègre deux potentiomètres de 10 kΩ montés orthogonalement (axe X et axe Y). Lorsqu'on incline le manche, les curseurs des deux potentiomètres se déplacent et délivrent deux tensions analogiques continues $U_X$ et $U_Y$ comprises entre $0\,\text{V}$ et $V_{CC}$ ($3{,}3\,\text{V}$). Au repos (manche au centre), les deux tensions sont centrées autour de $V_{CC}/2 \approx 1{,}65\,\text{V}$.
+        Le Thumb Joystick Grove intègre deux potentiomètres de 10 kΩ montés orthogonalement (axe X et axe Y). Lorsqu'on incline le manche, les curseurs des deux potentiomètres se déplacent et délivrent deux tensions analogiques continues <em>U</em><sub>X</sub> et <em>U</em><sub>Y</sub> comprises entre 0 V et <em>V</em><sub>CC</sub> (3,3 V). Au repos (manche au centre), les deux tensions sont centrées autour de <em>V</em><sub>CC</sub> / 2 &approx; 1,65 V.
     </p>
 
     <div class="tp-image-container">
@@ -1381,7 +1381,7 @@ while True:
 
     <h3 class="section-title">5.2. Code MicroPython Fourni : Déplacement Temps Réel du Pixel Lumineux</h3>
     <p>
-        Voici le programme complet permettant de piloter en direct la position du pixel lumineux sur la matrice $8 \times 8$ en fonction de la position du joystick. Ouvrez un nouveau script dans Thonny nommé <code>joystick_matrice_pixel.py</code> :
+        Voici le programme complet permettant de piloter en direct la position du pixel lumineux sur la matrice 8×8 en fonction de la position du joystick. Ouvrez un nouveau script dans Thonny nommé <code>joystick_matrice_pixel.py</code> :
     </p>
 
     <div class="code-container">
@@ -1458,8 +1458,8 @@ while True:
         <p><strong>Q15.</strong> Exécutez le script ci-dessus. Déplacez le manche du joystick et observez la réactivité du pixel. Que constatez-vous lorsque le manche est au repos ? Y a-t-il des micro-oscillations ou hésitations du pixel entre deux DELs adjacentes ? Expliquez ce phénomène lié au bruit de mesure du convertisseur analogique-numérique.</p>
         <p><strong>Q16 (Défi d'Approfondissement).</strong> Dans un jeu vidéo (type <em>Snake</em> ou curseur de sélection), le joystick ne commande pas la <em>position absolue</em> du pixel, mais sa <em>vitesse de déplacement</em> :</p>
         <ul style="padding-left: 1.3rem; margin-top: 0.3rem;">
-            <li>Si le manche est au centre (zone morte, par exemple $28000 \le N \le 37000$), le pixel reste immobile à sa position actuelle.</li>
-            <li>Si le manche est poussé vers la droite ($N_X > 50000$), le pixel se décale d'une case vers la droite à chaque pas de temps.</li>
+            <li>Si le manche est au centre (zone morte, par exemple 28000 &le; <em>N</em> &le; 37000), le pixel reste immobile à sa position actuelle.</li>
+            <li>Si le manche est poussé vers la droite (<em>N</em><sub>X</sub> &gt; 50000), le pixel se décale d'une case vers la droite à chaque pas de temps.</li>
         </ul>
         <p>Modifiez le script pour implémenter ce <strong>mode curseur mobile incrémental</strong> avec gestion de zone morte.</p>
     </div>
@@ -1500,7 +1500,7 @@ while True:
             </tr>
             <tr>
                 <td><strong>5. Modélisation Niveau à Bulle &amp; Horizon Artificiel</strong></td>
-                <td>Analyse vectorielle de la pesanteur $\vec{g}$, justification rigoureuse de la formule $\theta = \arctan(-a_x / a_y)$, équation de compensation de la ligne de DELs.</td>
+                <td>Analyse vectorielle de la pesanteur <em>g&#x20D7;</em>, justification rigoureuse de la formule &theta; = arctan(&minus;<em>a</em><sub>x</sub> / <em>a</em><sub>y</sub>), équation de compensation de la ligne de DELs.</td>
                 <td class="bareme-points">/ 4 pts</td>
             </tr>
             <tr>
