@@ -218,7 +218,7 @@ def create_evaluation_pdf(filename="Correction_Copies_MicroPython_Terminale_SI.p
         ],
         [
             Paragraph("2<sup>e</sup>", table_cell_center),
-            Paragraph("<b>MOLLÉ Victor</b>", table_cell_left_bold),
+            Paragraph("<b>MOLLA Victor</b>", table_cell_left_bold),
             Paragraph("3,00", table_cell_center),
             Paragraph("4,00", table_cell_center),
             Paragraph("5,75", table_cell_center),
@@ -228,7 +228,7 @@ def create_evaluation_pdf(filename="Correction_Copies_MicroPython_Terminale_SI.p
         ],
         [
             Paragraph("3<sup>e</sup>", table_cell_center),
-            Paragraph("<b>LETERT Nathan</b>", table_cell_left_bold),
+            Paragraph("<b>LETOT Nathan</b>", table_cell_left_bold),
             Paragraph("2,75", table_cell_center),
             Paragraph("4,00", table_cell_center),
             Paragraph("6,00", table_cell_center),
@@ -248,7 +248,7 @@ def create_evaluation_pdf(filename="Correction_Copies_MicroPython_Terminale_SI.p
         ],
         [
             Paragraph("5<sup>e</sup>", table_cell_center),
-            Paragraph("<b>HUZEREAU Maïllie</b>", table_cell_left_bold),
+            Paragraph("<b>MUZEREAU Maïllie</b>", table_cell_left_bold),
             Paragraph("3,50", table_cell_center),
             Paragraph("2,50", table_cell_center),
             Paragraph("6,00", table_cell_center),
@@ -278,7 +278,7 @@ def create_evaluation_pdf(filename="Correction_Copies_MicroPython_Terminale_SI.p
         ],
         [
             Paragraph("8<sup>e</sup>", table_cell_center),
-            Paragraph("<b>ROLLER Jean</b>", table_cell_left_bold),
+            Paragraph("<b>BELLIN Jean</b>", table_cell_left_bold),
             Paragraph("1,75", table_cell_center),
             Paragraph("2,00", table_cell_center),
             Paragraph("3,50", table_cell_center),
@@ -413,7 +413,7 @@ def create_evaluation_pdf(filename="Correction_Copies_MicroPython_Terminale_SI.p
             "appreciation": "Remarquable copie démontrant une excellente rigueur d'analyse et une compréhension fine du matériel et du code MicroPython. Bravo !"
         },
         {
-            "nom": "MOLLÉ Victor",
+            "nom": "MOLLA Victor",
             "classe": "TG1",
             "note": "18,75 / 20",
             "rang": "2e sur 8",
@@ -426,7 +426,7 @@ def create_evaluation_pdf(filename="Correction_Copies_MicroPython_Terminale_SI.p
             "appreciation": "Très grand sérieux et excellente compréhension des notions de régulation et d'acquisition analogique/numérique. Travail de grande qualité."
         },
         {
-            "nom": "LETERT Nathan",
+            "nom": "LETOT Nathan",
             "classe": "TG1",
             "note": "18,50 / 20",
             "rang": "3e sur 8",
@@ -452,7 +452,7 @@ def create_evaluation_pdf(filename="Correction_Copies_MicroPython_Terminale_SI.p
             "appreciation": "Excellente copie témoignant d'une réflexion physique et algorithmique très mature. Veillez simplement à bien lire les consignes des tableaux fonctionnels."
         },
         {
-            "nom": "HUZEREAU Maïllie",
+            "nom": "MUZEREAU Maïllie",
             "classe": "TG1",
             "note": "17,50 / 20",
             "rang": "5e sur 8",
@@ -491,7 +491,7 @@ def create_evaluation_pdf(filename="Correction_Copies_MicroPython_Terminale_SI.p
             "appreciation": "Le niveau moyen est atteint avec de bonnes bases sur le calcul numérique et le PWM, mais des confusions conceptuelles importantes persistent sur les fonctions."
         },
         {
-            "nom": "ROLLER Jean",
+            "nom": "BELLIN Jean",
             "classe": "TG1",
             "note": "12,25 / 20",
             "rang": "8e sur 8",
