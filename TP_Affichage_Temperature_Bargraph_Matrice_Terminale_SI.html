@@ -544,7 +544,7 @@
             Synoptique Global de la Chaîne d'Information à Réaliser
         </div>
         <p class="synoptique-intro">
-            Le microcontrôleur Raspberry Pi Pico échantillonne la tension analogique de la CTN, calcule la température en °C, puis pilote simultanément deux afficheurs numériques distincts à travers deux protocoles de communication série différents.
+            Le microcontrôleur Raspberry Pi Pico acquiert les grandeurs d'entrée (potentiomètre analogique sur GP26 pour la jauge, puis capteur numérique DHT sur GP22 pour la surveillance thermique), puis pilote simultanément deux afficheurs numériques distincts à travers deux protocoles de communication série différents.
         </p>
 
         <div class="synoptique-svg-container">
@@ -565,29 +565,29 @@
                 <rect x="10" y="70" width="120" height="75" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-width="2"/>
                 <text x="70" y="95" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">GRANDEUR</text>
                 <text x="70" y="112" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">PHYSIQUE</text>
-                <text x="70" y="132" text-anchor="middle" font-size="11" fill="#2563eb">Température θ (°C)</text>
+                <text x="70" y="132" text-anchor="middle" font-size="11" fill="#2563eb">Position / Temp. θ</text>
 
                 <!-- Flèche 1 -->
                 <line x1="130" y1="107" x2="168" y2="107" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow)"/>
 
-                <!-- Bloc 2: Capteur CTN & Pont Diviseur -->
+                <!-- Bloc 2: Capteurs Entrée -->
                 <rect x="170" y="60" width="160" height="95" rx="6" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
                 <text x="250" y="85" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e3a8a">1. ACQUÉRIR</text>
-                <text x="250" y="103" text-anchor="middle" font-size="10.5" fill="#1e293b">Sonde CTN 10 kΩ</text>
-                <text x="250" y="120" text-anchor="middle" font-size="10" fill="#475569">+ Pont R_fixe 10 kΩ</text>
-                <text x="250" y="142" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">U_mes ∈ [0 ; 3,3 V]</text>
+                <text x="250" y="103" text-anchor="middle" font-size="10.5" fill="#1e293b">Potentiomètre (Partie 1)</text>
+                <text x="250" y="120" text-anchor="middle" font-size="10" fill="#475569">Capteur DHT (Partie 3)</text>
+                <text x="250" y="142" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">GP26 (ADC) / GP22 (DHT)</text>
 
                 <!-- Flèche 2 -->
                 <line x1="330" y1="107" x2="378" y2="107" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow)"/>
-                <text x="354" y="98" text-anchor="middle" font-size="9" fill="#64748b">GP26 (ADC0)</text>
+                <text x="354" y="98" text-anchor="middle" font-size="9" fill="#64748b">Signaux</text>
 
                 <!-- Bloc 3: Raspberry Pi Pico (Traitement) -->
                 <rect x="380" y="45" width="200" height="130" rx="8" fill="#1e293b" stroke="#0f172a" stroke-width="2"/>
                 <text x="480" y="72" text-anchor="middle" font-size="12" font-weight="bold" fill="#38bdf8">2. TRAITER (RP2040)</text>
                 <text x="480" y="92" text-anchor="middle" font-size="10.5" fill="#f1f5f9">MicroPython (Thonny)</text>
                 <rect x="395" y="105" width="170" height="52" rx="4" fill="#0f172a"/>
-                <text x="480" y="123" text-anchor="middle" font-size="9.5" fill="#fde047">• Calcul R_ctn (pont div.)</text>
-                <text x="480" y="138" text-anchor="middle" font-size="9.5" fill="#fde047">• Modèle : T = a·ln(R) + b</text>
+                <text x="480" y="123" text-anchor="middle" font-size="9.5" fill="#fde047">• Lecture ADC potentiomètre</text>
+                <text x="480" y="138" text-anchor="middle" font-size="9.5" fill="#fde047">• Acquisition DHT (1-Wire)</text>
                 <text x="480" y="152" text-anchor="middle" font-size="9.5" fill="#fde047">• Calcul niveau &amp; icône</text>
 
                 <!-- Flèche Sortie Haute : Vers Bargraph -->
@@ -627,8 +627,8 @@
         <div class="synoptique-steps-grid">
             <div class="synoptique-step-card step-1">
                 <span class="synoptique-step-num">Étape 1</span>
-                <span class="synoptique-step-title">Mesure & Calcul</span>
-                <span class="synoptique-step-desc">Lecture ADC 16 bits sur GP26, conversion en tension <em>U</em><sub>mes</sub>, déduction de <em>R</em><sub>ctn</sub> et calcul de la température réelle <em>T</em> (°C).</span>
+                <span class="synoptique-step-title">Jauge & Potentiomètre</span>
+                <span class="synoptique-step-desc">Lecture ADC 16 bits sur GP26, conversion proportionnelle en niveau de 0 à 10 et pilotage fluide du Grove LED Bar.</span>
             </div>
             <div class="synoptique-step-card step-2">
                 <span class="synoptique-step-num">Étape 2</span>
@@ -642,8 +642,8 @@
             </div>
             <div class="synoptique-step-card step-4">
                 <span class="synoptique-step-num">Étape 4</span>
-                <span class="synoptique-step-title">Station Intégrée</span>
-                <span class="synoptique-step-desc">Fusion dans une boucle de contrôle temps réel : affichage synchronisé du niveau et de l'icône selon la température mesurée.</span>
+                <span class="synoptique-step-title">Station Autonome DHT</span>
+                <span class="synoptique-step-desc">Fusion dans une boucle temps réel avec le capteur numérique DHT : affichage synchronisé du bargraph et des pictogrammes.</span>
             </div>
         </div>
     </div>
@@ -754,70 +754,87 @@ while True:
         <p><strong>Q2.</strong> Pourquoi le module Grove LED Bar nécessite-t-il un circuit spécialisé comme le MY9221 au lieu de relier directement les 10 DELs aux broches du microcontrôleur ? Justifiez en termes de <em>nombre d'entrées/sorties (GPIO)</em> et de <em>courant électrique consommé</em>.</p>
     </div>
 
-    <h3 class="section-title">1.5. Travail Demandé aux Élèves : Asservissement du Bargraph à la Température</h3>
+    <h3 class="section-title">1.5. Travail Demandé aux Élèves : Pilotage du Bargraph par Potentiomètre (Jauge Analogique)</h3>
     <p>
-        Vous devez à présent modifier le programme afin que le nombre de DELs allumées reflète fidèlement la température mesurée par la CTN. On définit le cahier des charges d'affichage suivant pour une surveillance d'ambiance :
+        Pour piloter la jauge de manière fluide et intuitive, nous utilisons un <strong>potentiomètre analogique</strong> (par exemple le module <em>Grove Rotary Angle Sensor</em> ou un potentiomètre rotatif 10 kΩ) raccordé sur une entrée du convertisseur analogique-numérique (CAN) de la Raspberry Pi Pico plutôt que la sonde thermique CTN. Cela permet de commander et tester directement le bargraph en temps réel.
+    </p>
+
+    <div class="wiring-box">
+        <strong>🔌 Tableau des connexions Potentiomètre &harr; Raspberry Pi Pico :</strong><br><br>
+        • Broche Signal (Curseur / SIG, fil jaune) : Relier à l'entrée analogique <span class="pin-tag sig">GP26 (ADC0)</span> (broche physique 31)<br>
+        • Broche Alimentation (VCC, fil rouge) : Relier au <span class="pin-tag vcc">3V3 (Pin 36)</span><br>
+        • Broche Masse (GND, fil noir) : Relier à un <span class="pin-tag gnd">GND (Pin 18, 23 ou 38)</span>
+    </div>
+
+    <p style="margin-top: 1rem;">
+        Le microcontrôleur échantillonne la tension continue du curseur via son entrée ADC (résolution 16 bits sous MicroPython avec <code>read_u16()</code>, renvoyant une valeur entière <em>N</em> comprise entre 0 et 65535 pour une tension de 0 à 3,3 V). On définit le cahier des charges d'affichage suivant pour la jauge :
     </p>
 
     <table>
         <thead>
             <tr>
-                <th>Température mesurée T (°C)</th>
+                <th>Position du potentiomètre</th>
+                <th>Valeur ADC 16 bits (<em>N</em>)</th>
+                <th>Tension approximative <em>U</em><sub>mes</sub></th>
                 <th>Nombre de DELs à allumer</th>
                 <th>Segments visuels actifs</th>
-                <th>Signification industrielle</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td><em>T</em> &lt; 16 °C</td>
+                <td>Butée minimale (gauche)</td>
+                <td><em>N</em> &lt; 2 000</td>
+                <td><em>U</em> &lt; 0,10 V</td>
                 <td><strong>0 DEL</strong></td>
-                <td>Aucune DEL</td>
-                <td>Température anormalement basse / froid</td>
+                <td>Aucune DEL (jauge éteinte)</td>
             </tr>
             <tr>
-                <td>16 °C &le; <em>T</em> &lt; 18 °C</td>
+                <td>Rotation basse (10 % à 25 %)</td>
+                <td>2 000 &le; <em>N</em> &lt; 16 000</td>
+                <td>0,10 V &le; <em>U</em> &lt; 0,80 V</td>
                 <td><strong>1 à 2 DELs</strong></td>
-                <td>Vertes (base)</td>
-                <td>Frais</td>
+                <td>Vertes (base de la jauge)</td>
             </tr>
             <tr>
-                <td>18 °C &le; <em>T</em> &le; 24 °C</td>
+                <td>Course médiane (25 % à 65 %)</td>
+                <td>16 000 &le; <em>N</em> &le; 42 000</td>
+                <td>0,80 V &le; <em>U</em> &le; 2,10 V</td>
                 <td><strong>3 à 6 DELs</strong></td>
-                <td>Vertes (zone centrale)</td>
-                <td>Zone de confort thermique optimale</td>
+                <td>Vertes (zone médiane)</td>
             </tr>
             <tr>
-                <td>24 °C &lt; <em>T</em> &le; 28 °C</td>
+                <td>Rotation haute (65 % à 90 %)</td>
+                <td>42 000 &lt; <em>N</em> &le; 60 000</td>
+                <td>2,10 V &lt; <em>U</em> &le; 3,00 V</td>
                 <td><strong>7 à 8 DELs</strong></td>
                 <td>Vert clair + Jaune/Orange</td>
-                <td>Avertissement réchauffement</td>
             </tr>
             <tr>
-                <td><em>T</em> &gt; 28 °C</td>
+                <td>Butée maximale (droite)</td>
+                <td><em>N</em> &gt; 60 000</td>
+                <td><em>U</em> &gt; 3,00 V</td>
                 <td><strong>9 à 10 DELs</strong></td>
                 <td>Orange + Rouge sommital</td>
-                <td>Surchauffe / Alerte critique</td>
             </tr>
         </tbody>
     </table>
 
     <div class="code-container">
         <div class="code-header">
-            <span>MicroPython — Exercice 1 : Fonction de Conversion Température &rarr; Niveau</span>
+            <span>MicroPython — Exercice 1 : Fonction de Conversion Valeur ADC &rarr; Niveau Bargraph</span>
             <span>À compléter par l'élève dans son script</span>
         </div>
-        <pre><code class="language-python">def temperature_vers_niveau(temp_celsius, t_min=15.0, t_max=30.0):
+        <pre><code class="language-python">def potentiometre_vers_niveau(valeur_adc, n_min=1000, n_max=64000):
     """
     TODO ÉLÈVE : Calcule le nombre de DELs à allumer (entier de 0 à 10)
-    en effectuant une interpolation linéaire entre t_min et t_max.
-    - Si temp_celsius <= t_min -> retourne 0
-    - Si temp_celsius >= t_max -> retourne 10
+    en effectuant une interpolation linéaire entre n_min et n_max.
+    - Si valeur_adc <= n_min -> retourne 0
+    - Si valeur_adc >= n_max -> retourne 10
     - Entre les deux : échelonner proportionnellement sur 10 segments !
     """
-    if temp_celsius <= t_min:
+    if valeur_adc <= n_min:
         return 0
-    elif temp_celsius >= t_max:
+    elif valeur_adc >= n_max:
         return 10
     else:
         # TODO : Formule de proportionnalité mathématique (arrondir à l'entier)
@@ -826,8 +843,9 @@ while True:
     </div>
 
     <div class="question-box">
-        <h4>Question d'Analyse :</h4>
-        <p><strong>Q3.</strong> Écrivez la relation mathématique exacte qui exprime <code>niveau</code> en fonction de <code>temp_celsius</code>, <code>t_min</code> et <code>t_max</code>. Validez votre formule en calculant à la main le niveau obtenu pour <em>T</em> = 22,5 °C avec <em>T</em><sub>min</sub> = 15 °C et <em>T</em><sub>max</sub> = 30 °C.</p>
+        <h4>Questions d'Analyse :</h4>
+        <p><strong>Q3.</strong> Écrivez la relation mathématique exacte qui exprime <code>niveau</code> en fonction de <code>valeur_adc</code>, <code>n_min</code> et <code>n_max</code>. Validez votre formule en calculant à la main le niveau obtenu pour un potentiomètre à mi-course avec <em>N</em> = 32500 (avec <em>n_min</em> = 1000 et <em>n_max</em> = 64000).</p>
+        <p><strong>Q3-bis.</strong> Rédigez le script complet <code>potentiometre_led_bar.py</code> qui acquiert en continu l'entrée analogique GP26 dans une boucle <code>while True:</code>, appelle <code>potentiometre_vers_niveau()</code> et actualise l'afficheur avec <code>barre.level(niveau)</code>. Testez la réactivité du bargraph en tournant le potentiomètre.</p>
     </div>
 
     <!-- ========================================================================= -->
@@ -1105,159 +1123,182 @@ ICONE_CHAUD = [
     <!-- PARTIE 3 : SYNTHÈSE & DÉFI COMPLET -->
     <!-- ========================================================================= -->
     <h2 class="part-title">
-        <span>Partie 3 : Défi d'Ingénierie — Station de Surveillance Thermique Autonome</span>
+        <span>Partie 3 : Défi d'Ingénierie — Station de Surveillance Thermique Autonome (Capteur DHT)</span>
         <span class="duration-badge">Durée : 1h00</span>
     </h2>
 
     <p>
-        Vous allez maintenant fusionner l'ensemble des modules dans un <strong>programme principal complet</strong> (<code>main.py</code>). La station doit fonctionner de manière 100 % autonome dès la mise sous tension de la carte :
+        Dans ce défi d'ingénierie, vous allez fusionner l'ensemble des compétences acquises pour concevoir une <strong>station de surveillance thermo-hygrométrique autonome</strong> (<code>main.py</code>).
+    </p>
+    <p>
+        Pour mesurer la température et l'humidité de l'air ambiant de manière directe et industrielle, nous proposons d'<strong>abandonner la sonde analogique CTN</strong> (dont la réponse non linéaire exige un pont diviseur et une modélisation mathématique) au profit d'un <strong>capteur numérique intégré DHT (DHT11 ou DHT22 / AM2302)</strong>.
+        Ce composant moderne intègre son propre capteur capacitif d'humidité, une thermistance étalonnée en usine et un microcontrôleur interne qui convertit directement les grandeurs physiques en signaux numériques transmis sur un unique fil de données.
+    </p>
+
+    <div class="doc-link-box">
+        📚 <strong>Documentation officielle MicroPython pour les capteurs DHT :</strong><br>
+        <a href="https://docs.micropython.org/en/latest/esp8266/tutorial/dht.html" target="_blank" rel="noopener noreferrer">https://docs.micropython.org/en/latest/esp8266/tutorial/dht.html</a><br>
+        <em>Ce tutoriel officiel détaille l'utilisation du module <code>dht</code> standard de MicroPython. Le capteur communique sur 1 fil numérique (protocole 1-wire) et fournit directement la température en °C et le taux d'humidité relative en %.</em>
+    </div>
+
+    <div class="wiring-box">
+        <strong>🔌 Connexions du Capteur DHT &harr; Raspberry Pi Pico :</strong><br><br>
+        • Broche Signal (DATA, fil jaune) : Relier à la broche numérique <span class="pin-tag sig">GP22</span> (broche physique 29)<br>
+        • Broche Alimentation (VCC, fil rouge) : Relier au <span class="pin-tag vcc">3V3 (Pin 36)</span><br>
+        • Broche Masse (GND, fil noir) : Relier à un <span class="pin-tag gnd">GND (Pin 18, 23 ou 38)</span><br>
+        <em>(Remarque : Si vous disposez d'un module Grove DHT11/DHT22, la résistance de tirage pull-up est déjà intégrée sur le circuit. Si vous utilisez un capteur DHT en composant nu, reliez une résistance de tirage de 4,7 kΩ à 10 kΩ entre DATA et 3V3).</em>
+    </div>
+
+    <p style="margin-top: 1rem;">
+        <strong>Cahier des charges de la station autonome :</strong> Dès la mise sous tension de la Raspberry Pi Pico, le système doit exécuter de manière autonome les actions suivantes :
     </p>
     <ol style="margin-left: 2rem; margin-bottom: 1rem; font-size: 0.95rem;">
-        <li>Lire la tension du pont diviseur CTN 10 kΩ sur l'entrée analogique <code>GP26 / ADC0</code>.</li>
-        <li>Calculer la résistance <em>R</em><sub>ctn</sub> et en déduire la température réelle <em>T</em> en °C à l'aide de l'équation logarithmique déterminée lors du TP précédent :<br>
-            <span style="font-family: 'Cambria Math', monospace; color: var(--primary); font-weight: bold;">T = a &times; ln(R_ctn) + b</span> (ou modèle polynomial).
+        <li>Acquérir périodiquement la température et l'humidité mesurées par le capteur <strong>DHT</strong> sur <code>GP22</code>.</li>
+        <li>Adapter la fonction de jauge pour afficher le niveau thermique sur le <strong>Grove LED Bar</strong> (de 0 à 10 DELs pour une plage typique de 16 °C à 28 °C).</li>
+        <li>Afficher sur la <strong>Matrice DEL 8×8</strong> l'icône appropriée conçue en Partie 2 :<br>
+            • Si <em>T</em> &lt; 18 °C : icône <strong>Froid</strong> (flocon)<br>
+            • Si 18 °C &le; <em>T</em> &le; 24 °C : icône <strong>Confort</strong> (smiley)<br>
+            • Si <em>T</em> &gt; 24 °C : icône <strong>Alerte / Chaud</strong> (flamme)
         </li>
-        <li>Mettre à jour le <strong>Grove LED Bar</strong> avec le nombre de DELs proportionnel à la température.</li>
-        <li>Mettre à jour la <strong>Matrice DEL 8×8</strong> avec le pictogramme d'état approprié (<em>Froid</em>, <em>Confort</em> ou <em>Alerte</em>).</li>
-        <li>Afficher simultanément les valeurs mesurées sur la console série (pour diagnostic) et cadencer la boucle à une période d'échantillonnage de <strong>1 seconde</strong>.</li>
+        <li>Afficher un rapport formaté sur la console série Thonny (température, humidité, niveau bargraph, état qualitatif).</li>
+        <li>Cadencer la boucle principale avec une temporisation d'au moins <strong>1,5 à 2 secondes</strong> (contrainte matérielle de temps d'intégration du capteur DHT).</li>
     </ol>
 
     <div class="code-container">
         <div class="code-header">
-            <span>MicroPython — station_thermique_complete.py (Squelette à Compléter)</span>
+            <span>MicroPython — station_thermique_dht.py (Squelette d'Ingénierie à Compléter)</span>
             <span>Intégration Chaîne d'Information Complète</span>
         </div>
         <pre><code class="language-python"># ==============================================================================
-# TP TERMINALE SI — STATION DE SURVEILLANCE THERMIQUE COMPLÈTE
-# Acquérir : CTN 10 kΩ (GP26) | Traiter : Pico RP2040
-# Restituer : Grove LED Bar (GP16/17) + Matrice DEL 8x8 I2C (GP8/9)
+# TP TERMINALE SI — DÉFI D'INGÉNIERIE : STATION DE SURVEILLANCE DHT AUTONOME
+# Acquérir  : Capteur numérique DHT11 ou DHT22 (sur GP22)
+# Traiter   : Raspberry Pi Pico (RP2040)
+# Restituer : Grove LED Bar (GP16/17) + Matrice DEL 8x8 I2C HT16K33 (GP8/9)
 # ==============================================================================
 import time
-import math
-from machine import Pin, ADC, I2C
-from my9221 import MY9221  # Bibliothèque du Grove LED Bar (my9221.py)
+from machine import Pin, I2C
+import dht                  # Module officiel MicroPython pour DHT11 / DHT22
+from my9221 import MY9221  # Pilote de la barre de DELs
 
 # ------------------------------------------------------------------------------
-# 1. CONSTANTES & ÉTALONNAGE CTN 10 kΩ (RELEVÉ DU TP PRÉCÉDENT)
+# 1. INITIALISATION MATÉRIELLE DES PÉRIPHÉRIQUES
 # ------------------------------------------------------------------------------
-VREF = 3.3              # Tension de référence CAN (V)
-PLEINE_ECHELLE = 65535  # Résolution 16 bits MicroPython
-R_FIXE = 10000.0        # Résistance fixe du pont diviseur (10 kΩ)
+# TODO ÉLÈVE : Instancier le capteur DHT sur la broche GP22
+# (Utiliser dht.DHT11 ou dht.DHT22 selon le composant dont dispose votre binôme)
+# capteur = dht.DHT11(Pin(22))
+capteur = None  # <-- À remplacer par votre instanciation
 
-# TODO ÉLÈVE : Insérez les coefficients a et b obtenus lors du TP modélisation
-# Modèle Logarithmique : T = a * ln(R) + b
-COEFF_A = -21.5         # <-- À REMPLACER par votre coefficient 'a'
-COEFF_B = 223.4         # <-- À REMPLACER par votre coefficient 'b'
-
-# ------------------------------------------------------------------------------
-# 2. INITIALISATION MATÉRIELLE DES PÉRIPHÉRIQUES
-# ------------------------------------------------------------------------------
-# Entrée analogique CTN
-adc_ctn = ADC(Pin(26))
-
-# Bargraph Grove LED Bar (MY9221 via la bibliothèque externe)
+# Initialisation du bargraph Grove LED Bar (MY9221)
 barre = MY9221(di=Pin(16), dcki=Pin(17), reverse=False)
 
-# Matrice DEL 8x8 (HT16K33)
+# Initialisation du bus I2C et de la Matrice DEL 8x8 (HT16K33)
 i2c = I2C(0, scl=Pin(9), sda=Pin(8), freq=100000)
-# (Insérez ici la classe GroveMatrixHT16K33 définie en Partie 2)
-matrice = GroveMatrixHT16K33(i2c, address=0x70)
+# (Recopiez ici la définition de la classe GroveMatrixHT16K33 de la Partie 2)
+# matrice = GroveMatrixHT16K33(i2c, address=0x70)
+matrice = None  # <-- À remplacer par votre instanciation
 
-# Définition des motifs d'icônes conçus par l'élève
-ICONE_FROID   = [ ... ]  # <-- Vos 8 octets
-ICONE_CONFORT = [ ... ]  # <-- Vos 8 octets
-ICONE_CHAUD   = [ ... ]  # <-- Vos 8 octets
-
-# ------------------------------------------------------------------------------
-# 3. FONCTIONS DE TRAITEMENT ET DE RESTITUTION
-# ------------------------------------------------------------------------------
-def lire_temperature():
-    """Acquiert la tension, calcule la résistance CTN et retourne la température en °C"""
-    val_brute = adc_ctn.read_u16()
-    u_mes = val_brute * (VREF / PLEINE_ECHELLE)
-    
-    if u_mes > 0.05:
-        r_ctn = R_FIXE * ((VREF / u_mes) - 1.0)
-        # TODO : Appliquer la formule de régression logarithmique
-        temperature = COEFF_A * math.log(r_ctn) + COEFF_B
-        return u_mes, r_ctn, temperature
-    else:
-        return u_mes, 0.0, -99.0
+# TODO ÉLÈVE : Définition des motifs d'icônes conçus lors de la Partie 2 (8 octets par motif)
+ICONE_FROID   = [ ... ]  # <-- Vos 8 octets pour l'état Froid
+ICONE_CONFORT = [ ... ]  # <-- Vos 8 octets pour l'état Confort
+ICONE_CHAUD   = [ ... ]  # <-- Vos 8 octets pour l'état Alerte Chaud
 
 # ------------------------------------------------------------------------------
-# 4. BOUCLE PRINCIPALE DE RÉGULATION & DE RESTITUTION VISUELLE
+# 2. FONCTIONS DE TRAITEMENT ET DE CONVERSION
 # ------------------------------------------------------------------------------
-print("=== DÉMARRAGE DE LA STATION DE SURVEILLANCE THERMIQUE ===")
+def temperature_vers_niveau(temp_celsius, t_min=16.0, t_max=28.0):
+    """
+    TODO ÉLÈVE : Calcule le nombre de DELs à allumer (entier de 0 à 10)
+    en effectuant une interpolation linéaire de temp_celsius entre t_min et t_max.
+    - Si temp_celsius <= t_min : retourne 0
+    - Si temp_celsius >= t_max : retourne 10
+    - Entre les deux : calculer le palier proportionnel (0 à 10)
+    """
+    # TODO : Implanter la structure conditionnelle et la formule de proportionnalité
+    pass
+
+def acquerir_dht():
+    """
+    TODO ÉLÈVE : Déclenche l'acquisition et lit les grandeurs physiques du DHT.
+    - Appeler la méthode .measure() sur l'objet capteur
+    - Récupérer .temperature() en °C et .humidity() en %
+    - Retourner le tuple (temp, hum)
+    Astuce : Placez l'acquisition dans un bloc 'try ... except OSError:' pour
+    éviter l'arrêt du programme en cas de trame 1-wire corrompue.
+    """
+    # TODO : Écrire la séquence d'acquisition MicroPython
+    pass
+
+# ------------------------------------------------------------------------------
+# 3. BOUCLE PRINCIPALE AUTONOME (À COMPLÉTER PAR L'ÉLÈVE)
+# ------------------------------------------------------------------------------
+print("=== DÉMARRAGE DE LA STATION THERMIQUE AUTONOME (DHT) ===")
 
 while True:
-    u_mes, r_ctn, temp = lire_temperature()
+    # TODO ÉLÈVE 1 : Appeler acquerir_dht() pour obtenir la température et l'humidité
     
-    # 1. Calcul du niveau pour la jauge LED Bar (0 à 10 segments)
-    niveau_leds = temperature_vers_niveau(temp, t_min=16.0, t_max=28.0)
-    barre.level(niveau_leds)  # Pilotage direct du niveau via my9221
+    # TODO ÉLÈVE 2 : Calculer le nombre de DELs via temperature_vers_niveau()
+    #                et actualiser la jauge avec barre.level(...)
     
-    # 2. Sélection et affichage de l'icône sur la matrice 8x8
-    if temp < 18.0:
-        matrice.show(ICONE_FROID)
-        etat = "FROID"
-    elif temp <= 24.0:
-        matrice.show(ICONE_CONFORT)
-        etat = "CONFORT"
-    else:
-        matrice.show(ICONE_CHAUD)
-        etat = "ALERTE CHAUD"
+    # TODO ÉLÈVE 3 : Déterminer l'état thermique (Froid / Confort / Chaud)
+    #                et afficher le pictogramme correspondant sur la matrice 8x8
     
-    # 3. Message de contrôle sur la console
-    print(f"U = {u_mes:.2f} V | R = {r_ctn:6.0f} Ω | T = {temp:5.1f} °C | Jauge : {niveau_leds}/10 | État : {etat}")
+    # TODO ÉLÈVE 4 : Afficher les grandeurs mesurées dans la console Thonny pour le diagnostic
     
-    # Cadencement temporel
-    time.sleep(1.0)</code></pre>
+    # TODO ÉLÈVE 5 : Temporiser la boucle (attention à la cadence minimale du DHT !)
+    time.sleep(2.0)</code></pre>
     </div>
 
     <div class="question-box">
         <h4>Validation Expérimentale &amp; Questions de Synthèse :</h4>
-        <p><strong>Q10. Test en direct :</strong> Faites chauffer la sonde CTN en la serrant fermement entre vos doigts pendant 20 secondes. Observez l'évolution conjointe du bargraph et de la matrice à DELs. Relevez la température maximale atteinte et décrivez les transitions observées.</p>
-        <p><strong>Q11. Analyse comparative des liaisons série :</strong> Complétez le tableau comparatif ci-dessous pour synthétiser les différences entre les deux technologies de communication mises en œuvre :</p>
+        <p><strong>Q10. Test en direct :</strong> Rapprochez votre main du capteur DHT ou soufflez délicatement dessus pendant une dizaine de secondes. Observez l'évolution conjointe de la température et de l'humidité sur la console série, ainsi que les transitions sur le bargraph et la matrice à DELs. Relevez les valeurs maximales atteintes et décrivez les transitions observées.</p>
+        <p><strong>Q11. Analyse comparative des protocoles de communication :</strong> Complétez le tableau comparatif ci-dessous pour synthétiser les différences technologiques entre les trois périphériques raccordés à la Pico :</p>
     </div>
 
     <table>
         <thead>
             <tr>
                 <th>Critère de comparaison</th>
+                <th>Capteur DHT (DHT11 / DHT22)</th>
                 <th>Grove LED Bar (MY9221)</th>
                 <th>Grove Red LED Matrix (HT16K33)</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td><strong>Type de bus / protocole</strong></td>
-                <td>Série synchrone propriétaire 2 fils</td>
-                <td>Bus normalisé I²C (Inter-Integrated Circuit)</td>
+                <td><strong>Type de protocole de liaison</strong></td>
+                <td>Bus numérique série propriétaire 1 fil (One-Wire)</td>
+                <td>Série synchrone propriétaire 2 fils (Clock + Data)</td>
+                <td>Bus synchrone normalisé I²C (Inter-Integrated Circuit)</td>
             </tr>
             <tr>
-                <td><strong>Nombre de lignes de signaux</strong></td>
-                <td>2 fils (DI + DCKI)</td>
-                <td>2 fils (SDA + SCL)</td>
+                <td><strong>Nombre de broches de données</strong></td>
+                <td>1 broche (DATA)</td>
+                <td>2 broches (DI + DCKI)</td>
+                <td>2 broches (SDA + SCL)</td>
             </tr>
             <tr>
-                <td><strong>Adressage des périphériques</strong></td>
+                <td><strong>Adressage matériel sur le bus</strong></td>
+                <td class="empty-cell">... (Oui / Non ? Possible sur un seul fil ?)</td>
                 <td class="empty-cell">... (Possible ou impossible ?)</td>
                 <td class="empty-cell">... (Oui / Non ? De 0x... à 0x...)</td>
             </tr>
             <tr>
-                <td><strong>Partage des broches avec d'autres capteurs</strong></td>
+                <td><strong>Partage des broches avec d'autres périphériques</strong></td>
+                <td class="empty-cell">... (Point à point ou bus partagé ?)</td>
                 <td class="empty-cell">...</td>
                 <td class="empty-cell">...</td>
             </tr>
             <tr>
-                <td><strong>Débit &amp; Synchronisation</strong></td>
-                <td>Bit-banging manuel par programme</td>
-                <td>Horloge matérielle cadencée (100 à 400 kHz)</td>
+                <td><strong>Rôle dans la chaîne d'information</strong></td>
+                <td>ACQUÉRIR (Capteur d'entrée)</td>
+                <td>RESTITUER (Afficheur quantitatif)</td>
+                <td>RESTITUER (Afficheur qualitatif / IHM)</td>
             </tr>
             <tr>
-                <td><strong>Nature de l'information restituée</strong></td>
-                <td>Quantitatif discrétisé (Niveau / Jauge 0-10)</td>
-                <td>Qualitatif &amp; Symbolique (Graphisme 64 pixels)</td>
+                <td><strong>Avantage principal par rapport à la CTN</strong></td>
+                <td class="empty-cell">... (Étalonnage usine, mesure numérique directe...)</td>
+                <td style="background:#f8fafc; color:#64748b; font-style:italic;">—</td>
+                <td style="background:#f8fafc; color:#64748b; font-style:italic;">—</td>
             </tr>
         </tbody>
     </table>
@@ -1480,12 +1521,12 @@ while True:
         <tbody>
             <tr>
                 <td><strong>1. Câblage matériel &amp; Sécurité électrique</strong></td>
-                <td>Raccordements corrects des 4 périphériques sur la Raspberry Pi Pico (CTN, LED Bar, Matrice 8×8, Joystick) sans faux contact ni court-circuit.</td>
+                <td>Raccordements corrects des périphériques sur la Raspberry Pi Pico (Potentiomètre, Capteur DHT, LED Bar, Matrice 8×8, Joystick) sans faux contact ni court-circuit.</td>
                 <td class="bareme-points">/ 3 pts</td>
             </tr>
             <tr>
                 <td><strong>2. Maîtrise du Grove LED Bar (MY9221)</strong></td>
-                <td>Compréhension de la liaison 2 fils série, test du chenillard réussi, formule d'interpolation linéaire <code>temperature_vers_niveau</code> fonctionnelle.</td>
+                <td>Compréhension de la liaison 2 fils série, test du chenillard réussi, formule d'interpolation linéaire <code>potentiometre_vers_niveau</code> fonctionnelle.</td>
                 <td class="bareme-points">/ 3 pts</td>
             </tr>
             <tr>
@@ -1495,7 +1536,7 @@ while True:
             </tr>
             <tr>
                 <td><strong>4. Station de surveillance thermique intégrée</strong></td>
-                <td>Fonctionnement autonome de la station complète, affichage simultané de la jauge et de l'icône, validation de la réactivité au contact thermique.</td>
+                <td>Fonctionnement autonome de la station complète (Capteur DHT, LED Bar, Matrice 8×8), programmation de la boucle temps réel, affichage simultané de la jauge et de l'icône, validation expérimentale.</td>
                 <td class="bareme-points">/ 3 pts</td>
             </tr>
             <tr>
