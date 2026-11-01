@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche Synthèse — Numération & Conversions des Bases 2, 16 et 10</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #2563eb;
+            --secondary: #0d9488;
+            --secondary-dark: #0f766e;
+            --accent: #d97706;
+            --accent-red: #dc2626;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+            --code-bg: #0f172a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            padding: 1.5rem 1rem;
+        }
+
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 2.2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+            border: 1px solid var(--border);
+        }
+
+        /* En-tête */
+        .sheet-header {
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            margin-bottom: 1.8rem;
+            overflow: hidden;
+        }
+
+        .header-top {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 1.1rem;
+        }
+
+        .header-top h1 {
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.3rem;
+        }
+
+        .header-top p {
+            font-size: 0.95rem;
+            opacity: 0.92;
+        }
+
+        .header-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            background: #ffffff;
+            border-top: 1px solid var(--border);
+            font-size: 0.88rem;
+        }
+
+        .header-meta div {
+            padding: 0.6rem 0.9rem;
+            border-right: 1px solid var(--border);
+        }
+
+        .header-meta div:last-child {
+            border-right: none;
+        }
+
+        /* Titres de section */
+        h2.section-title {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.35rem;
+            margin: 1.8rem 0 1rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        h3.sub-title {
+            color: var(--secondary-dark);
+            margin: 1.3rem 0 0.5rem;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.9rem 0 1.2rem;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.6rem 0.55rem;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .table-binary th {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .table-binary td.poids {
+            font-weight: bold;
+            color: #0284c7;
+            background-color: #f0f9ff;
+        }
+
+        .table-hex th {
+            background-color: #fef3c7;
+            color: #b45309;
+        }
+
+        .table-hex td.poids {
+            font-weight: bold;
+            color: #d97706;
+            background-color: #fffbeb;
+        }
+
+        /* Boîtes méthode */
+        .method-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #ffffff;
+            margin: 1.1rem 0;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+
+        .method-header {
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+            font-size: 0.98rem;
+        }
+
+        .bg-b2d { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+        .bg-d2b { background: linear-gradient(135deg, #0d9488, #0f766e); }
+        .bg-b2h { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+        .bg-h2d { background: linear-gradient(135deg, #d97706, #b45309); }
+        .bg-d2h { background: linear-gradient(135deg, #dc2626, #b91c1c); }
+
+        .method-body {
+            padding: 1.1rem;
+            font-size: 0.92rem;
+        }
+
+        .rule-badge {
+            display: inline-block;
+            background: #e2e8f0;
+            color: #1e293b;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Formules */
+        .math-box {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 0.7rem 0.9rem;
+            margin: 0.6rem 0;
+            font-family: 'Cambria Math', 'STIX Two Math', 'Times New Roman', serif;
+            font-size: 1.05rem;
+            text-align: center;
+            color: var(--primary);
+        }
+
+        .step-list {
+            margin: 0.5rem 0 0.8rem 1.3rem;
+        }
+
+        .step-list li {
+            margin-bottom: 0.35rem;
+        }
+
+        .example-box {
+            background: #fdfbf7;
+            border-left: 4px solid var(--accent);
+            padding: 0.75rem 1rem;
+            margin: 0.7rem 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.9rem;
+        }
+
+        .example-box strong {
+            color: var(--accent);
+        }
+
+        .highlight-calc {
+            font-family: monospace;
+            font-weight: bold;
+            background: #f1f5f9;
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            color: #0f172a;
+        }
+
+        /* Règle des 4 bits */
+        .nibble-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 0.8rem 0;
+        }
+
+        .nibble-card {
+            border: 2px dashed #93c5fd;
+            border-radius: 8px;
+            padding: 0.8rem;
+            background: #eff6ff;
+            text-align: center;
+        }
+
+        .nibble-card.high {
+            border-color: #fca5a5;
+            background: #fef2f2;
+        }
+
+        .nibble-card h5 {
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+        }
+
+        /* Carte routière SVG */
+        .svg-container {
+            text-align: center;
+            margin: 1.2rem 0;
+            background: #ffffff;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .header-meta { grid-template-columns: 1fr; }
+            .header-meta div { border-right: none; border-bottom: 1px solid var(--border); }
+            .nibble-box { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; border: none; padding: 0; max-width: 100%; }
+            .method-card { break-inside: avoid; margin: 0.8rem 0; }
+            .sheet-header { margin-bottom: 1rem; }
+            h2.section-title { margin-top: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- En-tête -->
+    <div class="sheet-header">
+        <div class="header-top">
+            <h1>Fiche Synthèse : Conversions entre les Bases 2, 16 et 10</h1>
+            <p>Sciences de l'Ingénieur — Méthode des Poids d'Exposants &amp; Règle des Quartets (Sans division euclidienne)</p>
+        </div>
+        <div class="header-meta">
+            <div><strong>Niveau :</strong> Terminale SI</div>
+            <div><strong>Thématique :</strong> Chaîne d'Information / Numération</div>
+            <div><strong>Outil clé :</strong> Puissances de 2 &amp; Quartets 4 bits</div>
+        </div>
+    </div>
+
+    <!-- CARTE ROUTIÈRE : LE TRIANGLE DES CONVERSIONS SANS DIVISION -->
+    <h2 class="section-title">
+        <span>🗺️ La Carte Routière des Conversions (Le Triangle d'Or)</span>
+    </h2>
+    <p>
+        En Sciences de l'Ingénieur, les divisions avec reste sont sources d'erreurs et peu intuitives pour le matériel.
+        On privilégie <strong>l'écriture des poids (puissances de 2 et 16)</strong> et le <strong>regroupement en quartets de 4 bits</strong> :
+    </p>
+
+    <div class="svg-container">
+        <svg viewBox="0 0 780 220" width="100%" height="220" xmlns="http://www.w3.org/2000/svg">
+            <!-- Nœud Base 10 -->
+            <rect x="30" y="70" width="180" height="75" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2.5"/>
+            <text x="120" y="100" text-anchor="middle" font-weight="bold" font-size="15" fill="#15803d">BASE 10 (Décimal)</text>
+            <text x="120" y="122" text-anchor="middle" font-size="12" fill="#166534">0, 1, 2, ... 9 (Grandeur réelle)</text>
+
+            <!-- Nœud Base 2 -->
+            <rect x="300" y="15" width="190" height="75" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2.5"/>
+            <text x="395" y="45" text-anchor="middle" font-weight="bold" font-size="15" fill="#1e40af">BASE 2 (Binaire)</text>
+            <text x="395" y="67" text-anchor="middle" font-size="12" fill="#1e3a8a">0 et 1 (Bits / Signaux TTL)</text>
+
+            <!-- Nœud Base 16 -->
+            <rect x="560" y="70" width="190" height="75" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+            <text x="655" y="100" text-anchor="middle" font-weight="bold" font-size="15" fill="#b45309">BASE 16 (Hexa)</text>
+            <text x="655" y="122" text-anchor="middle" font-size="12" fill="#78350f">0 à 9, A, B, C, D, E, F</text>
+
+            <!-- Flèche Base 2 -> Base 10 -->
+            <path d="M 300 70 L 210 90" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+            <text x="235" y="68" font-size="11" font-weight="bold" fill="#2563eb">Somme des poids 2ⁱ</text>
+
+            <!-- Flèche Base 10 -> Base 2 -->
+            <path d="M 210 115 L 300 85" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+            <text x="210" y="132" font-size="11" font-weight="bold" fill="#16a34a">Soustraction des poids 2ⁱ</text>
+
+            <!-- Flèche double Base 2 <-> Base 16 -->
+            <path d="M 490 55 L 560 75" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#arrow-purple)"/>
+            <path d="M 560 90 L 490 70" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#arrow-purple)"/>
+            <text x="545" y="45" text-anchor="middle" font-size="12" font-weight="bold" fill="#7c3aed">Paquets de 4 bits</text>
+            <text x="545" y="60" text-anchor="middle" font-size="10.5" fill="#6d28d9">(Quartets 8-4-2-1)</text>
+
+            <!-- Passerelle Base 10 <-> Base 16 directe -->
+            <path d="M 210 135 L 560 135" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrow-red)"/>
+            <text x="385" y="155" text-anchor="middle" font-size="11" font-weight="bold" fill="#dc2626">Passage express recommandé : Base 10 &harr; Base 2 &harr; Base 16</text>
+            <text x="385" y="172" text-anchor="middle" font-size="10.5" fill="#64748b">(ou somme pondérée des poids 16ⁱ : 4096, 256, 16, 1)</text>
+
+            <!-- Marqueurs -->
+            <defs>
+                <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 2 L 8 5 L 0 8 z" fill="#2563eb"/></marker>
+                <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 2 L 8 5 L 0 8 z" fill="#16a34a"/></marker>
+                <marker id="arrow-purple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 2 L 8 5 L 0 8 z" fill="#7c3aed"/></marker>
+                <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 2 L 8 5 L 0 8 z" fill="#dc2626"/></marker>
+            </defs>
+        </svg>
+    </div>
+
+    <!-- SECTION 1 : LES TABLEAUX DES POIDS D'EXPOSANTS -->
+    <h2 class="section-title">
+        <span>1. Les Tableaux de Référence des Poids d'Exposants</span>
+    </h2>
+
+    <h3 class="sub-title">A. Table des Poids en Base 2 (sur un octet = 8 bits, de <em>b</em><sub>7</sub> à <em>b</em><sub>0</sub>)</h3>
+    <table class="table-binary">
+        <thead>
+            <tr>
+                <th style="width: 20%;">Rang du bit (<em>i</em>)</th>
+                <th>7 (MSB)</th>
+                <th>6</th>
+                <th>5</th>
+                <th>4</th>
+                <th>3</th>
+                <th>2</th>
+                <th>1</th>
+                <th>0 (LSB)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Poids d'exposant</strong></td>
+                <td>2<sup>7</sup></td>
+                <td>2<sup>6</sup></td>
+                <td>2<sup>5</sup></td>
+                <td>2<sup>4</sup></td>
+                <td>2<sup>3</sup></td>
+                <td>2<sup>2</sup></td>
+                <td>2<sup>1</sup></td>
+                <td>2<sup>0</sup></td>
+            </tr>
+            <tr>
+                <td><strong>Valeur décimale</strong></td>
+                <td class="poids">128</td>
+                <td class="poids">64</td>
+                <td class="poids">32</td>
+                <td class="poids">16</td>
+                <td class="poids">8</td>
+                <td class="poids">4</td>
+                <td class="poids">2</td>
+                <td class="poids">1</td>
+            </tr>
+        </tbody>
+    </table>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: -0.5rem; margin-bottom: 1rem;">
+        <em>Au-delà de 8 bits : 2<sup>8</sup> = 256, 2<sup>9</sup> = 512, 2<sup>10</sup> = 1024 (10 bits), 2<sup>11</sup> = 2048, 2<sup>12</sup> = 4096 (12 bits), 2<sup>16</sup> = 65536 (16 bits).</em>
+    </p>
+
+    <h3 class="sub-title">B. Table des Poids en Base 16 (Hexadécimal)</h3>
+    <table class="table-hex">
+        <thead>
+            <tr>
+                <th style="width: 20%;">Rang (<em>i</em>)</th>
+                <th>3</th>
+                <th>2</th>
+                <th>1</th>
+                <th>0</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Poids d'exposant</strong></td>
+                <td>16<sup>3</sup></td>
+                <td>16<sup>2</sup></td>
+                <td>16<sup>1</sup></td>
+                <td>16<sup>0</sup></td>
+            </tr>
+            <tr>
+                <td><strong>Valeur décimale</strong></td>
+                <td class="poids">4096</td>
+                <td class="poids">256</td>
+                <td class="poids">16</td>
+                <td class="poids">1</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="background: #fefce8; border: 1px solid #fef08a; padding: 0.7rem 1rem; border-radius: 6px; font-size: 0.88rem; margin-bottom: 1.5rem;">
+        <strong>Les 16 symboles de la base 16 :</strong>
+        <code>0, 1, 2, 3, 4, 5, 6, 7, 8, 9</code> puis 
+        <strong style="color: #b45309;">A = 10</strong>, 
+        <strong style="color: #b45309;">B = 11</strong>, 
+        <strong style="color: #b45309;">C = 12</strong>, 
+        <strong style="color: #b45309;">D = 13</strong>, 
+        <strong style="color: #b45309;">E = 14</strong>, 
+        <strong style="color: #b45309;">F = 15</strong>.
+    </div>
+
+    <!-- SECTION 2 : FICHES MÉTHODES DÉTAILLÉES SANS DIVISION -->
+    <h2 class="section-title">
+        <span>2. Les Fiches Méthodes Pas à Pas (Sans division)</span>
+    </h2>
+
+    <!-- MÉTHODE 1 : BINAIRE -> DÉCIMAL -->
+    <div class="method-card">
+        <div class="method-header bg-b2d">
+            <span>Méthode 1 : Binaire (Base 2) &rarr; Décimal (Base 10)</span>
+            <span class="rule-badge">Somme directe des poids</span>
+        </div>
+        <div class="method-body">
+            <p><strong>Principe :</strong> On additionne simplement la valeur des poids correspondant aux bits à <code>1</code>.</p>
+            <div class="math-box">
+                <em>N</em><sub>10</sub> = &sum; (<em>b<sub>i</sub></em> &times; 2<sup><em>i</em></sup>) = (<em>b</em><sub>7</sub> &times; 128) + (<em>b</em><sub>6</sub> &times; 64) + &hellip; + (<em>b</em><sub>0</sub> &times; 1)
+            </div>
+            <div class="example-box">
+                <strong>Exemple : Convertir (10100110)₂ en décimal</strong>
+                <table class="table-binary" style="margin: 0.5rem 0;">
+                    <tr><th>Poids</th><td>128</td><td>64</td><td>32</td><td>16</td><td>8</td><td>4</td><td>2</td><td>1</td></tr>
+                    <tr><th>Bit</th><td><strong>1</strong></td><td>0</td><td><strong>1</strong></td><td>0</td><td>0</td><td><strong>1</strong></td><td><strong>1</strong></td><td>0</td></tr>
+                </table>
+                <p>Calcul : <span class="highlight-calc">128 + 32 + 4 + 2 = 166₁₀</span>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MÉTHODE 2 : DÉCIMAL -> BINAIRE (PAR SOUSTRACTION DES POIDS) -->
+    <div class="method-card">
+        <div class="method-header bg-d2b">
+            <span>Méthode 2 : Décimal (Base 10) &rarr; Binaire (Base 2) — SANS DIVISION</span>
+            <span class="rule-badge">Méthode de la pesée (Soustraction des poids)</span>
+        </div>
+        <div class="method-body">
+            <p><strong>Principe :</strong> On parcourt les poids de 2 du plus grand au plus petit (128 &rarr; 64 &rarr; 32 &rarr; 16 &rarr; 8 &rarr; 4 &rarr; 2 &rarr; 1).
+            Si le poids "rentre" dans le reste, on met un <code>1</code> et on le soustrait ; sinon on met un <code>0</code>.</p>
+
+            <div class="example-box">
+                <strong>Exemple : Convertir 85₁₀ en binaire sur 8 bits</strong>
+                <ol class="step-list">
+                    <li>Poids 128 : Est-ce que 128 &le; 85 ? &rarr; <strong>Non</strong> &rarr; bit = <code>0</code> (reste = 85)</li>
+                    <li>Poids 64 : Est-ce que 64 &le; 85 ? &rarr; <strong>Oui</strong> &rarr; bit = <code>1</code> &rarr; reste = 85 &minus; 64 = <strong>21</strong></li>
+                    <li>Poids 32 : Est-ce que 32 &le; 21 ? &rarr; <strong>Non</strong> &rarr; bit = <code>0</code> (reste = 21)</li>
+                    <li>Poids 16 : Est-ce que 16 &le; 21 ? &rarr; <strong>Oui</strong> &rarr; bit = <code>1</code> &rarr; reste = 21 &minus; 16 = <strong>5</strong></li>
+                    <li>Poids 8 : Est-ce que 8 &le; 5 ? &rarr; <strong>Non</strong> &rarr; bit = <code>0</code> (reste = 5)</li>
+                    <li>Poids 4 : Est-ce que 4 &le; 5 ? &rarr; <strong>Oui</strong> &rarr; bit = <code>1</code> &rarr; reste = 5 &minus; 4 = <strong>1</strong></li>
+                    <li>Poids 2 : Est-ce que 2 &le; 1 ? &rarr; <strong>Non</strong> &rarr; bit = <code>0</code> (reste = 1)</li>
+                    <li>Poids 1 : Est-ce que 1 &le; 1 ? &rarr; <strong>Oui</strong> &rarr; bit = <code>1</code> &rarr; reste = 1 &minus; 1 = <strong>0</strong></li>
+                </ol>
+                <p>Résultat immédiat : <span class="highlight-calc">85₁₀ = 01010101₂</span> (zéro division posée !).</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MÉTHODE 3 : BINAIRE <-> HEXADÉCIMAL (LA RÈGLE DES 4 BITS) -->
+    <div class="method-card">
+        <div class="method-header bg-b2h">
+            <span>Méthode 3 : Binaire (Base 2) &harr; Hexadécimal (Base 16)</span>
+            <span class="rule-badge">La règle d'or des quartets (4 bits = 1 symbole hexa)</span>
+        </div>
+        <div class="method-body">
+            <p><strong>Principe :</strong> Comme 16 = 2<sup>4</sup>, chaque caractère hexadécimal correspond exactement à un groupe de <strong>4 bits</strong> (un <em>quartet</em>) dont les poids sont <strong>8 - 4 - 2 - 1</strong>.</p>
+            
+            <div class="nibble-box">
+                <div class="nibble-card high">
+                    <h5>Quartet Fort (MSB)</h5>
+                    <p style="font-family: monospace; font-size: 1.1rem; font-weight: bold;">[b7 b6 b5 b4]</p>
+                    <p style="font-size: 0.85rem; color: #dc2626;">Poids : 8 &bull; 4 &bull; 2 &bull; 1</p>
+                </div>
+                <div class="nibble-card">
+                    <h5>Quartet Faible (LSB)</h5>
+                    <p style="font-family: monospace; font-size: 1.1rem; font-weight: bold;">[b3 b2 b1 b0]</p>
+                    <p style="font-size: 0.85rem; color: #2563eb;">Poids : 8 &bull; 4 &bull; 2 &bull; 1</p>
+                </div>
+            </div>
+
+            <div class="example-box">
+                <strong>Exemple 1 : Binaire &rarr; Hexadécimal pour (11010110)₂</strong>
+                <ul class="step-list">
+                    <li>Quartet gauche : <code>1101₂</code> &rarr; 8 + 4 + 0 + 1 = 13 &rarr; Lettre <strong>D</strong></li>
+                    <li>Quartet droite : <code>0110₂</code> &rarr; 0 + 4 + 2 + 0 = 6 &rarr; Chiffre <strong>6</strong></li>
+                    <li>Résultat : <span class="highlight-calc">11010110₂ = 0xD6</span>.</li>
+                </ul>
+            </div>
+
+            <div class="example-box">
+                <strong>Exemple 2 : Hexadécimal &rarr; Binaire pour 0x3F</strong>
+                <ul class="step-list">
+                    <li>Symbole <code>3</code> &rarr; 2 + 1 &rarr; <code>0011₂</code></li>
+                    <li>Symbole <code>F</code> (15) &rarr; 8 + 4 + 2 + 1 &rarr; <code>1111₂</code></li>
+                    <li>Résultat assemblé : <span class="highlight-calc">0x3F = 0011 1111₂</span>.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- MÉTHODE 4 : HEXADÉCIMAL -> DÉCIMAL -->
+    <div class="method-card">
+        <div class="method-header bg-h2d">
+            <span>Méthode 4 : Hexadécimal (Base 16) &rarr; Décimal (Base 10)</span>
+            <span class="rule-badge">Multiplication par les poids 16ⁱ</span>
+        </div>
+        <div class="method-body">
+            <p><strong>Principe :</strong> On multiplie chaque chiffre hexadécimal par le poids correspondant (1, 16, 256, 4096) et on additionne.</p>
+            <div class="math-box">
+                <em>N</em><sub>10</sub> = (Chiffre<sub>2</sub> &times; 256) + (Chiffre<sub>1</sub> &times; 16) + (Chiffre<sub>0</sub> &times; 1)
+            </div>
+            <div class="example-box">
+                <strong>Exemple 1 (2 chiffres) : Convertir 0x7E en décimal</strong>
+                <p><code>7E₁₆ = (7 &times; 16) + (14 &times; 1) = 112 + 14 = <strong>126₁₀</strong></code>.</p>
+            </div>
+            <div class="example-box">
+                <strong>Exemple 2 (3 chiffres) : Convertir 0x2A5 en décimal</strong>
+                <p><code>2A5₁₆ = (2 &times; 256) + (10 &times; 16) + (5 &times; 1) = 512 + 160 + 5 = <strong>677₁₀</strong></code>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MÉTHODE 5 : DÉCIMAL -> HEXADÉCIMAL SANS DIVISION -->
+    <div class="method-card">
+        <div class="method-header bg-d2h">
+            <span>Méthode 5 : Décimal (Base 10) &rarr; Hexadécimal (Base 16) — SANS DIVISION</span>
+            <span class="rule-badge">La Passerelle Royale via le Binaire</span>
+        </div>
+        <div class="method-body">
+            <p><strong>Principe (Le raccourci des ingénieurs) :</strong> Poser des divisions euclidiennes par 16 est fastidieux. La technique la plus rapide et infaillible consiste à passer par le binaire :</p>
+            <div style="text-align: center; margin: 0.6rem 0; font-weight: bold; font-size: 1.05rem; color: #b91c1c;">
+                Décimal &nbsp;&rarr;&nbsp; Binaire (Soustraction des poids 2ⁱ) &nbsp;&rarr;&nbsp; Hexa (Quartets de 4 bits)
+            </div>
+            <div class="example-box">
+                <strong>Exemple : Convertir 214₁₀ en hexadécimal sans division</strong>
+                <ol class="step-list">
+                    <li>On convertit 214 en binaire avec les poids :<br>
+                        214 &minus; 128 = 86 (bit 7 = 1)<br>
+                        86 &minus; 64 = 22 (bit 6 = 1)<br>
+                        22 &minus; 16 = 6 (bit 4 = 1, bit 5 = 0)<br>
+                        6 &minus; 4 = 2 (bit 2 = 1, bit 3 = 0)<br>
+                        2 &minus; 2 = 0 (bit 1 = 1, bit 0 = 0)<br>
+                        &rarr; Binaire obtenu : <code>1101 0110₂</code>.
+                    </li>
+                    <li>On coupe en 2 quartets :<br>
+                        <code>1101₂ = 8 + 4 + 1 = 13 &rarr; <strong>D</strong></code><br>
+                        <code>0110₂ = 4 + 2 = 6 &rarr; <strong>6</strong></code>
+                    </li>
+                    <li>Résultat final : <span class="highlight-calc">214₁₀ = 0xD6</span>. (Rapide, sans poser aucune division !).</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 3 : TABLEAU RÉCAPITULATIF 0 À 15 -->
+    <h2 class="section-title">
+        <span>3. Tableau Aide-Mémoire Indispensable (Valeurs 0 à 15 / Quartet de 4 bits)</span>
+    </h2>
+    <p>Ce tableau est à connaître ou à savoir reconstruire instantanément avec la règle des poids <strong>8 - 4 - 2 - 1</strong> :</p>
+
+    <table style="margin-top: 0.8rem;">
+        <thead>
+            <tr style="background: #f1f5f9;">
+                <th>Décimal</th>
+                <th>Binaire (8 4 2 1)</th>
+                <th>Hexa</th>
+                <th>Décimal</th>
+                <th>Binaire (8 4 2 1)</th>
+                <th>Hexa</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>0</strong></td><td style="font-family: monospace;">0 0 0 0</td><td><strong>0</strong></td>
+                <td><strong>8</strong></td><td style="font-family: monospace;">1 0 0 0</td><td><strong>8</strong></td>
+            </tr>
+            <tr>
+                <td><strong>1</strong></td><td style="font-family: monospace;">0 0 0 1</td><td><strong>1</strong></td>
+                <td><strong>9</strong></td><td style="font-family: monospace;">1 0 0 1</td><td><strong>9</strong></td>
+            </tr>
+            <tr>
+                <td><strong>2</strong></td><td style="font-family: monospace;">0 0 1 0</td><td><strong>2</strong></td>
+                <td><strong>10</strong></td><td style="font-family: monospace;">1 0 1 0</td><td style="color:#b45309; font-weight:bold;">A</td>
+            </tr>
+            <tr>
+                <td><strong>3</strong></td><td style="font-family: monospace;">0 0 1 1</td><td><strong>3</strong></td>
+                <td><strong>11</strong></td><td style="font-family: monospace;">1 0 1 1</td><td style="color:#b45309; font-weight:bold;">B</td>
+            </tr>
+            <tr>
+                <td><strong>4</strong></td><td style="font-family: monospace;">0 1 0 0</td><td><strong>4</strong></td>
+                <td><strong>12</strong></td><td style="font-family: monospace;">1 1 0 0</td><td style="color:#b45309; font-weight:bold;">C</td>
+            </tr>
+            <tr>
+                <td><strong>5</strong></td><td style="font-family: monospace;">0 1 0 1</td><td><strong>5</strong></td>
+                <td><strong>13</strong></td><td style="font-family: monospace;">1 1 0 1</td><td style="color:#b45309; font-weight:bold;">D</td>
+            </tr>
+            <tr>
+                <td><strong>6</strong></td><td style="font-family: monospace;">0 1 1 0</td><td><strong>6</strong></td>
+                <td><strong>14</strong></td><td style="font-family: monospace;">1 1 1 0</td><td style="color:#b45309; font-weight:bold;">E</td>
+            </tr>
+            <tr>
+                <td><strong>7</strong></td><td style="font-family: monospace;">0 1 1 1</td><td><strong>7</strong></td>
+                <td><strong>15</strong></td><td style="font-family: monospace;">1 1 1 1</td><td style="color:#b45309; font-weight:bold;">F</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>
