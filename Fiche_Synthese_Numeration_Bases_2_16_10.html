@@ -652,6 +652,37 @@
         </tbody>
     </table>
 
+    <!-- SECTION 4 : APPLICATION EN SI : LA MATRICE 8x8 -->
+    <h2 class="section-title">
+        <span>4. Application Phare en SI : L'Image Matricielle 8×8 (Bitmap)</span>
+    </h2>
+    <p>
+        Sur un afficheur matriciel à 64 DELs (8 &times; 8) ou pour stocker une icône graphique, chaque ligne horizontale correspond exactement à <strong>un octet (8 bits)</strong> :
+    </p>
+    <ul class="step-list">
+        <li>Chaque DEL correspond à un bit : <code>1 = Allumée</code>, <code>0 = Éteinte</code>.</li>
+        <li>Les colonnes sont pondérées de gauche à droite par les puissances de 2 : <strong>128, 64, 32, 16, 8, 4, 2, 1</strong>.</li>
+        <li>Une image complète est représentée par une <strong>liste de 8 octets</strong> (64 bits).</li>
+    </ul>
+
+    <div style="background: #eff6ff; border-left: 5px solid #2563eb; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; margin: 0.9rem 0; font-size: 0.9rem;">
+        🎨 <strong>Générateur interactif en ligne :</strong> Dessinez vos figures et exportez directement vos tableaux d'octets avec l'outil :<br>
+        <a href="https://xantorohara.github.io/led-matrix-editor/" target="_blank" rel="noopener noreferrer" style="color: #1d4ed8; font-weight: bold; text-decoration: underline;">
+            https://xantorohara.github.io/led-matrix-editor/ (LED Matrix Editor)
+        </a>
+    </div>
+
+    <div class="example-box">
+        <strong>Exemple : Les 3 Notations strictement équivalentes pour une ligne (Ex: Ligne d'un Smiley ou d'un Cadenas)</strong>
+        <p style="margin-top: 0.4rem;">Si l'on allume les 4 DELs centrales : <code>. . [X] [X] [X] [X] . .</code></p>
+        <ul class="step-list">
+            <li><strong>En Binaire :</strong> <code>0b00111100</code> (Très visuel : les 1 indiquent directement où la lumière s'allume).</li>
+            <li><strong>En Hexadécimal :</strong> <code>0x3C</code> (Format compact universel : <code>0011₂ = 3</code> et <code>1100₂ = C</code>).</li>
+            <li><strong>En Décimal :</strong> <code>60</code> (Somme des puissances : 32 + 16 + 8 + 4 = 60).</li>
+        </ul>
+        <p style="font-weight: bold; color: var(--primary);">En MicroPython : <code>0b00111100 == 0x3C == 60</code> renvoie <code>True</code> !</p>
+    </div>
+
 </div>
 
 </body>

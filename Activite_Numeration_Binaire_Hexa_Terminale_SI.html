@@ -721,79 +721,113 @@
         </div>
     </div>
 
-    <!-- DÉFI 3 -->
+        <!-- DÉFI 3 -->
     <div class="challenge-card">
         <div class="challenge-header">
             <div class="challenge-title">
-                <span>💡 Défi 3 : L'Afficheur 7 Segments & la Commande d'Alerte Visuelle</span>
+                <span>💡 Défi 3 : La Matrice à DELs 8×8 &amp; Décodage de Pictogramme (LED Matrix Editor)</span>
             </div>
-            <span class="challenge-badge">Niveau : Intermédiaire (Hexa & Masques) • 5 pts</span>
+            <span class="challenge-badge">Niveau : Intermédiaire (Binaire, Hexa &amp; Décimal) • 5 pts</span>
         </div>
         <div class="challenge-body">
             <p>
-                Le pupitre de secours du rover possède un afficheur à 7 segments à LED (avec point décimal <em>dp</em>).
-                Chaque segment de l'afficheur est relié à une sortie d'un registre matériel 8 bits, où un niveau binaire <code>1</code> allume le segment et <code>0</code> l'éteint.
+                Le pupitre de bord du rover possède une <strong>matrice de 64 DELs (8 &times; 8)</strong> servant à afficher des pictogrammes d'état.
+                Chaque ligne de la matrice correspond exactement à <strong>un octet (8 bits)</strong>, où chaque bit contrôle l'état d'une DEL :
+                <code>1 = DEL allumée</code> et <code>0 = DEL éteinte</code>.
+                Les 8 colonnes correspondent aux puissances de 2 : de gauche (poids fort <em>b</em><sub>7</sub> = 128) à droite (poids faible <em>b</em><sub>0</sub> = 1).
             </p>
 
+            <div class="doc-link-box" style="background: #eff6ff; border-left: 5px solid #2563eb; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; margin: 0.9rem 0;">
+                🎨 <strong>Outil en ligne indispensable :</strong> Ouvrez l'éditeur graphique de matrice dans votre navigateur :<br>
+                <a href="https://xantorohara.github.io/led-matrix-editor/" target="_blank" rel="noopener noreferrer" style="color: #1d4ed8; font-weight: bold; text-decoration: underline;">
+                    https://xantorohara.github.io/led-matrix-editor/ (LED Matrix Editor)
+                </a>
+            </div>
+
+            <!-- Schéma SVG de la matrice 8x8 du Cadenas -->
             <div class="svg-container">
-                <svg viewBox="0 0 520 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Schéma Afficheur 7 segments -->
-                    <g transform="translate(60, 20)">
-                        <!-- Segment a -->
-                        <rect x="30" y="10" width="60" height="12" rx="4" fill="#ef4444"/>
-                        <text x="60" y="20" fill="white" font-weight="bold" font-size="10" text-anchor="middle">a</text>
-                        <!-- Segment b -->
-                        <rect x="90" y="22" width="12" height="50" rx="4" fill="#e2e8f0"/>
-                        <text x="96" y="52" fill="#64748b" font-weight="bold" font-size="10" text-anchor="middle">b</text>
-                        <!-- Segment c -->
-                        <rect x="90" y="74" width="12" height="50" rx="4" fill="#e2e8f0"/>
-                        <text x="96" y="104" fill="#64748b" font-weight="bold" font-size="10" text-anchor="middle">c</text>
-                        <!-- Segment d -->
-                        <rect x="30" y="124" width="60" height="12" rx="4" fill="#ef4444"/>
-                        <text x="60" y="134" fill="white" font-weight="bold" font-size="10" text-anchor="middle">d</text>
-                        <!-- Segment e -->
-                        <rect x="18" y="74" width="12" height="50" rx="4" fill="#ef4444"/>
-                        <text x="24" y="104" fill="white" font-weight="bold" font-size="10" text-anchor="middle">e</text>
-                        <!-- Segment f -->
-                        <rect x="18" y="22" width="12" height="50" rx="4" fill="#ef4444"/>
-                        <text x="24" y="52" fill="white" font-weight="bold" font-size="10" text-anchor="middle">f</text>
-                        <!-- Segment g -->
-                        <rect x="30" y="67" width="60" height="12" rx="4" fill="#ef4444"/>
-                        <text x="60" y="77" fill="white" font-weight="bold" font-size="10" text-anchor="middle">g</text>
-                        <!-- Point décimal dp -->
-                        <circle cx="115" cy="130" r="7" fill="#e2e8f0"/>
-                        <text x="115" y="134" fill="#64748b" font-size="9" text-anchor="middle">dp</text>
+                <svg viewBox="0 0 740 260" width="100%" height="260" xmlns="http://www.w3.org/2000/svg">
+                    <text x="180" y="20" text-anchor="middle" font-weight="bold" font-size="13" fill="#1e3a8a">Grille 8×8 du Motif Reçu (Cadenas Verrouillé)</text>
+                    <text x="560" y="20" text-anchor="middle" font-weight="bold" font-size="13" fill="#0d9488">Correspondance des 8 Octets en Mémoire</text>
+
+                    <!-- Poids des colonnes en haut de la matrice -->
+                    <g transform="translate(40, 35)">
+                        <text x="12" y="-5" font-family="monospace" font-size="9" fill="#64748b" text-anchor="middle">128</text>
+                        <text x="36" y="-5" font-family="monospace" font-size="9" fill="#64748b" text-anchor="middle">64</text>
+                        <text x="60" y="-5" font-family="monospace" font-size="9" fill="#64748b" text-anchor="middle">32</text>
+                        <text x="84" y="-5" font-family="monospace" font-size="9" fill="#64748b" text-anchor="middle">16</text>
+                        <text x="108" y="-5" font-family="monospace" font-size="9" fill="#64748b" text-anchor="middle">8</text>
+                        <text x="132" y="-5" font-family="monospace" font-size="9" fill="#64748b" text-anchor="middle">4</text>
+                        <text x="156" y="-5" font-family="monospace" font-size="9" fill="#64748b" text-anchor="middle">2</text>
+                        <text x="180" y="-5" font-family="monospace" font-size="9" fill="#64748b" text-anchor="middle">1</text>
+                        
+                        <!-- Lignes de la matrice -->
+                        <!-- L0: 00111100 (60, 0x3C) -->
+                        <circle cx="12" cy="12" r="9" fill="#e2e8f0"/><circle cx="36" cy="12" r="9" fill="#e2e8f0"/>
+                        <circle cx="60" cy="12" r="9" fill="#ef4444"/><circle cx="84" cy="12" r="9" fill="#ef4444"/>
+                        <circle cx="108" cy="12" r="9" fill="#ef4444"/><circle cx="132" cy="12" r="9" fill="#ef4444"/>
+                        <circle cx="156" cy="12" r="9" fill="#e2e8f0"/><circle cx="180" cy="12" r="9" fill="#e2e8f0"/>
+
+                        <!-- L1: 01000010 (66, 0x42) -->
+                        <circle cx="12" cy="36" r="9" fill="#e2e8f0"/><circle cx="36" cy="36" r="9" fill="#ef4444"/>
+                        <circle cx="60" cy="36" r="9" fill="#e2e8f0"/><circle cx="84" cy="36" r="9" fill="#e2e8f0"/>
+                        <circle cx="108" cy="36" r="9" fill="#e2e8f0"/><circle cx="132" cy="36" r="9" fill="#e2e8f0"/>
+                        <circle cx="156" cy="36" r="9" fill="#ef4444"/><circle cx="180" cy="36" r="9" fill="#e2e8f0"/>
+
+                        <!-- L2: 01000010 (66, 0x42) -> Anse fermée -->
+                        <circle cx="12" cy="60" r="9" fill="#e2e8f0"/><circle cx="36" cy="60" r="9" fill="#ef4444"/>
+                        <circle cx="60" cy="60" r="9" fill="#e2e8f0"/><circle cx="84" cy="60" r="9" fill="#e2e8f0"/>
+                        <circle cx="108" cy="60" r="9" fill="#e2e8f0"/><circle cx="132" cy="60" r="9" fill="#e2e8f0"/>
+                        <circle cx="156" cy="60" r="9" fill="#ef4444"/><circle cx="180" cy="60" r="9" fill="#e2e8f0"/>
+
+                        <!-- L3: 11111111 (255, 0xFF) -->
+                        <circle cx="12" cy="84" r="9" fill="#ef4444"/><circle cx="36" cy="84" r="9" fill="#ef4444"/>
+                        <circle cx="60" cy="84" r="9" fill="#ef4444"/><circle cx="84" cy="84" r="9" fill="#ef4444"/>
+                        <circle cx="108" cy="84" r="9" fill="#ef4444"/><circle cx="132" cy="84" r="9" fill="#ef4444"/>
+                        <circle cx="156" cy="84" r="9" fill="#ef4444"/><circle cx="180" cy="84" r="9" fill="#ef4444"/>
+
+                        <!-- L4: 11100111 (231, 0xE7) -->
+                        <circle cx="12" cy="108" r="9" fill="#ef4444"/><circle cx="36" cy="108" r="9" fill="#ef4444"/>
+                        <circle cx="60" cy="108" r="9" fill="#ef4444"/><circle cx="84" cy="108" r="9" fill="#e2e8f0"/>
+                        <circle cx="108" cy="108" r="9" fill="#e2e8f0"/><circle cx="132" cy="108" r="9" fill="#ef4444"/>
+                        <circle cx="156" cy="108" r="9" fill="#ef4444"/><circle cx="180" cy="108" r="9" fill="#ef4444"/>
+
+                        <!-- L5: 11100111 (231, 0xE7) -->
+                        <circle cx="12" cy="132" r="9" fill="#ef4444"/><circle cx="36" cy="132" r="9" fill="#ef4444"/>
+                        <circle cx="60" cy="132" r="9" fill="#ef4444"/><circle cx="84" cy="132" r="9" fill="#e2e8f0"/>
+                        <circle cx="108" cy="132" r="9" fill="#e2e8f0"/><circle cx="132" cy="132" r="9" fill="#ef4444"/>
+                        <circle cx="156" cy="132" r="9" fill="#ef4444"/><circle cx="180" cy="132" r="9" fill="#ef4444"/>
+
+                        <!-- L6: 11111111 (255, 0xFF) -->
+                        <circle cx="12" cy="156" r="9" fill="#ef4444"/><circle cx="36" cy="156" r="9" fill="#ef4444"/>
+                        <circle cx="60" cy="156" r="9" fill="#ef4444"/><circle cx="84" cy="156" r="9" fill="#ef4444"/>
+                        <circle cx="108" cy="156" r="9" fill="#ef4444"/><circle cx="132" cy="156" r="9" fill="#ef4444"/>
+                        <circle cx="156" cy="156" r="9" fill="#ef4444"/><circle cx="180" cy="156" r="9" fill="#ef4444"/>
+
+                        <!-- L7: 00000000 (0, 0x00) -->
+                        <circle cx="12" cy="180" r="9" fill="#e2e8f0"/><circle cx="36" cy="180" r="9" fill="#e2e8f0"/>
+                        <circle cx="60" cy="180" r="9" fill="#e2e8f0"/><circle cx="84" cy="180" r="9" fill="#e2e8f0"/>
+                        <circle cx="108" cy="180" r="9" fill="#e2e8f0"/><circle cx="132" cy="180" r="9" fill="#e2e8f0"/>
+                        <circle cx="156" cy="180" r="9" fill="#e2e8f0"/><circle cx="180" cy="180" r="9" fill="#e2e8f0"/>
                     </g>
 
-                    <!-- Table correspondance registre -->
-                    <g transform="translate(230, 30)">
-                        <text x="0" y="0" font-family="sans-serif" font-weight="bold" font-size="12" fill="#1e3a8a">Organisation de l'octet de commande :</text>
-                        
-                        <!-- Header bits -->
-                        <rect x="0" y="15" width="260" height="30" fill="#f1f5f9" stroke="#cbd5e1"/>
-                        <text x="16" y="34" font-family="monospace" font-size="11">b7</text>
-                        <text x="48" y="34" font-family="monospace" font-size="11">b6</text>
-                        <text x="80" y="34" font-family="monospace" font-size="11">b5</text>
-                        <text x="112" y="34" font-family="monospace" font-size="11">b4</text>
-                        <text x="144" y="34" font-family="monospace" font-size="11">b3</text>
-                        <text x="176" y="34" font-family="monospace" font-size="11">b2</text>
-                        <text x="208" y="34" font-family="monospace" font-size="11">b1</text>
-                        <text x="240" y="34" font-family="monospace" font-size="11">b0</text>
+                    <!-- Table des octets correspondants -->
+                    <g transform="translate(370, 30)">
+                        <rect x="0" y="0" width="350" height="200" fill="#f8fafc" stroke="#cbd5e1" rx="6"/>
+                        <text x="15" y="25" font-family="sans-serif" font-weight="bold" font-size="11" fill="#1e3a8a">Ligne</text>
+                        <text x="65" y="25" font-family="sans-serif" font-weight="bold" font-size="11" fill="#1e3a8a">Binaire (0b)</text>
+                        <text x="180" y="25" font-family="sans-serif" font-weight="bold" font-size="11" fill="#1e3a8a">Hexa (0x)</text>
+                        <text x="270" y="25" font-family="sans-serif" font-weight="bold" font-size="11" fill="#1e3a8a">Décimal</text>
+                        <line x1="10" y1="32" x2="340" y2="32" stroke="#cbd5e1"/>
 
-                        <!-- Segments names -->
-                        <rect x="0" y="45" width="260" height="30" fill="#ffffff" stroke="#cbd5e1"/>
-                        <text x="16" y="65" font-family="sans-serif" font-weight="bold" font-size="11" fill="#64748b">dp</text>
-                        <text x="48" y="65" font-family="sans-serif" font-weight="bold" font-size="11" fill="#dc2626">g</text>
-                        <text x="80" y="65" font-family="sans-serif" font-weight="bold" font-size="11" fill="#dc2626">f</text>
-                        <text x="112" y="65" font-family="sans-serif" font-weight="bold" font-size="11" fill="#dc2626">e</text>
-                        <text x="144" y="65" font-family="sans-serif" font-weight="bold" font-size="11" fill="#dc2626">d</text>
-                        <text x="176" y="65" font-family="sans-serif" font-weight="bold" font-size="11" fill="#64748b">c</text>
-                        <text x="208" y="65" font-family="sans-serif" font-weight="bold" font-size="11" fill="#64748b">b</text>
-                        <text x="240" y="65" font-family="sans-serif" font-weight="bold" font-size="11" fill="#dc2626">a</text>
-
-                        <!-- Code d'état pour la lettre 'E' -->
-                        <text x="0" y="105" font-family="sans-serif" font-size="11" fill="#334155">Symbole affiché : <strong>Lettre 'E' (Erreur)</strong></text>
-                        <text x="0" y="125" font-family="sans-serif" font-size="11" fill="#334155">Segments allumés : <strong>a, d, e, f, g</strong> (dp, b, c éteints)</text>
+                        <text x="20" y="48" font-family="monospace" font-size="10.5">L0</text><text x="65" y="48" font-family="monospace" font-size="10.5">0b00111100</text><text x="195" y="48" font-family="monospace" font-size="10.5">0x3C</text><text x="285" y="48" font-family="monospace" font-size="10.5">60</text>
+                        <text x="20" y="68" font-family="monospace" font-size="10.5">L1</text><text x="65" y="68" font-family="monospace" font-size="10.5">0b01000010</text><text x="195" y="68" font-family="monospace" font-size="10.5">0x42</text><text x="285" y="68" font-family="monospace" font-size="10.5">66</text>
+                        <text x="20" y="88" font-family="monospace" font-size="10.5" fill="#dc2626" font-weight="bold">L2*</text><text x="65" y="88" font-family="monospace" font-size="10.5" fill="#dc2626" font-weight="bold">0b01000010</text><text x="195" y="88" font-family="monospace" font-size="10.5" fill="#dc2626" font-weight="bold">0x42</text><text x="285" y="88" font-family="monospace" font-size="10.5" fill="#dc2626" font-weight="bold">66</text>
+                        <text x="20" y="108" font-family="monospace" font-size="10.5">L3</text><text x="65" y="108" font-family="monospace" font-size="10.5">0b11111111</text><text x="195" y="108" font-family="monospace" font-size="10.5">0xFF</text><text x="285" y="108" font-family="monospace" font-size="10.5">255</text>
+                        <text x="20" y="128" font-family="monospace" font-size="10.5">L4</text><text x="65" y="128" font-family="monospace" font-size="10.5">0b11100111</text><text x="195" y="128" font-family="monospace" font-size="10.5">0xE7</text><text x="285" y="128" font-family="monospace" font-size="10.5">231</text>
+                        <text x="20" y="148" font-family="monospace" font-size="10.5">L5</text><text x="65" y="148" font-family="monospace" font-size="10.5">0b11100111</text><text x="195" y="148" font-family="monospace" font-size="10.5">0xE7</text><text x="285" y="148" font-family="monospace" font-size="10.5">231</text>
+                        <text x="20" y="168" font-family="monospace" font-size="10.5">L6</text><text x="65" y="168" font-family="monospace" font-size="10.5">0b11111111</text><text x="195" y="168" font-family="monospace" font-size="10.5">0xFF</text><text x="285" y="168" font-family="monospace" font-size="10.5">255</text>
+                        <text x="20" y="188" font-family="monospace" font-size="10.5">L7</text><text x="65" y="188" font-family="monospace" font-size="10.5">0b00000000</text><text x="195" y="188" font-family="monospace" font-size="10.5">0x00</text><text x="285" y="188" font-family="monospace" font-size="10.5">0</text>
                     </g>
                 </svg>
             </div>
@@ -801,19 +835,35 @@
             <div class="question-box">
                 <h4>Questions Défi 3 :</h4>
                 <ol style="padding-left: 1.2rem;">
-                    <li><strong>Q3.1 :</strong> En analysant le schéma ci-dessus pour la lettre <strong>'E'</strong>, écrivez l'octet de commande binaire complet <code>[b<sub>7</sub> b<sub>6</sub> b<sub>5</sub> b<sub>4</sub> b<sub>3</sub> b<sub>2</sub> b<sub>1</sub> b<sub>0</sub>]</code> qui doit être envoyé à l'afficheur.</li>
-                    <li><strong>Q3.2 :</strong> Convertissez cet octet binaire en <strong>Hexadécimal</strong> (sur 2 caractères, ex: <code>0x..</code>).</li>
-                    <li><strong>Q3.3 :</strong> Calculez la valeur décimale de ce mot de commande. Ce nombre entier est votre <code>CLE_3</code>.</li>
+                    <li><strong>Q3.1 :</strong> Le centre spatial reçoit ce motif sous forme d'une liste de 8 entiers décimaux : <code>[60, 66, 66, 255, 231, 231, 255, 0]</code>.
+                        En observant le schéma et en décomposant les valeurs décimales en puissances de 2, identifiez quel symbole d'alerte s'affiche sur la matrice (c'est un <strong>cadenas fermé</strong> !).
+                    </li>
+                    <li><strong>Q3.2 :</strong> Rendez-vous sur <a href="https://xantorohara.github.io/led-matrix-editor/" target="_blank" rel="noopener noreferrer">LED Matrix Editor</a>. Dessinez ce cadenas fermé en cliquant sur les cases. Vérifiez que les octets générés correspondent bien à la liste hexadécimale <code>[0x3C, 0x42, 0x42, 0xFF, 0xE7, 0xE7, 0xFF, 0x00]</code>.</li>
+                    <li><strong>Q3.3 :</strong> Pour déverrouiller le rover, l'anse du cadenas doit s'ouvrir à gauche : dans la ligne 2 (<code>L2</code>), éteignez la DEL de la colonne 6 (poids 64). La DEL de droite (colonne 1, poids 2) reste allumée.<br>
+                        Donnez la nouvelle valeur de la ligne 2 :
+                        <ul>
+                            <li>En notation <strong>Binaire</strong> sur 8 bits (<code>0b...</code>).</li>
+                            <li>En notation <strong>Hexadécimale</strong> (<code>0x...</code>).</li>
+                            <li>En notation <strong>Décimale</strong>.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Q3.4 (Code Secret n°3) :</strong> Calculez la <strong>somme décimale totale des 8 nouveaux octets</strong> du cadenas ouvert :<br>
+                        <code>SOMME = 60 + 66 + (nouvelle_ligne_2) + 255 + 231 + 231 + 255 + 0</code>.<br>
+                        Ce nombre est votre <code>CLE_3</code> (vous pouvez aussi entrer directement la nouvelle valeur de la ligne 2).</li>
                 </ol>
             </div>
 
             <details class="solution-box">
-                <summary>💡 Indice & Vérification (Défi 3)</summary>
+                <summary>💡 Indice &amp; Vérification (Défi 3)</summary>
                 <div class="solution-content">
-                    <p>Bits associés : <em>dp</em> = 0, <em>g</em> = 1, <em>f</em> = 1, <em>e</em> = 1, <em>d</em> = 1, <em>c</em> = 0, <em>b</em> = 0, <em>a</em> = 1.</p>
-                    <p>Mot binaire : <code>0111 1001₂</code>.</p>
-                    <p>Quartets : <code>0111₂ = 7₁₆</code> et <code>1001₂ = 9₁₆</code> &rarr; Mot hexadécimal = <code>0x79</code>.</p>
-                    <p>Valeur décimale : 7 &times; 16 + 9 = 112 + 9 = <strong>121</strong> &implies; <strong>CLE_3 = 121</strong>.</p>
+                    <p>Pour ouvrir l'anse à gauche sur la ligne 2, seul le bit <em>b</em><sub>1</sub> reste à 1 :</p>
+                    <ul>
+                        <li>Binaire : <code>0b00000010</code>.</li>
+                        <li>Hexadécimal : <code>0x02</code>.</li>
+                        <li>Décimal : <code>2</code>.</li>
+                    </ul>
+                    <p>Somme des 8 octets du cadenas ouvert : 60 + 66 + 2 + 255 + 231 + 231 + 255 + 0 = <strong>1100</strong>.</p>
+                    <p>&rarr; <strong>CLE_3 = 1100</strong> (ou <code>2</code>).</p>
                 </div>
             </details>
         </div>
@@ -954,8 +1004,8 @@
                 <input type="text" id="input-cle2" placeholder="Ex: 206">
             </div>
             <div class="check-item">
-                <label for="input-cle3">CLE_3 (Défi 3 - Afficheur 'E')</label>
-                <input type="text" id="input-cle3" placeholder="Ex: 121">
+                <label for="input-cle3">CLE_3 (Défi 3 - Cadenas Matrice 8x8)</label>
+                <input type="text" id="input-cle3" placeholder="Ex: 1100 ou 2">
             </div>
             <div class="check-item">
                 <label for="input-cle4">CLE_FINALE (Défi 4 - Trame 0xCAFE)</label>
@@ -1126,7 +1176,8 @@
                 <!-- Stop -->
                 <rect x="600" y="0" width="110" height="55" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
                 <text x="655" y="24" text-anchor="middle" font-weight="bold" font-size="11" fill="#1e40af">Délimiteur STOP</text>
-                <text x="655" y="42" text-anchor="middle" font-family="monospace" font-size="10" fill="#1e3a8a">0x0D ()</text>
+                <text x="655" y="42" text-anchor="middle" font-family="monospace" font-size="10" fill="#1e3a8a">0x0D (
+)</text>
             </g>
         </svg>
     </div>
@@ -1355,6 +1406,162 @@
         </div>
     </div>
 
+    <!-- ===================================================================== -->
+    <!-- SECTION PRATIQUE : IMPLANTATION MICROPYTHON SUR RASPBERRY PI PICO      -->
+    <!-- ===================================================================== -->
+    <h2 class="part-title">
+        <span>Partie Pratique — Pilotage de la Matrice 8×8 en MicroPython (Pico RP2040)</span>
+        <span class="duration-badge">💻 Labo MicroPython</span>
+    </h2>
+
+    <div class="concept-box">
+        <h4>🎯 Objectif : Expérimenter les 3 Notations en MicroPython</h4>
+        <p>
+            En Python, un nombre entier est stocké de manière unique sous forme binaire dans les registres du microcontrôleur.
+            Pour le programmeur, écrire un octet en <strong>Binaire (<code>0b...</code>)</strong>, en <strong>Hexadécimal (<code>0x...</code>)</strong> ou en <strong>Décimal</strong> produit exactement le même résultat en mémoire !
+        </p>
+        <p style="margin-top: 0.4rem; font-family: monospace; font-weight: bold; color: var(--primary);">
+            &gt;&gt;&gt; 0b00111100 == 0x3C == 60<br>
+            True
+        </p>
+    </div>
+
+    <div class="info-bridge">
+        <h4>🔌 Câblage Matériel : Matrice LED 8×8 Grove (I²C) &harr; Raspberry Pi Pico</h4>
+        <ul style="margin-left: 1.2rem;">
+            <li><strong>Broche SCL (Horloge I2C) :</strong> Connectée sur <strong>GP9</strong> (Broche physique 12 du Pico).</li>
+            <li><strong>Broche SDA (Données I2C) :</strong> Connectée sur <strong>GP8</strong> (Broche physique 11 du Pico).</li>
+            <li><strong>Alimentation VCC :</strong> <strong>3V3(OUT)</strong> (Broche 36) ou <strong>VBUS 5V</strong> (Broche 40).</li>
+            <li><strong>Masse GND :</strong> Broche 38 ou 3.</li>
+            <li><em>Adresse I²C par défaut :</em> <code>0x70</code> (ou <code>0x77</code> selon le composant Holtek HT16K33).</li>
+        </ul>
+    </div>
+
+    <div style="background: #0f172a; border-radius: 8px; overflow: hidden; margin: 1.2rem 0; border: 1px solid #334155;">
+        <div style="background: #1e293b; color: #94a3b8; padding: 0.5rem 1rem; font-family: monospace; font-size: 0.85rem; display: flex; justify-content: space-between;">
+            <span>MicroPython — main_matrice_8x8_pico.py (Prêt à l'emploi)</span>
+            <span>Pilote I2C HT16K33 + Émulateur Console</span>
+        </div>
+        <pre style="padding: 1rem; color: #f1f5f9; font-family: 'Consolas', monospace; font-size: 0.85rem; line-height: 1.5; overflow-x: auto;"><code># ==============================================================================
+# TP TERMINALE SI - PILOTAGE DE MATRICE DEL 8x8 EN MICROPYTHON (PICO RP2040)
+# Decodage des notations Binaire (0b), Hexadecimale (0x) et Decimale
+# ==============================================================================
+from machine import Pin, I2C
+import time
+
+class Matrice8x8_HT16K33:
+    """Pilote I2C pour matrice de DEL 8x8 Grove (controleur HT16K33)"""
+    def __init__(self, bus_i2c, address=0x70):
+        self.i2c = bus_i2c
+        self.address = address
+        # Sequence d'initialisation du HT16K33
+        self.i2c.writeto(self.address, bytes([0x21]))  # Allume oscillateur
+        self.i2c.writeto(self.address, bytes([0x81]))  # Affichage ON
+        self.set_brightness(7)                         # Luminosite moyenne (0-15)
+        self.clear()
+
+    def set_brightness(self, level):
+        """Regle la luminosite de 0 a 15"""
+        level = max(0, min(15, int(level)))
+        self.i2c.writeto(self.address, bytes([0xE0 | level]))
+
+    def clear(self):
+        """Eteint toutes les DELs"""
+        self.show([0] * 8)
+
+    def show(self, motif_8_lignes):
+        """Envoie 8 octets a la matrice via I2C (1 ligne = 1 octet)"""
+        buffer = bytearray(17)
+        buffer[0] = 0x00
+        for i in range(8):
+            buffer[1 + 2 * i] = motif_8_lignes[i]
+            buffer[2 + 2 * i] = 0x00
+        self.i2c.writeto(self.address, buffer)
+
+def afficher_console(motif_8_lignes, titre="AFFICHAGE VIRTUEL"):
+    """Simulateur de matrice dans la console Thonny (REPL)"""
+    print(f"\n=== {titre} ===")
+    for i, val in enumerate(motif_8_lignes):
+        binaire = f"{val:08b}"
+        pixels = "".join(["██" if b == '1' else "··" for b in binaire])
+        print(f"L{i}: 0b{binaire} | 0x{val:02X} | {val:3d} | [{pixels}]")
+
+# ------------------------------------------------------------------------------
+# 1. INITIALISATION I2C
+# ------------------------------------------------------------------------------
+try:
+    i2c = I2C(0, scl=Pin(9), sda=Pin(8), freq=100000)
+    matrice = Matrice8x8_HT16K33(i2c, address=0x70)
+    matrice_presente = True
+    print("Matrice 8x8 physique connectee sur I2C0 (0x70) !")
+except Exception:
+    matrice_presente = False
+    print("Matrice physique non detectee : Mode simulateur console Thonny actif.")
+
+# ------------------------------------------------------------------------------
+# 2. DEFINITION DES MOTIFS DANS LES 3 NOTATIONS (STRICTEMENT IDENTIQUES)
+# ------------------------------------------------------------------------------
+
+# Notation 1 : BINAIRE (0b...) - Dessin direct (1 = allume, 0 = eteint)
+CADENAS_BINAIRE = [
+    0b00111100,  # L0 : haut anse
+    0b01000010,  # L1 : cotes anse
+    0b01000010,  # L2 : anse fermee
+    0b11111111,  # L3 : haut corps
+    0b11100111,  # L4 : serrure
+    0b11100111,  # L5 : serrure
+    0b11111111,  # L6 : bas corps
+    0b00000000   # L7 : eteint
+]
+
+# Notation 2 : HEXADECIMALE (0x...) - Format standard compact
+CADENAS_HEXA = [
+    0x3C, 0x42, 0x42, 0xFF, 0xE7, 0xE7, 0xFF, 0x00
+]
+
+# Notation 3 : DECIMALE - Poids bruts
+CADENAS_DECIMAL = [
+    60, 66, 66, 255, 231, 231, 255, 0
+]
+
+# Motif Deverrouille : Anse ouverte a gauche (L2 : 0b00000010 = 0x02 = 2)
+CADENAS_OUVERT = [
+    0x3C, 0x42, 0x02, 0xFF, 0xE7, 0xE7, 0xFF, 0x00
+]
+
+# ------------------------------------------------------------------------------
+# 3. DEMONSTRATION D'EQUIVALENCE STRICTE
+# ------------------------------------------------------------------------------
+print("\n--- VERIFICATION EN MEMOIRE ---")
+print("CADENAS_BIN == CADENAS_HEX == CADENAS_DEC ?", CADENAS_BINAIRE == CADENAS_HEXA == CADENAS_DECIMAL)
+
+# ------------------------------------------------------------------------------
+# 4. ANIMATION DEVERROUILLAGE (FERME -> OUVERT)
+# ------------------------------------------------------------------------------
+for tour in range(2):
+    afficher_console(CADENAS_BINAIRE, "CADENAS FERME (VERROU)")
+    if matrice_presente:
+        matrice.show(CADENAS_BINAIRE)
+    time.sleep(1.5)
+
+    afficher_console(CADENAS_OUVERT, "CADENAS OUVERT (DEVERROUILLE)")
+    if matrice_presente:
+        matrice.show(CADENAS_OUVERT)
+    time.sleep(1.5)
+
+print("\nProgramme termine !")</code></pre>
+    </div>
+
+    <div class="question-box">
+        <h4>🎯 Défi Créatif pour les Élèves :</h4>
+        <ol style="padding-left: 1.2rem;">
+            <li>Ouvrez <a href="https://xantorohara.github.io/led-matrix-editor/" target="_blank" rel="noopener noreferrer">LED Matrix Editor</a>.</li>
+            <li>Dessinez un pictogramme original de votre choix : vos initiales, un cœur, un smiley, ou le logo "SI".</li>
+            <li>Exportez le tableau de 8 octets en hexadécimal et en binaire.</li>
+            <li>Collez votre motif dans le script MicroPython sur Thonny et vérifiez son affichage dans la console et sur la matrice physique !</li>
+        </ol>
+    </div>
+
     <!-- Grille d'évaluation sommative -->
     <h2 class="part-title">Grille d'Évaluation des Compétences SI (20 Points)</h2>
     <table>
@@ -1375,7 +1582,7 @@
             </tr>
             <tr>
                 <td><strong>Défi 3 & 4 (Escape Game)</strong></td>
-                <td>Codage d'afficheur 7 segments, déchiffrage d'une trame série (MSB/LSB), table ASCII et intégrité. (CO2.1)</td>
+                <td>Matrice 8x8 & LED Matrix Editor (binaire/hexa/décimal), déchiffrage de trame série (MSB/LSB) et table ASCII. (CO2.1)</td>
                 <td>6 pts</td>
                 <td>...... / 6</td>
             </tr>
@@ -1419,7 +1626,7 @@
 
         if (c1 !== '107') erreurs.push("Clé 1 incorrecte (Vérifiez la division du mot d'état par 2).");
         if (c2 !== '206' && c2 !== '206.25') erreurs.push("Clé 2 incorrecte (Vérifiez le calcul de tension CAN et la pression en bars).");
-        if (c3 !== '121') erreurs.push("Clé 3 incorrecte (Vérifiez la conversion binaire/décimale des segments a, d, e, f, g allumés).");
+        if (c3 !== '1100' && c3 !== '2') erreurs.push("Clé 3 incorrecte (Vérifiez la somme des octets du cadenas ouvert 8x8 : 1100, ou la valeur de la ligne 2 : 2).");
         if (c4 !== '51966') erreurs.push("Clé Finale incorrecte (Vérifiez la conversion décimale du mot hexadécimal 0xCAFE).");
 
         if (erreurs.length === 0) {
