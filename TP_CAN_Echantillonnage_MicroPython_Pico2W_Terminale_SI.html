@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP Terminale SI — Chaîne d'Acquisition : Conversion Analogique-Numérique (CAN), Échantillonnage & MicroPython sur Raspberry Pi Pico 2 W</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #2563eb;
+            --secondary: #0d9488;
+            --secondary-dark: #0f766e;
+            --accent: #d97706;
+            --accent-red: #dc2626;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+            --code-bg: #0f172a;
+            --code-text: #f1f5f9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.55;
+            padding: 1.5rem 1rem;
+        }
+
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 2.2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
+        }
+
+        /* En-tête officiel */
+        .tp-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            margin-bottom: 1.8rem;
+            overflow: hidden;
+        }
+
+        .header-cell {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid var(--primary);
+            background: #ffffff;
+            font-size: 0.9rem;
+        }
+
+        .header-cell:nth-child(odd) {
+            border-right: 1px solid var(--primary);
+        }
+
+        .header-cell.full {
+            grid-column: span 2;
+        }
+
+        .header-cell.title {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 1.15rem 1rem;
+        }
+
+        .header-cell.title h1 {
+            font-size: 1.32rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.35rem;
+        }
+
+        .header-cell.title p {
+            font-size: 0.92rem;
+            opacity: 0.92;
+        }
+
+        /* Encadré Compétences */
+        .competences-box {
+            background-color: #eff6ff;
+            border-left: 5px solid var(--primary-light);
+            padding: 1.1rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1.8rem;
+        }
+
+        .competences-box h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        .competences-box ul {
+            padding-left: 1.4rem;
+            font-size: 0.92rem;
+        }
+
+        .competences-box li {
+            margin-bottom: 0.35rem;
+        }
+
+        /* Titres de parties */
+        h2.part-title {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.35rem;
+            margin: 2.2rem 0 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 1.25rem;
+        }
+
+        .duration-badge {
+            background: var(--primary-light);
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.2rem 0.65rem;
+            border-radius: 20px;
+        }
+
+        h3.section-title {
+            color: var(--secondary-dark);
+            margin: 1.3rem 0 0.6rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* Boîte Documentation & Lien Datasheet */
+        .doc-link-box {
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            border-left: 5px solid #16a34a;
+            padding: 0.95rem 1.15rem;
+            margin: 1.2rem 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.93rem;
+        }
+
+        .doc-link-box a {
+            color: #15803d;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        /* Boîte Théorie / Concept */
+        .concept-box {
+            background-color: #fefce8;
+            border: 1px solid #fef08a;
+            border-left: 5px solid #eab308;
+            padding: 1rem 1.15rem;
+            margin: 1.1rem 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.92rem;
+        }
+
+        .concept-box h4 {
+            color: #a16207;
+            margin-bottom: 0.45rem;
+            font-size: 1rem;
+        }
+
+        .concept-box ul {
+            padding-left: 1.3rem;
+            margin: 0.4rem 0;
+        }
+
+        .concept-box li {
+            margin-bottom: 0.35rem;
+        }
+
+        /* Formules */
+        .math-box {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 0.7rem 1rem;
+            margin: 0.6rem 0;
+            text-align: center;
+            font-family: 'Cambria Math', 'STIX Two Math', 'Times New Roman', serif;
+            font-size: 1.05rem;
+            color: var(--primary);
+        }
+
+        /* Cartes d'exercices / manipulations */
+        .challenge-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #ffffff;
+            margin: 1.4rem 0;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+
+        .challenge-header {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            color: white;
+            padding: 0.8rem 1.1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.98rem;
+        }
+
+        .challenge-header.secondary {
+            background: linear-gradient(135deg, #0f766e, #0d9488);
+        }
+
+        .challenge-header.accent {
+            background: linear-gradient(135deg, #b45309, #d97706);
+        }
+
+        .challenge-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.82rem;
+            font-weight: bold;
+        }
+
+        .challenge-body {
+            padding: 1.2rem;
+            font-size: 0.92rem;
+        }
+
+        /* Questions Box */
+        .question-box {
+            background-color: #fdf4ff;
+            border-left: 4px solid #c084fc;
+            padding: 0.95rem 1.15rem;
+            margin: 1.15rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .question-box h4 {
+            color: #7e22ce;
+            margin-bottom: 0.4rem;
+            font-size: 0.98rem;
+        }
+
+        .question-box ol {
+            padding-left: 1.3rem;
+        }
+
+        .question-box li {
+            margin-bottom: 0.45rem;
+        }
+
+        /* Blocs de Code */
+        .code-container {
+            margin: 1.1rem 0 1.4rem;
+            border-radius: 6px;
+            overflow: hidden;
+            background: var(--code-bg);
+            border: 1px solid #1e293b;
+        }
+
+        .code-header {
+            background: #1e293b;
+            color: #94a3b8;
+            padding: 0.45rem 1rem;
+            font-size: 0.82rem;
+            font-family: monospace;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+        }
+
+        pre {
+            padding: 1rem;
+            overflow-x: auto;
+            color: var(--code-text);
+            font-family: 'Fira Code', 'Consolas', 'Courier New', monospace;
+            font-size: 0.86rem;
+            line-height: 1.48;
+        }
+
+        .code-comment { color: #94a3b8; }
+        .code-keyword { color: #f472b6; font-weight: bold; }
+        .code-func { color: #38bdf8; }
+        .code-num { color: #fbbf24; }
+        .code-str { color: #4ade80; }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0 1.4rem;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.65rem 0.6rem;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        td.empty-cell {
+            background-color: #ffffff;
+            color: var(--text-muted);
+            font-style: italic;
+            height: 2.2rem;
+        }
+
+        /* Zone de réponse manuscrite élève */
+        .answer-zone {
+            border: 1.5px dashed #94a3b8;
+            border-radius: 6px;
+            background: #f8fafc;
+            padding: 0.8rem 1rem;
+            margin: 0.6rem 0 0.9rem;
+            font-style: italic;
+            color: #64748b;
+            font-size: 0.88rem;
+            min-height: 2.5rem;
+        }
+
+        /* Synoptiques et conteneurs SVG */
+        .svg-container {
+            text-align: center;
+            margin: 1.2rem 0;
+            background: #ffffff;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .svg-container svg {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .tp-header { grid-template-columns: 1fr; }
+            .header-cell:nth-child(odd) { border-right: none; }
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; border: none; padding: 0; max-width: 100%; }
+            .challenge-card { break-inside: avoid; margin: 1rem 0; }
+            .tp-header { margin-bottom: 1rem; }
+            h2.part-title { margin-top: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- EN-TÊTE DU TP -->
+    <div class="tp-header">
+        <div class="header-cell title full">
+            <h1>Chaîne d'Acquisition : CAN, Échantillonnage &amp; MicroPython</h1>
+            <p>Étude Pratique du Convertisseur Analogique-Numérique du Raspberry Pi Pico 2 W (RP2350)</p>
+        </div>
+        <div class="header-cell">
+            <strong>Niveau :</strong> Terminale SI &bull; Spécialité Sciences de l'Ingénieur
+        </div>
+        <div class="header-cell">
+            <strong>Durée conseillée :</strong> ⏱️ 1h30 (TP / Démarche d'Ingénierie)
+        </div>
+        <div class="header-cell">
+            <strong>Nom(s) &amp; Prénom(s) :</strong> ............................................................................
+        </div>
+        <div class="header-cell">
+            <strong>Date :</strong> ................................................
+        </div>
+        <div class="header-cell">
+            <strong>Équipe / Poste :</strong> ....................................................................................
+        </div>
+        <div class="header-cell">
+            <strong>Évaluation / Validation :</strong> ..... / 20
+        </div>
+    </div>
+
+    <!-- OBJECTIFS & COMPÉTENCES -->
+    <div class="competences-box">
+        <h3>🎯 Compétences du Programme de Terminale SI visées</h3>
+        <ul>
+            <li><strong>Compétence B1 / CO1.2 :</strong> Caractériser les grandeurs physiques et numériques au sein d'une chaîne d'acquisition : déterminer la résolution, la sensibilité et le quantum d'un Convertisseur Analogique-Numérique (CAN).</li>
+            <li><strong>Compétence B2 / CO2.1 :</strong> Analyser et quantifier les écarts entre grandeur continue d'entrée et grandeur discrétisée en sortie : identifier l'influence de la résolution en bits et l'erreur de quantification.</li>
+            <li><strong>Compétence C1 / CO3.1 :</strong> Mettre en œuvre un algorithme en MicroPython pour cadencer l'acquisition périodique d'un signal, observer l'influence de la période d'échantillonnage <em>T<sub>e</sub></em> et vérifier la condition de Shannon-Nyquist.</li>
+        </ul>
+    </div>
+
+    <!-- SYNOPTIQUE DE LA CHAÎNE D'ACQUISITION -->
+    <h3 class="section-title">
+        <span>📡 Synoptique de la Chaîne d'Acquisition Analogique-Numérique</span>
+    </h3>
+    <p>
+        Dans un système mécatronique autonome (rover, drone, robotique médicale), les capteurs physiques délivrent une grandeur continue (tension analogique <em>U</em>(<em>t</em>) en Volts).
+        Le microcontrôleur doit impérativement discrétiser ce signal dans le temps (<strong>échantillonnage</strong>) et en amplitude (<strong>quantification</strong>) pour pouvoir le traiter sous forme binaire :
+    </p>
+
+    <div class="svg-container">
+        <svg viewBox="0 0 940 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 2 L 8 5 L 0 8 z" fill="#2563eb"/>
+                </marker>
+            </defs>
+
+            <!-- Étape 1 : Signal Continu -->
+            <rect x="20" y="40" width="160" height="90" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+            <text x="100" y="68" text-anchor="middle" font-weight="bold" font-size="12" fill="#1e40af">Capteur / Potentiomètre</text>
+            <text x="100" y="88" text-anchor="middle" font-size="11" fill="#1e3a8a">Signal Continu U(t)</text>
+            <text x="100" y="108" text-anchor="middle" font-size="10.5" fill="#64748b">Plage : 0 V à 3,3 V</text>
+
+            <line x1="180" y1="85" x2="230" y2="85" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+            <text x="205" y="75" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">U(t)</text>
+
+            <!-- Étape 2 : Échantillonneur-Bloqueur -->
+            <rect x="230" y="40" width="190" height="90" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+            <text x="325" y="68" text-anchor="middle" font-weight="bold" font-size="12" fill="#15803d">Échantillonneur-Bloqueur</text>
+            <text x="325" y="88" text-anchor="middle" font-size="11" fill="#166534">Discrétisation Temporelle</text>
+            <text x="325" y="108" text-anchor="middle" font-size="10.5" fill="#166534">Cadence Te (Fe = 1 / Te)</text>
+
+            <line x1="420" y1="85" x2="470" y2="85" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+            <text x="445" y="75" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">U[k]</text>
+
+            <!-- Étape 3 : CAN Matériel RP2350 (12 bits) -->
+            <rect x="470" y="40" width="210" height="90" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+            <text x="575" y="68" text-anchor="middle" font-weight="bold" font-size="12" fill="#b45309">CAN Matériel (SAR ADC)</text>
+            <text x="575" y="88" text-anchor="middle" font-size="11" fill="#78350f">Résolution native : 12 bits</text>
+            <text x="575" y="108" text-anchor="middle" font-size="10.5" fill="#78350f">2¹² = 4096 niveaux (0 à 4095)</text>
+
+            <line x1="680" y1="85" x2="730" y2="85" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+            <text x="705" y="75" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">N_12</text>
+
+            <!-- Étape 4 : MicroPython read_u16 (16 bits) -->
+            <rect x="730" y="40" width="190" height="90" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+            <text x="825" y="68" text-anchor="middle" font-weight="bold" font-size="12" fill="#6d28d9">Couche MicroPython</text>
+            <text x="825" y="88" text-anchor="middle" font-size="11" fill="#7c3aed">read_u16() (Normalisé 16 bits)</text>
+            <text x="825" y="108" text-anchor="middle" font-size="10.5" fill="#7c3aed">0 à 65535 (Décalage de 4 bits)</text>
+        </svg>
+    </div>
+
+    <!-- DOCUMENTATION RESSOURCE -->
+    <div class="doc-link-box">
+        📄 <strong>Document Constructeur de Référence (Datasheet Officiel) :</strong><br>
+        Téléchargez ou ouvrez directement la documentation technique du <em>Raspberry Pi Pico 2 W</em> via le lien officiel ci-dessous :<br>
+        <a href="https://pip-assets.raspberrypi.com/categories/1088-raspberry-pi-pico-2-w/documents/RP-008304-DS-3-pico-2-w-datasheet.pdf" target="_blank" rel="noopener noreferrer">
+            🔗 https://pip-assets.raspberrypi.com/categories/1088-raspberry-pi-pico-2-w/documents/RP-008304-DS-3-pico-2-w-datasheet.pdf (Document RP-008304-DS)
+        </a>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- PARTIE 1 : INVESTIGATION TECHNIQUE DU DATASHEET PICO 2 W (20 MIN)     -->
+    <!-- ===================================================================== -->
+    <h2 class="part-title">
+        <span>Partie 1 — Investigation Technique du Datasheet Officiel (Pico 2 W)</span>
+        <span class="duration-badge">⏱️ 20 min</span>
+    </h2>
+
+    <div class="challenge-card">
+        <div class="challenge-header">
+            <span>Recherche Documentaire &amp; Caractéristiques du Convertisseur du RP2350</span>
+            <span class="challenge-badge">4 points</span>
+        </div>
+        <div class="challenge-body">
+            <p>
+                Ouvrez le document technique officiel <strong>RP-008304-DS</strong> dans votre navigateur.
+                À l'aide de la table des matières ou de l'outil de recherche (<code>Ctrl + F</code>, mots-clés : <em>ADC</em>, <em>Analog</em>, <em>Pinout</em>, <em>VREF</em>, <em>AGND</em>), répondez avec rigueur aux questions suivantes :
+            </p>
+
+            <div class="question-box">
+                <h4>Questions d'Investigation :</h4>
+                <ol>
+                    <li>
+                        <strong>Architecture et Résolution native :</strong>
+                        Quel est le type d'architecture du convertisseur analogique-numérique intégré au microcontrôleur RP2350 (ex: <em>SAR</em>, <em>Flash</em>, <em>Sigma-Delta</em>) ?
+                        Quelle est sa <strong>résolution native matérielle</strong> en nombre de bits (<em>n</em>) ? En déduire le nombre total de combinaisons discrètes (2<sup><em>n</em></sup>).
+                        <div class="answer-zone">Type d'architecture : ................................... &bull; Résolution native n = .......... bits &bull; Nombre de niveaux : 2<sup>n</sup> = ..........</div>
+                    </li>
+                    <li>
+                        <strong>Brochage physique des entrées analogiques externes :</strong>
+                        À partir du schéma de brochage (<em>Pinout</em>) du Pico 2 W, identifiez le numéro de broche physique (<em>Pin number</em>, de 1 à 40) associé à chacune des entrées analogiques utilisateur :
+                        <ul style="margin: 0.3rem 0 0.4rem 1.2rem;">
+                            <li>Entrée <code>ADC0</code> (GPIO 26) : Broche physique n° ..........</li>
+                            <li>Entrée <code>ADC1</code> (GPIO 27) : Broche physique n° ..........</li>
+                            <li>Entrée <code>ADC2</code> (GPIO 28) : Broche physique n° ..........</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Rôle de la broche AGND (Broche physique n°33) :</strong>
+                        Le Raspberry Pi Pico 2 W dispose de plusieurs broches de masse numérique (GND) et d'une broche spécifique <strong>AGND</strong> (<em>Analog Ground</em>).
+                        En consultant la section dédiée au routage analogique, expliquez pourquoi le constructeur a isolé la masse analogique sur la broche 33 avec son propre plan de masse sous les GPIO 26 à 29.
+                        <div class="answer-zone">Rôle technique de AGND : ..........................................................................................................................................................</div>
+                    </li>
+                    <li>
+                        <strong>Tension de Référence (ADC_VREF - Broche physique n°35) :</strong>
+                        Quelle est la valeur nominale de la tension de référence <em>V</em><sub>ref</sub> sur le Pico 2 W ? Comment cette broche est-elle raccordée par défaut sur la carte (filtre R-C, rail 3V3) ? Que peut faire l'ingénieur sur cette broche s'il recherche une précision de mesure maximale ?
+                        <div class="answer-zone">Valeur nominale V_ref = ................. V &bull; Amélioration possible : ...........................................................................................</div>
+                    </li>
+                    <li>
+                        <strong>Canaux internes ADC3 et ADC4 :</strong>
+                        Le convertisseur du RP2350 compte 5 canaux au total (ADC0 à ADC4). À quoi sont affectés les canaux internes <strong>ADC3</strong> et <strong>ADC4</strong> non reliés aux broches extérieures ?
+                        <div class="answer-zone">Canal ADC3 : ........................................................... &bull; Canal ADC4 : ...........................................................</div>
+                    </li>
+                    <li>
+                        <strong>Cadence d'échantillonnage maximale :</strong>
+                        Quelle est la fréquence maximale d'échantillonnage matériel (exprimée en <em>kilo-samples per second</em>, <strong>ksps</strong>) du convertisseur du RP2350 ? En déduire le temps minimal de conversion d'un échantillon en microsecondes (&mu;s).
+                        <div class="answer-zone">Cadence max = .......... ksps &bull; Temps minimal de conversion T_conv = .......... &mu;s</div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- PARTIE 2 : QUANTUM, SENSIBILITÉ & ABSTRACTION 12/16 BITS (25 MIN)     -->
+    <!-- ===================================================================== -->
+    <h2 class="part-title">
+        <span>Partie 2 — Notions Clés : Quantum, Sensibilité &amp; Abstraction MicroPython</span>
+        <span class="duration-badge">⏱️ 25 min</span>
+    </h2>
+
+    <div class="concept-box">
+        <h4>📐 Rappels Théoriques Fondamentaux :</h4>
+        <ul>
+            <li>
+                <strong>1. Quantum de conversion (<em>q</em>) :</strong>
+                C'est la plus petite variation de la grandeur analogique d'entrée (tension) capable de faire varier le mot numérique de sortie d'une unité (1 LSB - <em>Least Significant Bit</em>) :
+                <div class="math-box">
+                    <em>q</em> = <sup><em>V</em><sub>ref</sub></sup> &frasl; <sub>2<sup><em>n</em></sup></sub> &nbsp;&nbsp;&nbsp; <em>(avec V<sub>ref</sub> = 3,30 V et n = nombre de bits effectifs)</em>
+                </div>
+            </li>
+            <li>
+                <strong>2. Sensibilité du CAN (<em>S</em>) :</strong>
+                La sensibilité traduit la pente de conversion du convertisseur (le nombre de pas numériques obtenus par Volt d'entrée) :
+                <div class="math-box">
+                    <em>S</em> = <sup>&Delta;<em>N</em></sup> &frasl; <sub>&Delta;<em>U</em></sub> = <sup>1</sup> &frasl; <sub><em>q</em></sub> &nbsp;&nbsp; [en LSB/V ou pas/V]
+                </div>
+            </li>
+            <li>
+                <strong>3. Le "Mystère" de la fonction MicroPython <code>read_u16()</code> :</strong><br>
+                Alors que le matériel du RP2350 est physiquement un convertisseur <strong>12 bits</strong> (renvoyant des valeurs comprises entre <code>0</code> et <code>4095</code>), la méthode standard MicroPython <code>adc.read_u16()</code> renvoie obligatoirement un entier non signé sur <strong>16 bits</strong> (allant de <code>0</code> à <code>65535</code>).<br>
+                <em>Pourquoi ce choix ?</em> Pour garantir la portabilité du code MicroPython quel que soit le microcontrôleur cible (Pico 12 bits, ESP32 12 bits, STM32 16 bits...).<br>
+                <em>Comment MicroPython procède-t-il ?</em> Il décale la valeur brute 12 bits de <strong>4 bits vers la gauche</strong> :
+                <div class="math-box">
+                    <code>N_16 = N_12 &lt;&lt; 4</code> &nbsp;&nbsp;&harr;&nbsp;&nbsp; <code>N_16 &approx; N_12 &times; 16</code>
+                </div>
+                <strong>Conséquence majeure pour l'ingénieur :</strong> Les 4 bits de poids faible de <code>read_u16()</code> sont en réalité toujours à 0 ou extrapolés ! Le CAN n'a pas gagné en précision magique : il reste limité à son quantum physique de 12 bits.
+            </li>
+        </ul>
+    </div>
+
+    <div class="challenge-card">
+        <div class="challenge-header secondary">
+            <span>Étude Comparative des Résolutions : 16 bits (MicroPython), 12 bits (Natif) &amp; 3 bits (Dégradé)</span>
+            <span class="challenge-badge">4 points</span>
+        </div>
+        <div class="challenge-body">
+            <p>
+                Afin de bien appréhender l'impact de la résolution sur la finesse de mesure, calculez les caractéristiques théoriques du convertisseur selon les 3 résolutions étudiées, avec <em>V</em><sub>ref</sub> = 3,30 V :
+            </p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%;">Caractéristique</th>
+                        <th style="width: 25%;">MicroPython <code>read_u16()</code> (16 bits)</th>
+                        <th style="width: 25%;">Matériel RP2350 Réel (12 bits)</th>
+                        <th style="width: 25%;">Résolution Dégradée (3 bits)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Nombre de bits (<em>n</em>)</strong></td>
+                        <td>16 bits</td>
+                        <td>12 bits</td>
+                        <td>3 bits</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nombre de niveaux (2<sup><em>n</em></sup>)</strong></td>
+                        <td class="empty-cell">2¹⁶ = ...............</td>
+                        <td class="empty-cell">2¹² = ...............</td>
+                        <td class="empty-cell">2³ = ...............</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Plage du mot numérique (<em>N</em>)</strong></td>
+                        <td>0 à 65 535</td>
+                        <td>0 à ..............</td>
+                        <td>0 à ..............</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quantum théorique (<em>q</em>)</strong></td>
+                        <td class="empty-cell">q₁₆ = ............... &mu;V</td>
+                        <td class="empty-cell">q₁₂ = ............... mV</td>
+                        <td class="empty-cell">q₃ = ............... V</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sensibilité (<em>S</em> = 1 / <em>q</em>)</strong></td>
+                        <td class="empty-cell">S₁₆ &approx; ............... LSB/V</td>
+                        <td class="empty-cell">S₁₂ &approx; ............... LSB/V</td>
+                        <td class="empty-cell">S₃ &approx; ............... LSB/V</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Erreur max de quantification (&plusmn; <em>q</em> / 2)</strong></td>
+                        <td class="empty-cell">&plusmn; ............... &mu;V</td>
+                        <td class="empty-cell">&plusmn; ............... mV</td>
+                        <td class="empty-cell">&plusmn; ............... mV</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="question-box">
+                <h4>Questions d'Analyse :</h4>
+                <ol>
+                    <li>
+                        Montrez par quelle opération arithmétique simple (ou opérateur de décalage binaire) on extrait la valeur réelle 12 bits (<em>N</em><sub>12</sub>) à partir de la valeur <em>N</em><sub>16</sub> retournée par MicroPython.
+                        <div class="answer-zone">Formule en MicroPython : N_12 = ............................................................................................</div>
+                    </li>
+                    <li>
+                        Quel est le problème concret si un ingénieur pense mesurer une tension avec une précision de 16 bits (quantum apparent de ~50 &mu;V) alors que le convertisseur est physiquement limité à 12 bits ?
+                        <div class="answer-zone">Analyse critique : ............................................................................................................................................................</div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- PARTIE 3 : EXPÉRIMENTATION PRATIQUE POTENTIOMÈTRE 12 vs 3 BITS (25M)  -->
+    <!-- ===================================================================== -->
+    <h2 class="part-title">
+        <span>Partie 3 — Expérimentation Pratique : Potentiomètre en 12 bits vs 3 bits</span>
+        <span class="duration-badge">⏱️ 25 min</span>
+    </h2>
+
+    <div class="challenge-card">
+        <div class="challenge-header accent">
+            <span>Mise en Œuvre Matérielle &amp; Visualisation de la Discrétisation</span>
+            <span class="challenge-badge">6 points</span>
+        </div>
+        <div class="challenge-body">
+            <h4 style="color: var(--primary); margin-bottom: 0.6rem;">1. Câblage du Potentiomètre sur le Raspberry Pi Pico 2 W :</h4>
+            <p>
+                Réalisez le montage expérimental ci-dessous à l'aide d'un potentiomètre rotatif linéaire (10 k&Omega;) :
+            </p>
+            <ul style="margin: 0.4rem 0 0.8rem 1.3rem;">
+                <li><strong>Borne 1 du potentiomètre :</strong> Reliée à la <strong>Pin 36 (3V3_OUT)</strong> du Pico 2 W.</li>
+                <li><strong>Borne 2 (Curseur central) :</strong> Reliée à la <strong>Pin 31 (GP26 / ADC0)</strong>.</li>
+                <li><strong>Borne 3 du potentiomètre :</strong> Reliée à la <strong>Pin 33 (AGND)</strong> (masse analogique privilégiée).</li>
+            </ul>
+
+            <div class="svg-container">
+                <svg viewBox="0 0 780 200" width="100%" height="200" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Carte Raspberry Pi Pico 2 W -->
+                    <rect x="50" y="20" width="300" height="160" rx="10" fill="#047857" stroke="#065f46" stroke-width="2.5"/>
+                    <text x="200" y="50" text-anchor="middle" font-weight="bold" font-size="14" fill="#ffffff">Raspberry Pi Pico 2 W (RP2350)</text>
+                    
+                    <!-- Broches Pico -->
+                    <!-- Pin 36 : 3V3 OUT -->
+                    <circle cx="330" cy="70" r="6" fill="#f87171"/>
+                    <text x="315" y="74" text-anchor="end" font-size="11" font-weight="bold" fill="#ffffff">Pin 36 (3V3_OUT)</text>
+
+                    <!-- Pin 31 : GP26 ADC0 -->
+                    <circle cx="330" cy="110" r="6" fill="#38bdf8"/>
+                    <text x="315" y="114" text-anchor="end" font-size="11" font-weight="bold" fill="#ffffff">Pin 31 (GP26 / ADC0)</text>
+
+                    <!-- Pin 33 : AGND -->
+                    <circle cx="330" cy="150" r="6" fill="#94a3b8"/>
+                    <text x="315" y="154" text-anchor="end" font-size="11" font-weight="bold" fill="#ffffff">Pin 33 (AGND)</text>
+
+                    <!-- Potentiomètre -->
+                    <rect x="530" y="45" width="180" height="110" rx="10" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>
+                    <text x="620" y="70" text-anchor="middle" font-weight="bold" font-size="13" fill="#1e293b">Potentiomètre 10 kΩ</text>
+                    <circle cx="620" cy="105" r="22" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+                    <line x1="620" y1="105" x2="635" y2="92" stroke="#d97706" stroke-width="3" stroke-linecap="round"/>
+
+                    <!-- Bornes Potentiomètre -->
+                    <circle cx="510" cy="70" r="5" fill="#dc2626"/>
+                    <circle cx="510" cy="110" r="5" fill="#0284c7"/>
+                    <circle cx="510" cy="150" r="5" fill="#475569"/>
+
+                    <!-- Connexions fils -->
+                    <!-- Fil 3V3 (Rouge) -->
+                    <path d="M 330 70 L 510 70" stroke="#dc2626" stroke-width="2.5" fill="none"/>
+                    <!-- Fil Signal GP26 (Bleu) -->
+                    <path d="M 330 110 L 510 110" stroke="#0284c7" stroke-width="2.5" fill="none"/>
+                    <!-- Fil Masse AGND (Noir) -->
+                    <path d="M 330 150 L 510 150" stroke="#334155" stroke-width="2.5" fill="none"/>
+                </svg>
+            </div>
+
+            <h4 style="color: var(--primary); margin: 1.1rem 0 0.5rem;">2. Script MicroPython : Extraction 12 bits &amp; Dégradation volontaire à 3 bits :</h4>
+            <p>
+                Lancez l'EDI <strong>Thonny</strong>, connectez le Pico 2 W et saisissez le programme ci-dessous dans un fichier <code>main.py</code> :
+            </p>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <span>main.py — Étude Comparative 12 bits vs 3 bits</span>
+                    <span>MicroPython v1.23+</span>
+                </div>
+                <pre><code><span class="code-keyword">from</span> machine <span class="code-keyword">import</span> ADC, Pin
+<span class="code-keyword">import</span> time
+
+<span class="code-comment"># Initialisation de l'entrée analogique ADC0 (Broche GP26)</span>
+adc_pot = ADC(Pin(<span class="code-num">26</span>))
+
+VREF = <span class="code-num">3.30</span>  <span class="code-comment"># Tension de référence nominale en Volts</span>
+
+print(<span class="code-str">"--- Démarrage du Test CAN : Résolution 12 bits vs 3 bits ---"</span>)
+
+<span class="code-keyword">while</span> <span class="code-keyword">True</span>:
+    <span class="code-comment"># 1. Lecture MicroPython (normalisée sur 16 bits : 0 à 65535)</span>
+    n_16 = adc_pot.read_u16()
+    
+    <span class="code-comment"># 2. Récupération de la valeur réelle matérielle 12 bits (0 à 4095)</span>
+    n_12 = n_16 >> <span class="code-num">4</span>  <span class="code-comment"># Décalage de 4 bits à droite</span>
+    
+    <span class="code-comment"># 3. Dégradation logicielle à 3 bits (0 à 7 : 8 niveaux de quantification)</span>
+    n_3 = n_12 >> <span class="code-num">9</span>   <span class="code-comment"># 12 - 3 = 9 bits éliminés (ou n_16 >> 13)</span>
+    
+    <span class="code-comment"># 4. Calcul des grandeurs physiques reconstituées en Volts</span>
+    u_12 = n_12 * (VREF / <span class="code-num">4096</span>)
+    u_3  = n_3  * (VREF / <span class="code-num">8</span>)
+    
+    <span class="code-comment"># Affichage formaté</span>
+    print(f<span class="code-str">"Raw_16: {n_16:5d} | Natif_12b: {n_12:4d} ({u_12:.3f} V) | Dégradé_3b: {n_3:1d} ({u_3:.3f} V)"</span>)
+    
+    time.sleep_ms(<span class="code-num">250</span>)</code></pre>
+            </div>
+
+            <h4 style="color: var(--primary); margin: 1.1rem 0 0.5rem;">3. Relevés Expérimentaux &amp; Comparaison :</h4>
+            <p>
+                Faites tourner le bouton du potentiomètre à différentes positions caractéristiques et complétez le tableau de mesures suivant :
+            </p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Position Potentiomètre</th>
+                        <th>Tension réelle au voltmètre (V)</th>
+                        <th>Valeur 16 bits (<code>n_16</code>)</th>
+                        <th>Valeur 12 bits (<code>n_12</code>)</th>
+                        <th>Tension calculée 12b (<em>U</em><sub>12</sub>)</th>
+                        <th>Valeur 3 bits (<code>n_3</code>)</th>
+                        <th>Tension calculée 3b (<em>U</em><sub>3</sub>)</th>
+                        <th>Écart |<em>U</em><sub>12</sub> &minus; <em>U</em><sub>3</sub>|</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Position Min (Butée gauche)</strong></td>
+                        <td class="empty-cell">~ 0,00 V</td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Position 1/3 de course</strong></td>
+                        <td class="empty-cell">~ 1,10 V</td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Position 2/3 de course</strong></td>
+                        <td class="empty-cell">~ 2,20 V</td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Position Max (Butée droite)</strong></td>
+                        <td class="empty-cell">~ 3,30 V</td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="question-box">
+                <h4>Questions d'Exploitation :</h4>
+                <ol>
+                    <li>
+                        <strong>Observation des "marches d'escalier" sur 3 bits :</strong>
+                        Lorsque vous tournez très lentement le potentiomètre de 0 V à 3,3 V, décrivez comment évolue la tension <code>u_3</code> par rapport à <code>u_12</code>. Quelle est la hauteur exacte (en Volts) de chaque "saut" de tension en 3 bits ? À quelle grandeur fondamentale cette hauteur correspond-elle ?
+                        <div class="answer-zone">Description &amp; Hauteur du saut : ....................................................................................................................................</div>
+                    </li>
+                    <li>
+                        <strong>Erreur de quantification :</strong>
+                        Comparez l'écart maximal mesuré entre <code>u_12</code> et <code>u_3</code>. Vérifiez si cet écart reste bien inférieur ou égal à l'erreur maximale théorique &plusmn; <em>q</em><sub>3</sub> / 2 calculée en Partie 2.
+                        <div class="answer-zone">Vérification : .....................................................................................................................................................................</div>
+                    </li>
+                    <li>
+                        <strong>Application industrielle :</strong>
+                        Dans un joystick de commande de drone ou une pédale d'accélérateur de véhicule électrique, que se passerait-il pour le pilotage si le capteur était codé sur 3 bits au lieu de 12 bits ?
+                        <div class="answer-zone">Impact sur le comportement du système : ...........................................................................................................................</div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- PARTIE 4 : ÉCHANTILLONNAGE TEMPOREL & THÉORÈME DE SHANNON (20 MIN)    -->
+    <!-- ===================================================================== -->
+    <h2 class="part-title">
+        <span>Partie 4 — Échantillonnage Temporel, Cadence &amp; Théorème de Shannon</span>
+        <span class="duration-badge">⏱️ 20 min</span>
+    </h2>
+
+    <div class="concept-box">
+        <h4>⏱️ Notions Clés de l'Échantillonnage Temporel :</h4>
+        <ul>
+            <li><strong>Période d'échantillonnage (<em>T<sub>e</sub></em>) :</strong> Intervalle de temps régulier séparant deux conversions successives du signal.</li>
+            <li><strong>Fréquence d'échantillonnage (<em>F<sub>e</sub></em>) :</strong> Nombre de conversions effectuées par seconde : <em>F<sub>e</sub></em> = 1 / <em>T<sub>e</sub></em> (en Hertz).</li>
+            <li><strong>Condition de Shannon-Nyquist :</strong> Pour restituer fidèlement un signal analogique sans perte d'information ni distorsion spectrale (effet d'aliasing / repliement de spectre), la fréquence d'échantillonnage doit être au moins le double de la fréquence maximale du signal d'entrée :
+                <div class="math-box">
+                    <em>F<sub>e</sub></em> &ge; 2 &times; <em>f</em><sub>max</sub> &nbsp;&nbsp;&harr;&nbsp;&nbsp; <em>T<sub>e</sub></em> &le; <sup>1</sup> &frasl; <sub>2 &times; <em>f</em><sub>max</sub></sub>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="challenge-card">
+        <div class="challenge-header">
+            <span>Expérimentation de la Cadence d'Échantillonnage dans le Traceur Thonny</span>
+            <span class="challenge-badge">6 points</span>
+        </div>
+        <div class="challenge-body">
+            <p>
+                Pour visualiser l'importance capitale de la cadence d'échantillonnage, ouvrez le <strong>Traceur graphique</strong> de Thonny (<em>Affichage &rarr; Traceur</em>).
+                Ce traceur trace en temps réel chaque ligne contenant une valeur numérique affichée par <code>print()</code>.
+            </p>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <span>echantillonnage.py — Tracé Temporel en Temps Réel</span>
+                    <span>MicroPython</span>
+                </div>
+                <pre><code><span class="code-keyword">from</span> machine <span class="code-keyword">import</span> ADC, Pin
+<span class="code-keyword">import</span> time
+
+adc_pot = ADC(Pin(<span class="code-num">26</span>))
+VREF = <span class="code-num">3.30</span>
+
+<span class="code-comment"># PARAMÈTRE À MODIFIER : Période d'échantillonnage Te en millisecondes</span>
+TE_MS = <span class="code-num">10</span>   <span class="code-comment"># Essai 1 : Te = 10 ms (Fe = 100 Hz) | Essai 2 : Te = 500 ms (Fe = 2 Hz)</span>
+
+print(f<span class="code-str">"Acquisition lancée avec Te = {TE_MS} ms (Fe = {1000 // TE_MS} Hz)"</span>)
+
+<span class="code-keyword">while</span> <span class="code-keyword">True</span>:
+    <span class="code-comment"># Conversion 12 bits native</span>
+    val_12 = adc_pot.read_u16() >> <span class="code-num">4</span>
+    tension = val_12 * (VREF / <span class="code-num">4096</span>)
+    
+    <span class="code-comment"># Affichage pour le traceur Thonny (Tension_12b, Tension_3b)</span>
+    val_3 = val_12 >> <span class="code-num">9</span>
+    tension_3b = val_3 * (VREF / <span class="code-num">8</span>)
+    
+    print(tension, tension_3b)
+    
+    time.sleep_ms(TE_MS)</code></pre>
+            </div>
+
+            <div class="question-box">
+                <h4>Protocole &amp; Expériences de Tracé :</h4>
+                <ol>
+                    <li>
+                        <strong>Essai n°1 : Cadence Rapide (<em>T<sub>e</sub></em> = 10 ms &rarr; <em>F<sub>e</sub></em> = 100 Hz) :</strong><br>
+                        Exécutez le script avec <code>TE_MS = 10</code>. Tournez rapidement le potentiomètre d'un aller-retour complet en 1 seconde environ.<br>
+                        Observez les deux courbes dans le traceur Thonny (bleue pour 12 bits, orange pour 3 bits). La dynamique du mouvement manuel est-elle parfaitement suivie ?
+                        <div class="answer-zone">Observations Essai 1 (Fe = 100 Hz) : ............................................................................................................................</div>
+                    </li>
+                    <li>
+                        <strong>Essai n°2 : Sous-Échantillonnage Critique (<em>T<sub>e</sub></em> = 500 ms &rarr; <em>F<sub>e</sub></em> = 2 Hz) :</strong><br>
+                        Modifiez la variable à <code>TE_MS = 500</code> et relancez le programme. Effectuez exactement la même rotation rapide du potentiomètre (aller-retour en 1 seconde).<br>
+                        Que constatez-vous sur la courbe tracée ? Le pic maximal de tension à 3,3 V a-t-il été capturé ou complètement manqué ?
+                        <div class="answer-zone">Observations Essai 2 (Fe = 2 Hz) : ............................................................................................................................</div>
+                    </li>
+                    <li>
+                        <strong>Justification par le Théorème de Shannon :</strong><br>
+                        Si le geste de l'opérateur génère une variation analogique contenant des fréquences jusqu'à <em>f</em><sub>max</sub> = 5 Hz, quelle fréquence d'échantillonnage minimale <em>F</em><sub>e,min</sub> impose le critère de Shannon pour ne pas altérer le signal ? Quelle période <em>T<sub>e</sub></em> maximale cela représente-t-il ?
+                        <div class="answer-zone">Calcul : Fe,min = .......... Hz &bull; Te,max = .......... ms. Comparaison avec vos deux essais : ....................................</div>
+                    </li>
+                    <li>
+                        <strong>Bilan d'Ingénierie :</strong>
+                        Résumez en deux phrases pourquoi le choix d'un convertisseur analogique-numérique pour un système embarqué repose toujours sur un double compromis : <em>résolution en bits</em> (précision d'amplitude) et <em>cadence d'échantillonnage</em> (précision temporelle).
+                        <div class="answer-zone">Synthèse d'ingénierie : .......................................................................................................................................................</div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- GRILLE D'ÉVALUATION DES COMPÉTENCES (20 POINTS)                       -->
+    <!-- ===================================================================== -->
+    <h2 class="part-title">
+        <span>Grille d'Évaluation des Compétences SI (20 Points)</span>
+        <span class="duration-badge">Bilan &amp; Notation</span>
+    </h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 20%;">Partie du TP</th>
+                <th style="width: 50%;">Critères d'Évaluation &amp; Compétences Visées</th>
+                <th style="width: 15%;">Barème</th>
+                <th style="width: 15%;">Note</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Partie 1</strong></td>
+                <td>Recherche efficace dans le datasheet officiel (RP2350 SAR ADC, broches physiques, AGND, VREF, cadence max). (CO1.2)</td>
+                <td>4 pts</td>
+                <td>...... / 4</td>
+            </tr>
+            <tr>
+                <td><strong>Partie 2</strong></td>
+                <td>Maîtrise du calcul du quantum, de la sensibilité et compréhension du décalage de 4 bits <code>read_u16()</code> MicroPython. (CO1.2 &bull; CO2.1)</td>
+                <td>4 pts</td>
+                <td>...... / 4</td>
+            </tr>
+            <tr>
+                <td><strong>Partie 3</strong></td>
+                <td>Câblage conforme du potentiomètre, mise en œuvre du script MicroPython, tableau de relevés et analyse de l'erreur de quantification (12b vs 3b). (CO2.1 &bull; CO3.1)</td>
+                <td>6 pts</td>
+                <td>...... / 6</td>
+            </tr>
+            <tr>
+                <td><strong>Partie 4</strong></td>
+                <td>Cadencement de l'échantillonnage temporel, tracé graphique temps réel, mise en évidence du sous-échantillonnage et application de Shannon. (CO3.1)</td>
+                <td>6 pts</td>
+                <td>...... / 6</td>
+            </tr>
+            <tr style="background: #f1f5f9; font-weight: bold;">
+                <td colspan="2" style="text-align: right; padding-right: 1.5rem;">NOTE TOTALE DU TP :</td>
+                <td>20 pts</td>
+                <td>...... / 20</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

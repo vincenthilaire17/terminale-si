@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TP Terminale SI — Chaîne d'Information : Restitution Visuelle & IHM Embarquée (Bargraph & Matrice DEL 8×8)</title>
+    <title>TP Terminale SI — Chaîne d'Information : Restitution Visuelle & IHM (Bargraph & Interface Graphique Tkinter)</title>
     <style>
         :root {
             --primary: #1e3a8a;
@@ -501,8 +501,8 @@
             Évaluation : <strong>..... / 20</strong>
         </div>
         <div class="header-cell full title">
-            <h1>Chaîne d'Information : Restitution Visuelle & IHM Embarquée</h1>
-            <p>Bargraph LED Bar, Matrice 8×8 (Pictogrammes &amp; Niveau à Bulle avec Accéléromètre 3 Axes) et Pilotage Joystick — MicroPython (Raspberry Pi Pico)</p>
+            <h1>Chaîne d'Information : Restitution Visuelle & Interface Homme-Machine (IHM)</h1>
+            <p>Bargraph LED Bar v2.0, Capteur DHT & Supervision Graphique PC en Python (Tkinter) — MicroPython & Python 3</p>
         </div>
     </div>
 
@@ -510,12 +510,11 @@
     <div class="competences-box">
         <h3>📌 Objectifs & Compétences du Programme de Terminale SI</h3>
         <ul>
-            <li><strong>Compétence B2 / CO2.1 :</strong> Caractériser les échanges d'information entre composants (liaison série synchrone propriétaire 2 fils et bus normalisé I²C).</li>
-            <li><strong>Compétence B3 / CO2.4 :</strong> Modéliser et exploiter la projection vectorielle de la pesanteur dans un repère incliné pour déterminer un angle d'inclinaison (niveau à bulle / horizon artificiel).</li>
+            <li><strong>Compétence B2 / CO2.1 :</strong> Caractériser les échanges d'information entre composants (liaison série synchrone propriétaire 2 fils et communication série USB).</li>
             <li><strong>Compétence C1 / CO3.1 :</strong> Concevoir et implanter une structure algorithmique de restitution et d'acquisition en langage MicroPython sur microcontrôleur <strong>Raspberry Pi Pico (RP2040)</strong>.</li>
-            <li><strong>Compétence C2 / CO3.2 :</strong> Mettre en œuvre une Interface Homme-Machine (IHM) adaptée aux contraintes d'exploitation (jauge analogique discrétisée, pictogrammes d'alerte, horizon artificiel et curseur interactif).</li>
-            <li><strong>Compétence D1 / CO4.1 :</strong> Exploiter la documentation technique constructeur pour configurer un périphérique numérique (recherche de l'adresse I²C, chronogrammes, registres de commande).</li>
-            <li><strong>Compétence D2 / CO4.2 :</strong> Valider expérimentalement le fonctionnement de la chaîne d'information complète : <em>Acquérir (Capteurs) &rarr; Traiter (Pico RP2040) &rarr; Restituer (Afficheurs)</em>.</li>
+            <li><strong>Compétence C2 / CO3.2 :</strong> Concevoir et mettre en œuvre une Interface Homme-Machine (IHM) adaptée aux contraintes d'exploitation (jauge analogique discrétisée sur bargraph et supervision graphique sur PC avec <strong>Tkinter</strong>).</li>
+            <li><strong>Compétence D1 / CO4.1 :</strong> Exploiter la documentation technique constructeur pour configurer un périphérique numérique (registres de commande, protocole 1-wire, chronogrammes).</li>
+            <li><strong>Compétence D2 / CO4.2 :</strong> Valider expérimentalement le fonctionnement de la chaîne d'information complète : <em>Acquérir (Capteur DHT) &rarr; Traiter (Pico RP2040) &rarr; Transmettre (USB) &rarr; Restituer (IHM Tkinter)</em>.</li>
         </ul>
     </div>
 
@@ -529,11 +528,11 @@
             <li>Implanté ce modèle mathématique dans un programme MicroPython sur Raspberry Pi Pico afin de calculer et d'afficher la température en °C dans la console texte de <strong>Thonny</strong>.</li>
         </ul>
         <p style="margin-top: 0.5rem;">
-            <strong>Problématique d'Ingénierie :</strong> Dans un système autonome réel (armoire électrique industrielle, serre agricole régulée, couveuse néonatale ou centrale de traitement d'air), il n'y a pas d'ordinateur connecté en permanence. Le système doit communiquer son état à l'opérateur via des organes de restitution instantanés, intuitifs et visibles à distance :
+            <strong>Problématique d'Ingénierie :</strong> Dans un système moderne (armoire électrique, serre agricole connectée, couveuse néonatale ou centrale de traitement d'air), les grandeurs physiques mesurées doivent être restituées sous deux formes complémentaires :
         </p>
         <ol style="margin-left: 1.4rem; margin-top: 0.4rem;">
-            <li><strong>Un niveau quantitatif discrétisé :</strong> Un afficheur bargraph à 10 DELs (<strong>Grove LED Bar v2.0</strong>) dont la hauteur s'allume en proportion de la température.</li>
-            <li><strong>Un état qualitatif d'alerte :</strong> Une <strong>matrice à DELs 8×8 (Grove Red LED Matrix I²C)</strong> affichant des pictogrammes expressifs (icône <em>Froid / Flocon</em>, icône <em>Confort / Smiley</em>, icône <em>Alerte / Flamme</em>) pour alerter immédiatement en cas de dérive thermique.</li>
+            <li><strong>Une restitution matérielle locale immédiate :</strong> Un afficheur bargraph à 10 DELs (<strong>Grove LED Bar v2.0</strong>) dont la hauteur s'allume en proportion d'une commande analogique (potentiomètre).</li>
+            <li><strong>Une supervision graphique à distance (IHM) :</strong> Une interface graphique sur ordinateur développée en <strong>Python</strong> avec la bibliothèque standard <strong>Tkinter</strong>, affichant en temps réel la température (°C) et l'humidité relative (%) mesurées par un capteur numérique <strong>DHT</strong>, ainsi qu'un badge dynamique d'état de confort thermique (froid, confort, alerte chaleur).</li>
         </ol>
     </div>
 
@@ -544,7 +543,7 @@
             Synoptique Global de la Chaîne d'Information à Réaliser
         </div>
         <p class="synoptique-intro">
-            Le microcontrôleur Raspberry Pi Pico acquiert les grandeurs d'entrée (potentiomètre analogique sur GP26 pour la jauge, puis capteur numérique DHT sur GP22 pour la surveillance thermique), puis pilote simultanément deux afficheurs numériques distincts à travers deux protocoles de communication série différents.
+            Le microcontrôleur Raspberry Pi Pico acquiert les grandeurs d'entrée (potentiomètre analogique sur GP26 pour la jauge locale, puis capteur numérique DHT sur GP22 pour la surveillance thermo-hygrométrique). Il pilote directement le bargraph matériel et transmet simultanément les mesures au PC via liaison série USB pour animer l'interface graphique IHM sous Tkinter.
         </p>
 
         <div class="synoptique-svg-container">
@@ -574,7 +573,7 @@
                 <rect x="170" y="60" width="160" height="95" rx="6" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
                 <text x="250" y="85" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e3a8a">1. ACQUÉRIR</text>
                 <text x="250" y="103" text-anchor="middle" font-size="10.5" fill="#1e293b">Potentiomètre (Partie 1)</text>
-                <text x="250" y="120" text-anchor="middle" font-size="10" fill="#475569">Capteur DHT (Partie 3)</text>
+                <text x="250" y="120" text-anchor="middle" font-size="10" fill="#475569">Capteur DHT (Partie 2)</text>
                 <text x="250" y="142" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">GP26 (ADC) / GP22 (DHT)</text>
 
                 <!-- Flèche 2 -->
@@ -588,7 +587,7 @@
                 <rect x="395" y="105" width="170" height="52" rx="4" fill="#0f172a"/>
                 <text x="480" y="123" text-anchor="middle" font-size="9.5" fill="#fde047">• Lecture ADC potentiomètre</text>
                 <text x="480" y="138" text-anchor="middle" font-size="9.5" fill="#fde047">• Acquisition DHT (1-Wire)</text>
-                <text x="480" y="152" text-anchor="middle" font-size="9.5" fill="#fde047">• Calcul niveau &amp; icône</text>
+                <text x="480" y="152" text-anchor="middle" font-size="9.5" fill="#fde047">• Émission série USB vers PC</text>
 
                 <!-- Flèche Sortie Haute : Vers Bargraph -->
                 <path d="M 580 85 L 630 85 L 630 55 L 668 55" fill="none" stroke="#0d9488" stroke-width="2" marker-end="url(#arrow-green)"/>
@@ -612,15 +611,15 @@
                     <rect x="135" y="0" width="12" height="18" fill="#dc2626" rx="1"/>
                 </g>
 
-                <!-- Flèche Sortie Basse : Vers Matrice 8x8 -->
-                <path d="M 580 135 L 630 135 L 630 165 L 668 165" fill="none" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow-red)"/>
-                <text x="625" y="180" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#dc2626">Bus I²C : GP8/9</text>
+                <!-- Flèche Sortie Basse : Vers Supervision PC Tkinter -->
+                <path d="M 580 135 L 630 135 L 630 165 L 668 165" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow)"/>
+                <text x="625" y="180" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#2563eb">Liaison Série USB</text>
 
-                <!-- Bloc 4B: Matrice DEL 8x8 -->
-                <rect x="670" y="125" width="235" height="80" rx="6" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
-                <text x="787" y="146" text-anchor="middle" font-size="11" font-weight="bold" fill="#991b1b">3B. RESTITUER QUALITATIF</text>
-                <text x="787" y="163" text-anchor="middle" font-size="10.5" fill="#1e293b">Grove Red LED Matrix (HT16K33)</text>
-                <text x="787" y="182" text-anchor="middle" font-size="9.5" fill="#475569">Pictogrammes : ❄️ Froid | 😊 Normal | 🔥 Chaud</text>
+                <!-- Bloc 4B: Supervision PC Tkinter -->
+                <rect x="670" y="125" width="235" height="80" rx="6" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+                <text x="787" y="146" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e3a8a">3B. SUPERVISION PC (IHM)</text>
+                <text x="787" y="163" text-anchor="middle" font-size="10.5" fill="#1e293b">Python Standard &amp; Tkinter</text>
+                <text x="787" y="182" text-anchor="middle" font-size="9.5" fill="#2563eb">Dashboard : Température, Humidité &amp; Alertes</text>
             </svg>
         </div>
 
@@ -637,13 +636,13 @@
             </div>
             <div class="synoptique-step-card step-3">
                 <span class="synoptique-step-num">Étape 3</span>
-                <span class="synoptique-step-title">Matrice 8×8 I²C</span>
-                <span class="synoptique-step-desc">Recherche documentaire de l'adresse I²C du HT16K33, test matériel avec une diagonale et création d'icônes avec l'éditeur web.</span>
+                <span class="synoptique-step-title">Capteur Numérique DHT</span>
+                <span class="synoptique-step-desc">Acquisition thermo-hygrométrique 1-wire sur GP22 et transmission série continue des trames vers l'ordinateur.</span>
             </div>
             <div class="synoptique-step-card step-4">
                 <span class="synoptique-step-num">Étape 4</span>
-                <span class="synoptique-step-title">Station Autonome DHT</span>
-                <span class="synoptique-step-desc">Fusion dans une boucle temps réel avec le capteur numérique DHT : affichage synchronisé du bargraph et des pictogrammes.</span>
+                <span class="synoptique-step-title">Supervision IHM Tkinter</span>
+                <span class="synoptique-step-desc">Création de l'interface graphique sur PC : labels, jauge d'humidité, code couleur d'état et rafraîchissement temps réel.</span>
             </div>
         </div>
     </div>
@@ -849,465 +848,414 @@ while True:
     </div>
 
     <!-- ========================================================================= -->
-    <!-- PARTIE 2 : GROVE RED LED MATRIX W/ DRIVER (HT16K33) -->
+    <!-- PARTIE 2 : INTERFACE GRAPHIQUE IHM AVEC PYTHON & TKINTER -->
     <!-- ========================================================================= -->
     <h2 class="part-title">
-        <span>Partie 2 : Pictogrammes d'Alerte sur Matrice DEL 8×8 I²C (HT16K33)</span>
+        <span>Partie 2 : Interface Graphique IHM sur PC avec Python &amp; Tkinter (Surveillance Température &amp; Humidité)</span>
         <span class="duration-badge">Durée : 1h30</span>
     </h2>
 
     <p>
-        Le composant <strong>Grove - Red LED Matrix w/Driver</strong> associe une matrice carrée de 64 DELs rouges (8 &times; 8) à un contrôleur spécialisé <strong>Holtek HT16K33</strong> communiquant via le bus <strong>I²C</strong>.
+        Dans de nombreux systèmes techniques modernes (bâtiment intelligent, serveurs de données, serres automatisées ou stations météorologiques), la surveillance des grandeurs physiques ne se limite pas à un afficheur local. Les mesures doivent être centralisées sur un poste de supervision informatique équipé d'une <strong>Interface Homme-Machine (IHM)</strong> conviviale, ergonomique et interactive.
     </p>
-
-    <div class="doc-link-box">
-        📚 <strong>Documentation officielle du composant (Wiki Seeed Studio) :</strong><br>
-        <a href="https://wiki.seeedstudio.com/Grove-Red_LED_Matrix_w_Driver/" target="_blank" rel="noopener noreferrer">https://wiki.seeedstudio.com/Grove-Red_LED_Matrix_w_Driver/</a><br>
-        <em>Consultez impérativement cette page pour répondre aux questions de recherche documentaire ci-après !</em>
-    </div>
-
-    <h3 class="section-title">2.1. Recherche Documentaire &amp; Configuration du Bus I²C (Mission Élève)</h3>
     <p>
-        Sur un bus I²C, chaque composant esclave (<em>slave</em>) doit posséder une <strong>adresse matérielle unique</strong> sur 7 bits pour être reconnu et piloté par le microcontrôleur maître (Raspberry Pi Pico).
+        Dans cette partie, vous allez réaliser une <strong>chaîne d'information complète</strong> :
     </p>
-
-    <div class="question-box">
-        <h4>Mission Documentaire — Analyse du Wiki Constructeur :</h4>
-        <p><strong>Q4.</strong> En explorant le wiki officiel du produit (tableau des spécifications et section <em>I²C Address</em>) :</p>
-        <ul style="padding-left: 1.3rem; margin-top: 0.3rem;">
-            <li>Quelle est la tension d'alimentation admissible (<em>Supply Voltage</em>) du module ?</li>
-            <li>Quelle est l'<strong>adresse I²C par défaut</strong> (<em>default I²C address</em>) du module en sortie d'usine ? Exprimez-la en notation hexadécimale.</li>
-            <li>Combien d'adresses I²C différentes peut-on attribuer à ce module au maximum ?</li>
-            <li>Comment modifie-t-on physiquement cette adresse sur le circuit imprimé (observez les cavaliers/pads à souder A0, A1, A2 au dos du module) ? Donnez l'état des cavaliers pour obtenir l'adresse <code>0x73</code>.</li>
-        </ul>
-    </div>
-
-    <h3 class="section-title">2.2. Câblage Matériel &amp; Détection par Scanner I²C</h3>
-    <p>
-        Le module se raccorde sur le port <strong>I²C(0)</strong> de la Raspberry Pi Pico :
-    </p>
-
-    <div class="wiring-box">
-        <strong>🔌 Connexions Grove Red LED Matrix &harr; Raspberry Pi Pico :</strong><br><br>
-        • Broche Grove 1 (Fil Jaune) : <span class="pin-tag sig">SCL (Horloge I²C)</span> &rarr; Relier à la broche <span class="pin-tag sig">GP9</span> (I2C0 SCL, broche physique 12)<br>
-        • Broche Grove 2 (Fil Blanc) : <span class="pin-tag sig">SDA (Données I²C)</span> &rarr; Relier à la broche <span class="pin-tag sig">GP8</span> (I2C0 SDA, broche physique 11)<br>
-        • Broche Grove 3 (Fil Rouge) : <span class="pin-tag vcc">VCC</span> &rarr; Relier à <span class="pin-tag vcc">3V3 (Pin 36)</span> ou 5V (VBUS)<br>
-        • Broche Grove 4 (Fil Noir) : <span class="pin-tag gnd">GND</span> &rarr; Relier à un <span class="pin-tag gnd">GND</span>
-    </div>
-
-    <p>
-        Avant de tenter d'afficher quoi que ce soit, validons la présence matérielle du composant en exécutant le script de détection <strong>Scanner I²C</strong> ci-dessous dans Thonny :
-    </p>
-
-    <div class="code-container">
-        <div class="code-header">
-            <span>MicroPython — scan_i2c_pico.py (Validation Matérielle)</span>
-            <span>Détection Automatique d'Adresses I²C</span>
-        </div>
-        <pre><code class="language-python"># ==============================================================================
-# SCRIPT DE RECHERCHE D'ADRESSES SUR LE BUS I2C (RASPBERRY PI PICO)
-# Broches : GP8 (SDA) | GP9 (SCL) sur I2C(0)
-# ==============================================================================
-from machine import Pin, I2C
-
-# Initialisation du bus I2C(0) à 100 kHz
-i2c = I2C(0, scl=Pin(9), sda=Pin(8), freq=100000)
-
-print("Scan du bus I2C en cours...")
-peripheriques = i2c.scan()
-
-if peripheriques:
-    print(f"Périphérique(s) I2C détecté(s) : {len(peripheriques)}")
-    for adresse in peripheriques:
-        print(f" -> Adresse décimale : {adresse} | Adresse hexadécimale : {hex(adresse)}")
-else:
-    print("❌ Aucun périphérique I2C détecté !")
-    print("Vérifiez vos 4 fils : SDA (GP8), SCL (GP9), 3V3 et GND.")</code></pre>
-    </div>
-
-    <div class="question-box">
-        <h4>Question d'Analyse :</h4>
-        <p><strong>Q5.</strong> Exécutez le script <code>scan_i2c_pico.py</code>. Quelle adresse hexadécimale s'affiche sur la console Thonny ? Correspond-elle bien à l'adresse relevée dans la documentation à la question Q4 ? Que se passe-t-il si vous débranchez le fil jaune (SCL) et relancez le scan ?</p>
-    </div>
-
-    <h3 class="section-title">2.3. Structure des Registres et Pilotage du Contrôleur HT16K33</h3>
-    <p>
-        Le circuit intégré <strong>HT16K33</strong> nécessite une séquence d'initialisation précise via le bus I²C :
-    </p>
-    <ul style="margin-left: 2rem; margin-bottom: 0.8rem; font-size: 0.92rem;">
-        <li><strong>0x21 :</strong> Allumage de l'oscillateur interne système (<em>System setup register &rarr; Normal operation</em>).</li>
-        <li><strong>0x81 :</strong> Activation de l'affichage sans clignotement (<em>Display setup &rarr; Display ON, Blinking OFF</em>).</li>
-        <li><strong>0xE0 à 0xEF :</strong> Réglage de la luminosité (<em>Dimming register</em>, 16 niveaux de 0 à 15).</li>
-        <li><strong>Mémoire d'affichage (Display RAM) :</strong> La mémoire interne contient 16 octets débutant à l'adresse <code>0x00</code>. Pour une matrice 8 &times; 8, chaque ligne <em>i</em> (de 0 à 7) est stockée à l'octet pair <code>2 * i</code> (les octets impairs ne sont pas connectés).</li>
+    <ul style="margin-left: 2rem; margin-bottom: 1rem; font-size: 0.95rem;">
+        <li><strong>Acquisition embarquée (MicroPython sur Pico RP2040) :</strong> Mesure directe et étalonnée en usine de la température ambiante (°C) et de l'humidité relative (%) grâce à un capteur numérique intégré <strong>DHT (DHT11 ou DHT22)</strong>.</li>
+        <li><strong>Transmission de données (Liaison Série USB) :</strong> Envoi périodique des mesures de la Pico vers l'ordinateur sous forme de trames textuelles structurées.</li>
+        <li><strong>Restitution graphique &amp; Supervision (Python 3 sur PC) :</strong> Développement d'une interface graphique moderne avec la bibliothèque officielle <strong>Tkinter</strong>, avec affichage numérique grand format, jauge d'humidité relative et changement dynamique de code couleur selon des seuils de confort thermique.</li>
     </ul>
 
-    <h3 class="section-title">2.4. Code de Base Fourni : Allumage d'une Diagonale de DELs</h3>
+    <h3 class="section-title">2.1. Le Capteur Numérique Thermo-Hygrométrique DHT (DHT11 / DHT22)</h3>
     <p>
-        Voici le script de base fourni. Ce code allume précisément les 8 DELs formant la <strong>diagonale principale</strong> de la matrice :
-    </p>
-
-    <div class="code-container">
-        <div class="code-header">
-            <span>MicroPython — test_matrice_diagonale_base.py (Code de Base Fourni)</span>
-            <span>Pilote HT16K33 + Affichage Diagonale</span>
-        </div>
-        <pre><code class="language-python"># ==============================================================================
-# TP TERMINALE SI — PILOTAGE DE LA MATRICE DEL 8x8 GROVE (HT16K33)
-# Broches : GP8 (SDA) | GP9 (SCL) | VCC -> 3V3 | GND -> GND
-# ==============================================================================
-import time
-from machine import Pin, I2C
-
-class GroveMatrixHT16K33:
-    """Pilote MicroPython autonome pour la matrice à DEL 8x8 Grove (HT16K33)"""
-    def __init__(self, bus_i2c, address=0x70):
-        self.i2c = bus_i2c
-        self.address = address
-        self.init_hardware()
-
-    def init_hardware(self):
-        """Séquence d'initialisation matérielle du HT16K33"""
-        # 1. Démarrer l'oscillateur interne
-        self.i2c.writeto(self.address, b'\x21')
-        # 2. Allumer l'affichage (Display ON, Clignotement désactivé)
-        self.i2c.writeto(self.address, b'\x81')
-        # 3. Luminosité intermédiaire (niveau 7 sur 15)
-        self.set_brightness(7)
-        # 4. Effacer l'affichage initial
-        self.clear()
-
-    def set_brightness(self, level):
-        """Règle la luminosité de 0 (très faible) à 15 (maximale)"""
-        level = max(0, min(15, int(level)))
-        self.i2c.writeto(self.address, bytes([0xE0 | level]))
-
-    def clear(self):
-        """Éteint toutes les DELs de la matrice"""
-        self.show([0x00] * 8)
-
-    def show(self, pattern_8_lignes):
-        """
-        Affiche un motif 8x8 défini par une liste de 8 octets.
-        Chaque octet contrôle l'état des 8 DELs d'une ligne (1 = Allumée, 0 = Éteinte).
-        """
-        # Trame I2C : registre 0x00 suivi des 16 octets du buffer d'affichage
-        buffer = bytearray(17)
-        buffer[0] = 0x00  # Adresse mémoire initiale du contrôleur
-        for i in range(8):
-            buffer[1 + 2 * i] = pattern_8_lignes[i]  # Donnée de la ligne i
-            buffer[2 + 2 * i] = 0x00                 # Octet haut non utilisé
-        self.i2c.writeto(self.address, buffer)
-
-# ------------------------------------------------------------------------------
-# PROGRAMME DE BASE FOURNI : ALLUMAGE D'UNE DIAGONALE DE DELs
-# ------------------------------------------------------------------------------
-# 1. Initialisation de la liaison I2C(0)
-i2c = I2C(0, scl=Pin(9), sda=Pin(8), freq=100000)
-
-# 2. Définition de l'adresse I2C (relevée à la question Q4 / Q5)
-ADRESSE_MATRICE = 0x70  # Modifiez cette valeur si votre scan a révélé 0x77
-
-# 3. Création de l'objet matrice
-matrice = GroveMatrixHT16K33(i2c, address=ADRESSE_MATRICE)
-
-print("=== TEST MATRICE 8x8 : ALLUMAGE DE LA DIAGONALE PRINCIPALE ===")
-
-# Motif de test : 1 DEL allumée par ligne (décalée d'un bit à chaque ligne)
-# Notations binaires 0b : bit à 1 = DEL allumée, bit à 0 = DEL éteinte
-DIAGONALE = [
-    0b10000000,  # Ligne 0 : bit 7 allumé (DEL en haut à gauche)
-    0b01000000,  # Ligne 1 : bit 6 allumé
-    0b00100000,  # Ligne 2 : bit 5 allumé
-    0b00010000,  # Ligne 3 : bit 4 allumé
-    0b00001000,  # Ligne 4 : bit 3 allumé
-    0b00000100,  # Ligne 5 : bit 2 allumé
-    0b00000010,  # Ligne 6 : bit 1 allumé
-    0b00000001   # Ligne 7 : bit 0 allumé (DEL en bas à droite)
-]
-
-# Affichage du motif
-matrice.show(DIAGONALE)
-print("Diagonale affichée avec succès !")</code></pre>
-    </div>
-
-    <div class="question-box">
-        <h4>Questions d'Analyse :</h4>
-        <p><strong>Q6.</strong> Exécutez le script. Observez la diagonale affichée. En déduire le rôle de chaque bit dans un octet de ligne. Comment s'écrirait la liste de 8 octets pour afficher la <strong>seconde diagonale (antidiagonale)</strong> allant du coin haut-droit au coin bas-gauche ?</p>
-        <p><strong>Q7.</strong> Comment s'écrirait le motif pour afficher une <strong>croix complète (X)</strong> combinant les deux diagonales ?</p>
-    </div>
-
-    <h3 class="section-title">2.5. Conception des Pictogrammes avec LED Matrix Editor</h3>
-    <p>
-        Pour dessiner facilement des icônes complexes et expressives sans calculer manuellement chaque octet, vous utiliserez l'outil en ligne <strong>LED Matrix Editor</strong> :
-    </p>
-
-    <div class="doc-link-box">
-        🎨 <strong>Éditeur interactif en ligne :</strong> Ouvrez dans votre navigateur :<br>
-        <a href="https://xantorohara.github.io/led-matrix-editor/" target="_blank" rel="noopener noreferrer">https://xantorohara.github.io/led-matrix-editor/</a>
-    </div>
-
-    <div class="methodo-grid">
-        <div class="methodo-card matrix">
-            <h4>🛠️ Guide d'Utilisation de LED Matrix Editor</h4>
-            <ul>
-                <li>1. Dans le sélecteur en haut à droite, choisissez la couleur <strong>Red</strong>.</li>
-                <li>2. Cliquez sur les cases de la grille 8 &times; 8 pour allumer ou éteindre les DELs et former votre dessin.</li>
-                <li>3. Pour récupérer le code :
-                    <ul>
-                        <li>Dans le menu déroulant de génération, sélectionnez <strong>Arduino (byte array)</strong>.</li>
-                        <li>Copiez la liste des 8 valeurs (ex : <code>{ B00111100, B01000010, ... }</code> ou en hexadécimal).</li>
-                    </ul>
-                </li>
-                <li>4. Dans votre code MicroPython, collez simplement ces 8 valeurs sous forme d'une liste Python : <code>[0x3C, 0x42, ...]</code> ou <code>[0b00111100, ...]</code>.</li>
-            </ul>
-        </div>
-        <div class="methodo-card bargraph">
-            <h4>🎯 Pictogrammes Obligatoires à Concevoir</h4>
-            <ul>
-                <li><strong>1. Icône FROID (<em>T</em> &lt; 18 °C) :</strong> Symbole Flocon de neige, flèche vers le bas ou thermomètre bas.</li>
-                <li><strong>2. Icône CONFORT (18 °C &le; <em>T</em> &le; 25 °C) :</strong> Visage souriant (Smiley "happy") ou mot "OK".</li>
-                <li><strong>3. Icône ALERTE / CHAUD (<em>T</em> &gt; 25 °C) :</strong> Symbole Flamme, point d'exclamation dans un triangle ou mot "HOT".</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="code-container">
-        <div class="code-header">
-            <span>MicroPython — Exemples de Motifs 8x8 (À Personnaliser par l'Élève)</span>
-            <span>Représentations Binaires Explicites</span>
-        </div>
-        <pre><code class="language-python"># Exemple 1 : Flocon / Étoile (Température Froide)
-ICONE_FROID = [
-    0b00011000,
-    0b10011001,
-    0b01011010,
-    0b00111100,
-    0b00111100,
-    0b01011010,
-    0b10011001,
-    0b00011000
-]
-
-# Exemple 2 : Smiley Souriant (Température de Confort Idéale)
-ICONE_CONFORT = [
-    0b00111100,  # . . # # # # . .
-    0b01000010,  # . # . . . . # .
-    0b10100101,  # # . # . . # . # (Yeux)
-    0b10000001,  # # . . . . . . #
-    0b10100101,  # # . # . . # . # (Sourire)
-    0b10011001,  # # . . # # . . #
-    0b01000010,  # . # . . . . # .
-    0b00111100   # . . # # # # . .
-]
-
-# Exemple 3 : Flamme / Alerte Surchauffe (Température Élevée)
-ICONE_CHAUD = [
-    0b00010000,
-    0b00011000,
-    0b00111100,
-    0b01101110,
-    0b01111110,
-    0b01111110,
-    0b00111100,
-    0b00011000
-]</code></pre>
-    </div>
-
-    <div class="question-box">
-        <h4>Questions d'Analyse :</h4>
-        <p><strong>Q8.</strong> Dessinez vos 3 pictogrammes sur l'éditeur en ligne. Relevez ci-dessous la liste des 8 octets de chaque motif (en hexadécimal ou en binaire). Justifiez le choix graphique de vos pictogrammes du point de vue de l'expérience utilisateur et de la lisibilité à distance.</p>
-        <p><strong>Q9.</strong> Testez l'affichage successif de vos 3 icônes sur la matrice avec une temporisation de 1,5 seconde entre chaque image dans une boucle de test.</p>
-    </div>
-
-    <!-- ========================================================================= -->
-    <!-- PARTIE 3 : SYNTHÈSE & DÉFI COMPLET -->
-    <!-- ========================================================================= -->
-    <h2 class="part-title">
-        <span>Partie 3 : Défi d'Ingénierie — Station de Surveillance Thermique Autonome (Capteur DHT)</span>
-        <span class="duration-badge">Durée : 1h00</span>
-    </h2>
-
-    <p>
-        Dans ce défi d'ingénierie, vous allez fusionner l'ensemble des compétences acquises pour concevoir une <strong>station de surveillance thermo-hygrométrique autonome</strong> (<code>main.py</code>).
-    </p>
-    <p>
-        Pour mesurer la température et l'humidité de l'air ambiant de manière directe et industrielle, nous proposons d'<strong>abandonner la sonde analogique CTN</strong> (dont la réponse non linéaire exige un pont diviseur et une modélisation mathématique) au profit d'un <strong>capteur numérique intégré DHT (DHT11 ou DHT22 / AM2302)</strong>.
-        Ce composant moderne intègre son propre capteur capacitif d'humidité, une thermistance étalonnée en usine et un microcontrôleur interne qui convertit directement les grandeurs physiques en signaux numériques transmis sur un unique fil de données.
+        Pour mesurer simultanément la température et l'humidité de l'air ambiant avec fiabilité, nous utilisons un capteur numérique <strong>DHT (DHT11 ou DHT22 / AM2302)</strong>.
+        Contrairement à une thermistance CTN qui délivre une grandeur analogique dépendante d'un pont diviseur, le capteur DHT intègre son propre microcontrôleur interne : il convertit directement les grandeurs physiques en signaux binaires transmis sur <strong>un unique fil de données (protocole série 1-Wire)</strong>.
     </p>
 
     <div class="doc-link-box">
         📚 <strong>Documentation officielle MicroPython pour les capteurs DHT :</strong><br>
         <a href="https://docs.micropython.org/en/latest/esp8266/tutorial/dht.html" target="_blank" rel="noopener noreferrer">https://docs.micropython.org/en/latest/esp8266/tutorial/dht.html</a><br>
-        <em>Ce tutoriel officiel détaille l'utilisation du module <code>dht</code> standard de MicroPython. Le capteur communique sur 1 fil numérique (protocole 1-wire) et fournit directement la température en °C et le taux d'humidité relative en %.</em>
+        <em>Ce pilote natif MicroPython fournit directement la température en °C via <code>capteur.temperature()</code> et l'humidité relative en % via <code>capteur.humidity()</code> après avoir déclenché une acquisition par <code>capteur.measure()</code>.</em>
     </div>
 
     <div class="wiring-box">
-        <strong>🔌 Connexions du Capteur DHT &harr; Raspberry Pi Pico :</strong><br><br>
+        <strong>🔌 Connexions du Capteur DHT sur la Raspberry Pi Pico :</strong><br><br>
         • Broche Signal (DATA, fil jaune) : Relier à la broche numérique <span class="pin-tag sig">GP22</span> (broche physique 29)<br>
         • Broche Alimentation (VCC, fil rouge) : Relier au <span class="pin-tag vcc">3V3 (Pin 36)</span><br>
         • Broche Masse (GND, fil noir) : Relier à un <span class="pin-tag gnd">GND (Pin 18, 23 ou 38)</span><br>
-        <em>(Remarque : Si vous disposez d'un module Grove DHT11/DHT22, la résistance de tirage pull-up est déjà intégrée sur le circuit. Si vous utilisez un capteur DHT en composant nu, reliez une résistance de tirage de 4,7 kΩ à 10 kΩ entre DATA et 3V3).</em>
+        • <strong>Liaison avec le PC :</strong> Câble micro-USB reliant la Raspberry Pi Pico à un port USB de l'ordinateur.<br>
+        <em>(Remarque : Si vous utilisez un module Grove DHT, la résistance de tirage pull-up est déjà incluse sur le module. En cas d'utilisation d'un capteur nu, ajoutez une résistance de 4,7 kΩ à 10 kΩ entre DATA et 3V3).</em>
     </div>
 
-    <p style="margin-top: 1rem;">
-        <strong>Cahier des charges de la station autonome :</strong> Dès la mise sous tension de la Raspberry Pi Pico, le système doit exécuter de manière autonome les actions suivantes :
+    <h3 class="section-title">2.2. Programme Embarqué sur la Pico : Émission Série des Mesures (MicroPython)</h3>
+    <p>
+        Ouvrez Thonny et créez sur votre Raspberry Pi Pico le script <code>pico_emetteur_dht.py</code> ci-dessous. Ce programme lit le capteur toutes les 2 secondes et transmet la trame <code>temperature,humidite</code> sur la liaison série USB :
     </p>
-    <ol style="margin-left: 2rem; margin-bottom: 1rem; font-size: 0.95rem;">
-        <li>Acquérir périodiquement la température et l'humidité mesurées par le capteur <strong>DHT</strong> sur <code>GP22</code>.</li>
-        <li>Adapter la fonction de jauge pour afficher le niveau thermique sur le <strong>Grove LED Bar</strong> (de 0 à 10 DELs pour une plage typique de 16 °C à 28 °C).</li>
-        <li>Afficher sur la <strong>Matrice DEL 8×8</strong> l'icône appropriée conçue en Partie 2 :<br>
-            • Si <em>T</em> &lt; 18 °C : icône <strong>Froid</strong> (flocon)<br>
-            • Si 18 °C &le; <em>T</em> &le; 24 °C : icône <strong>Confort</strong> (smiley)<br>
-            • Si <em>T</em> &gt; 24 °C : icône <strong>Alerte / Chaud</strong> (flamme)
-        </li>
-        <li>Afficher un rapport formaté sur la console série Thonny (température, humidité, niveau bargraph, état qualitatif).</li>
-        <li>Cadencer la boucle principale avec une temporisation d'au moins <strong>1,5 à 2 secondes</strong> (contrainte matérielle de temps d'intégration du capteur DHT).</li>
-    </ol>
 
     <div class="code-container">
         <div class="code-header">
-            <span>MicroPython — station_thermique_dht.py (Squelette d'Ingénierie à Compléter)</span>
-            <span>Intégration Chaîne d'Information Complète</span>
+            <span>MicroPython — pico_emetteur_dht.py (Code Embarqué Fourni)</span>
+            <span>Acquisition 1-Wire &amp; Transmission Série USB</span>
         </div>
         <pre><code class="language-python"># ==============================================================================
-# TP TERMINALE SI — DÉFI D'INGÉNIERIE : STATION DE SURVEILLANCE DHT AUTONOME
-# Acquérir  : Capteur numérique DHT11 ou DHT22 (sur GP22)
-# Traiter   : Raspberry Pi Pico (RP2040)
-# Restituer : Grove LED Bar (GP16/17) + Matrice DEL 8x8 I2C HT16K33 (GP8/9)
+# TP TERMINALE SI — STATION MÉTÉO EMBARQUÉE : ÉMETTEUR SÉRIE (PICO RP2040)
+# Capteur : DHT11 (bleu) ou DHT22 (blanc) sur la broche numérique GP22
+# Liaison : Port série USB (communication avec le PC exécutant l'IHM Tkinter)
 # ==============================================================================
 import time
-from machine import Pin, I2C
-import dht                  # Module officiel MicroPython pour DHT11 / DHT22
-from my9221 import MY9221  # Pilote de la barre de DELs
+from machine import Pin
+import dht
 
-# ------------------------------------------------------------------------------
-# 1. INITIALISATION MATÉRIELLE DES PÉRIPHÉRIQUES
-# ------------------------------------------------------------------------------
-# TODO ÉLÈVE : Instancier le capteur DHT sur la broche GP22
-# (Utiliser dht.DHT11 ou dht.DHT22 selon le composant dont dispose votre binôme)
-# capteur = dht.DHT11(Pin(22))
-capteur = None  # <-- À remplacer par votre instanciation
+# 1. Instanciation du capteur sur GP22 (DHT11 ou DHT22 selon votre matériel)
+capteur = dht.DHT11(Pin(22))  # Remplacez par dht.DHT22(Pin(22)) si DHT22
 
-# Initialisation du bargraph Grove LED Bar (MY9221)
-barre = MY9221(di=Pin(16), dcki=Pin(17), reverse=False)
-
-# Initialisation du bus I2C et de la Matrice DEL 8x8 (HT16K33)
-i2c = I2C(0, scl=Pin(9), sda=Pin(8), freq=100000)
-# (Recopiez ici la définition de la classe GroveMatrixHT16K33 de la Partie 2)
-# matrice = GroveMatrixHT16K33(i2c, address=0x70)
-matrice = None  # <-- À remplacer par votre instanciation
-
-# TODO ÉLÈVE : Définition des motifs d'icônes conçus lors de la Partie 2 (8 octets par motif)
-ICONE_FROID   = [ ... ]  # <-- Vos 8 octets pour l'état Froid
-ICONE_CONFORT = [ ... ]  # <-- Vos 8 octets pour l'état Confort
-ICONE_CHAUD   = [ ... ]  # <-- Vos 8 octets pour l'état Alerte Chaud
-
-# ------------------------------------------------------------------------------
-# 2. FONCTIONS DE TRAITEMENT ET DE CONVERSION
-# ------------------------------------------------------------------------------
-def temperature_vers_niveau(temp_celsius, t_min=16.0, t_max=28.0):
-    """
-    TODO ÉLÈVE : Calcule le nombre de DELs à allumer (entier de 0 à 10)
-    en effectuant une interpolation linéaire de temp_celsius entre t_min et t_max.
-    - Si temp_celsius <= t_min : retourne 0
-    - Si temp_celsius >= t_max : retourne 10
-    - Entre les deux : calculer le palier proportionnel (0 à 10)
-    """
-    # TODO : Implanter la structure conditionnelle et la formule de proportionnalité
-    pass
-
-def acquerir_dht():
-    """
-    TODO ÉLÈVE : Déclenche l'acquisition et lit les grandeurs physiques du DHT.
-    - Appeler la méthode .measure() sur l'objet capteur
-    - Récupérer .temperature() en °C et .humidity() en %
-    - Retourner le tuple (temp, hum)
-    Astuce : Placez l'acquisition dans un bloc 'try ... except OSError:' pour
-    éviter l'arrêt du programme en cas de trame 1-wire corrompue.
-    """
-    # TODO : Écrire la séquence d'acquisition MicroPython
-    pass
-
-# ------------------------------------------------------------------------------
-# 3. BOUCLE PRINCIPALE AUTONOME (À COMPLÉTER PAR L'ÉLÈVE)
-# ------------------------------------------------------------------------------
-print("=== DÉMARRAGE DE LA STATION THERMIQUE AUTONOME (DHT) ===")
+print("=== PICO ÉMETTEUR DHT PRÊT ===")
 
 while True:
-    # TODO ÉLÈVE 1 : Appeler acquerir_dht() pour obtenir la température et l'humidité
-    
-    # TODO ÉLÈVE 2 : Calculer le nombre de DELs via temperature_vers_niveau()
-    #                et actualiser la jauge avec barre.level(...)
-    
-    # TODO ÉLÈVE 3 : Déterminer l'état thermique (Froid / Confort / Chaud)
-    #                et afficher le pictogramme correspondant sur la matrice 8x8
-    
-    # TODO ÉLÈVE 4 : Afficher les grandeurs mesurées dans la console Thonny pour le diagnostic
-    
-    # TODO ÉLÈVE 5 : Temporiser la boucle (attention à la cadence minimale du DHT !)
+    try:
+        # Déclenchement de l'acquisition des grandeurs physiques
+        capteur.measure()
+        temp = capteur.temperature()  # Température en °C
+        hum = capteur.humidity()      # Humidité relative en %
+        
+        # Envoi de la trame au format standard CSV : "temp,hum"
+        print(f"{temp:.1f},{hum:.1f}")
+        
+    except OSError as e:
+        print("ERREUR_DHT")
+        
+    # Temporisation obligatoire : le capteur DHT exige au moins 1,5 à 2 secondes
+    # d'intervalle entre deux acquisitions pour réinitialiser sa chambre de mesure !
     time.sleep(2.0)</code></pre>
     </div>
 
+    <h3 class="section-title">2.3. Conception de l'IHM de Supervision avec Python &amp; Tkinter</h3>
+    <p>
+        <strong>Tkinter</strong> est la bibliothèque standard d'interface graphique (GUI) de Python. Elle permet de construire des fenêtres interactives composées de conteneurs (<code>Frame</code>, <code>LabelFrame</code>) et de composants d'affichage appelés <strong>widgets</strong> :
+    </p>
+    <ul style="margin-left: 2rem; margin-bottom: 0.9rem; font-size: 0.92rem;">
+        <li><code>Label</code> : Affichage de textes fixes, de grandeurs numériques grand format ou d'étiquettes d'état stylisées.</li>
+        <li><code>ttk.Progressbar</code> : Barre de progression horizontale représentant graphiquement une jauge de 0 à 100 %.</li>
+        <li><code>Button</code> : Bouton d'action permettant par exemple à l'utilisateur de quitter proprement l'application.</li>
+    </ul>
+
+    <div class="concept-box">
+        <h4>⚡ Règle d'Or en Programmation Graphique Événementielle : Ne Jamais Bloquer l'IHM !</h4>
+        <p>
+            Une interface graphique repose sur une <strong>boucle événementielle</strong> continue (<code>fenetre.mainloop()</code>) qui écoute les clics de souris, le clavier et redessine la fenêtre à chaque instant.
+        </p>
+        <p>
+            ❌ <strong>Erreur fatale :</strong> Si vous écrivez une boucle <code>while True:</code> avec un <code>time.sleep(2)</code> dans un programme Tkinter, l'exécution reste bloquée dans le sommeil : la fenêtre ne traite plus les messages du système d'exploitation et l'écran devient blanc avec la mention <em>"Le programme ne répond pas"</em> !
+        </p>
+        <p>
+            ✅ <strong>Solution d'ingénierie :</strong> On utilise la méthode non-bloquante <code>fenetre.after(delai_en_ms, nom_fonction)</code>. Cette méthode demande à Tkinter de planifier l'exécution de la fonction de rafraîchissement dans un temps précis (ex : 2000 ms), tout en continuant à faire tourner fluidement la boucle graphique entre-temps.
+        </p>
+    </div>
+
+    <div class="tp-image-container">
+        <svg viewBox="0 0 460 380" width="460" height="380" xmlns="http://www.w3.org/2000/svg" style="background:#ffffff; border-radius:8px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); border: 1px solid #cbd5e1;">
+            <!-- Fenêtre OS barre de titre -->
+            <rect x="0" y="0" width="460" height="32" rx="8" fill="#e2e8f0"/>
+            <rect x="0" y="20" width="460" height="12" fill="#e2e8f0"/>
+            <circle cx="18" cy="16" r="5.5" fill="#ef4444"/>
+            <circle cx="34" cy="16" r="5.5" fill="#f59e0b"/>
+            <circle cx="50" cy="16" r="5.5" fill="#10b981"/>
+            <text x="230" y="20" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="11" font-weight="600" fill="#475569">Station de Surveillance Thermo-Hygrométrique — Terminale SI</text>
+
+            <!-- Bandeau d'en-tête bleu -->
+            <rect x="0" y="32" width="460" height="50" fill="#1e3a8a"/>
+            <text x="230" y="56" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="14" font-weight="bold" fill="#ffffff" letter-spacing="0.5">STATION DE SURVEILLANCE IHM</text>
+            <text x="230" y="73" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="9.5" fill="#93c5fd">Supervision Température &amp; Humidité en Temps Réel (Tkinter)</text>
+
+            <!-- Carte 1 : Température -->
+            <rect x="25" y="94" width="410" height="106" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+            <text x="40" y="112" font-family="'Segoe UI', sans-serif" font-size="11" font-weight="bold" fill="#1e293b">🌡️ Température Ambiante</text>
+            <text x="230" y="152" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="32" font-weight="bold" fill="#1e293b">22.4 °C</text>
+            <!-- Badge de statut confort (vert) -->
+            <rect x="125" y="165" width="210" height="24" rx="12" fill="#16a34a"/>
+            <text x="230" y="181" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="10" font-weight="bold" fill="#ffffff">😊 CONFORT OPTIMAL (18-24°C)</text>
+
+            <!-- Carte 2 : Humidité -->
+            <rect x="25" y="210" width="410" height="106" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+            <text x="40" y="228" font-family="'Segoe UI', sans-serif" font-size="11" font-weight="bold" fill="#1e293b">💧 Humidité Relative de l'Air</text>
+            <text x="230" y="264" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="28" font-weight="bold" fill="#0284c7">54.0 %</text>
+            <!-- Barre de progression -->
+            <rect x="45" y="282" width="370" height="16" rx="8" fill="#e2e8f0"/>
+            <rect x="45" y="282" width="200" height="16" rx="8" fill="#0284c7"/>
+            <text x="230" y="294" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="9" font-weight="bold" fill="#ffffff">54 %</text>
+
+            <!-- Pied de page -->
+            <rect x="0" y="332" width="460" height="48" fill="#f8fafc"/>
+            <line x1="0" y1="332" x2="460" y2="332" stroke="#e2e8f0" stroke-width="1"/>
+            <circle cx="35" cy="356" r="4" fill="#22c55e"/>
+            <text x="46" y="360" font-family="'Segoe UI', sans-serif" font-size="9.5" fill="#475569">Acquisition active • Dernière màj : 14:32:08</text>
+            <!-- Bouton Quitter -->
+            <rect x="345" y="344" width="90" height="25" rx="4" fill="#ef4444"/>
+            <text x="390" y="360" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-size="9.5" font-weight="bold" fill="#ffffff">Fermer l'IHM</text>
+        </svg>
+        <p class="tp-image-caption">
+            <strong>Figure 1 :</strong> Interface Homme-Machine (IHM) développée en Python standard avec <code>tkinter</code>. L'affichage s'actualise automatiquement toutes les 2 secondes sans bloquer l'interface grâce à <code>fenetre.after()</code>. Le badge de statut et sa couleur s'adaptent dynamiquement selon les seuils thermiques programmés par l'élève.
+        </p>
+    </div>
+
+    <h3 class="section-title">2.4. Code Python PC Fourni à Compléter : <code>station_meteo_ihm.py</code></h3>
+    <p>
+        Sur votre ordinateur, ouvrez un nouvel environnement Python (VS Code, Thonny en mode <em>Python 3 standard</em> ou IDLE) et enregistrez le script sous le nom <strong><code>station_meteo_ihm.py</code></strong>.
+        Le code est <strong>fourni pour l'essentiel</strong> ; votre mission consiste à compléter les 4 sections <strong><code>TODO ÉLÈVE</code></strong> repérées dans la fonction <code>actualiser_donnees()</code> :
+    </p>
+
+    <div class="code-container">
+        <div class="code-header">
+            <span>Python 3 (PC) — station_meteo_ihm.py (Code IHM à Compléter)</span>
+            <span>Interface Graphique Tkinter &amp; Supervision Temps Réel</span>
+        </div>
+        <pre><code class="language-python"># ==============================================================================
+# TP TERMINALE SI — SUPERVISION THERMO-HYGROMÉTRIQUE SUR PC AVEC PYTHON &amp; TKINTER
+# Rôle   : Réception des mesures de la Pico et affichage sur une IHM graphique
+# Binôme : .....................................................................
+# ==============================================================================
+import tkinter as tk
+from tkinter import ttk
+from datetime import datetime
+import random
+
+# Module série pour communiquer avec la Pico (si la bibliothèque pyserial est installée)
+try:
+    import serial
+except ImportError:
+    serial = None
+
+# ------------------------------------------------------------------------------
+# 1. CONFIGURATION DE LA COMMUNICATION SÉRIE / MODE SIMULATION
+# ------------------------------------------------------------------------------
+PORT_SERIE = "COM3"  # TODO : Adapter selon le port COM de votre Pico (ex: COM4, COM5)
+VITESSE_BAUDS = 115200
+
+liaison_serie = None
+if serial:
+    try:
+        liaison_serie = serial.Serial(PORT_SERIE, VITESSE_BAUDS, timeout=1)
+        print(f"Connexion série établie avec succès sur {PORT_SERIE}")
+    except Exception:
+        print(f"Port {PORT_SERIE} non disponible. Basculement automatique en mode SIMULATION.")
+
+def lire_mesures_capteur():
+    """
+    Lit la trame 'temp,hum' transmise par la Pico via le port série USB,
+    ou génère des mesures réalistes en mode SIMULATION si la carte n'est pas connectée.
+    Retourne : tuple (temperature_float, humidite_float)
+    """
+    global liaison_serie
+    if liaison_serie and liaison_serie.is_open:
+        try:
+            ligne = liaison_serie.readline().decode('utf-8').strip()
+            if ligne and "," in ligne and not "ERREUR" in ligne:
+                parties = ligne.split(",")
+                return float(parties[0]), float(parties[1])
+        except Exception:
+            pass
+            
+    # Mode SIMULATION automatique (démo / test de l'IHM sur PC)
+    temp_sim = round(21.5 + random.uniform(-4.0, 5.0), 1)
+    hum_sim  = round(54.0 + random.uniform(-10.0, 15.0), 1)
+    return temp_sim, hum_sim
+
+# ------------------------------------------------------------------------------
+# 2. CRÉATION ET MISE EN PAGE DE L'INTERFACE GRAPHIQUE TKINTER
+# ------------------------------------------------------------------------------
+fenetre = tk.Tk()
+fenetre.title("Station de Surveillance Thermo-Hygrométrique — Terminale SI")
+fenetre.geometry("480x520")
+fenetre.resizable(False, False)
+fenetre.configure(bg="#f8fafc")
+
+# Bandeau d'en-tête bleu
+cadre_titre = tk.Frame(fenetre, bg="#1e3a8a", pady=12)
+cadre_titre.pack(fill=tk.X)
+
+lbl_titre = tk.Label(cadre_titre, text="STATION DE SURVEILLANCE IHM", 
+                     font=("Segoe UI", 14, "bold"), fg="white", bg="#1e3a8a")
+lbl_titre.pack()
+
+lbl_soustitre = tk.Label(cadre_titre, text="Supervision Température &amp; Humidité en Temps Réel", 
+                         font=("Segoe UI", 9), fg="#93c5fd", bg="#1e3a8a")
+lbl_soustitre.pack()
+
+# Carte 1 : Température Ambiante
+cadre_temp = tk.LabelFrame(fenetre, text=" 🌡️ Température Ambiante ", font=("Segoe UI", 11, "bold"),
+                           bg="white", fg="#1e293b", padx=15, pady=10, relief=tk.GROOVE)
+cadre_temp.pack(padx=20, pady=12, fill=tk.X)
+
+label_valeur_temp = tk.Label(cadre_temp, text="--.- °C", font=("Segoe UI", 32, "bold"), 
+                             fg="#1e293b", bg="white")
+label_valeur_temp.pack(pady=4)
+
+badge_statut = tk.Label(cadre_temp, text="EN ATTENTE DE MESURE", font=("Segoe UI", 10, "bold"),
+                        fg="white", bg="#64748b", padx=12, pady=4, relief=tk.FLAT)
+badge_statut.pack(pady=5)
+
+# Carte 2 : Humidité Relative
+cadre_hum = tk.LabelFrame(fenetre, text=" 💧 Humidité Relative de l'Air ", font=("Segoe UI", 11, "bold"),
+                          bg="white", fg="#1e293b", padx=15, pady=10, relief=tk.GROOVE)
+cadre_hum.pack(padx=20, pady=10, fill=tk.X)
+
+label_valeur_hum = tk.Label(cadre_hum, text="--.- %", font=("Segoe UI", 28, "bold"), 
+                            fg="#0284c7", bg="white")
+label_valeur_hum.pack(pady=2)
+
+# Jauge horizontale (ttk.Progressbar)
+style = ttk.Style()
+style.theme_use('clam')
+style.configure("Custom.Horizontal.TProgressbar", troughcolor="#e2e8f0", background="#0284c7")
+barre_hum = ttk.Progressbar(cadre_hum, orient=tk.HORIZONTAL, length=380, mode='determinate',
+                            maximum=100.0, style="Custom.Horizontal.TProgressbar")
+barre_hum.pack(pady=8)
+
+# Pied de page : Horodatage et Bouton Quitter
+cadre_bas = tk.Frame(fenetre, bg="#f8fafc", padx=20, pady=10)
+cadre_bas.pack(fill=tk.X, side=tk.BOTTOM)
+
+label_horodatage = tk.Label(cadre_bas, text="Dernière actualisation : --:--:--", 
+                            font=("Segoe UI", 9, "italic"), fg="#64748b", bg="#f8fafc")
+label_horodatage.pack(side=tk.LEFT)
+
+btn_quitter = tk.Button(cadre_bas, text="Fermer l'IHM", font=("Segoe UI", 9, "bold"),
+                        bg="#ef4444", fg="white", activebackground="#dc2626",
+                        relief=tk.FLAT, padx=10, pady=3, cursor="hand2", command=fenetre.destroy)
+btn_quitter.pack(side=tk.RIGHT)
+
+# ------------------------------------------------------------------------------
+# 3. FONCTION DE TRAITEMENT ET D'ACTUALISATION PÉRIODIQUE (À COMPLÉTER PAR L'ÉLÈVE)
+# ------------------------------------------------------------------------------
+def actualiser_donnees():
+    """
+    Fonction de rappel (callback) appelée périodiquement pour :
+    1. Récupérer les mesures (réelles ou simulées)
+    2. Formater l'affichage et appliquer les règles métier de confort (TODO Élève)
+    3. Mettre à jour dynamiquement les widgets Tkinter (TODO Élève)
+    4. Reprogrammer l'appel suivant sans bloquer l'IHM (TODO Élève)
+    """
+    # Récupération des grandeurs physiques
+    temp, hum = lire_mesures_capteur()
+
+    # ==========================================================================
+    # TODO ÉLÈVE 1 : Formatage des textes d'affichage
+    # ==========================================================================
+    # Formatez 'temp' avec 1 chiffre après la virgule, suivi de " °C" (ex: "21.5 °C")
+    # Formatez 'hum' avec 1 chiffre après la virgule, suivi de " %" (ex: "54.2 %")
+    texte_temp = ...  # <-- Remplacez par : f"{temp:.1f} °C"
+    texte_hum  = ...  # <-- Remplacez par : f"{hum:.1f} %"
+
+    # ==========================================================================
+    # TODO ÉLÈVE 2 : Logique conditionnelle des seuils de confort thermique
+    # ==========================================================================
+    # Cahier des charges :
+    # - Si temp < 18.0 °C             -> Statut: "❄️ FROID (< 18°C)",           Couleur: "#2563eb" (Bleu)
+    # - Si 18.0 °C <= temp <= 24.0 °C -> Statut: "😊 CONFORT OPTIMAL (18-24°C)", Couleur: "#16a34a" (Vert)
+    # - Si temp > 24.0 °C             -> Statut: "🔥 ALERTE CHALEUR (> 24°C)",   Couleur: "#dc2626" (Rouge)
+    if temp < 18.0:
+        statut = "❄️ FROID (< 18°C)"
+        couleur = "#2563eb"
+    elif ... :  # <-- Complétez la condition pour la zone de confort (18 à 24 °C)
+        statut = ...
+        couleur = ...
+    else:       # <-- Cas où temp > 24.0 °C
+        statut = ...
+        couleur = ...
+
+    # ==========================================================================
+    # TODO ÉLÈVE 3 : Mise à jour dynamique des widgets graphiques Tkinter
+    # ==========================================================================
+    # Actualiser le texte affiché sur 'label_valeur_temp' avec 'texte_temp' :
+    label_valeur_temp.config(text=texte_temp)
+    
+    # Actualiser le texte affiché sur 'label_valeur_hum' avec 'texte_hum' :
+    label_valeur_hum.config(...)
+    
+    # Actualiser le badge d'état avec le texte 'statut' et la couleur d'arrière-plan 'couleur' :
+    badge_statut.config(...)
+    
+    # Actualiser la valeur de la barre de progression 'barre_hum' avec la variable 'hum' :
+    barre_hum['value'] = ...
+
+    # Horodatage automatique
+    heure_actuelle = datetime.now().strftime("%H:%M:%S")
+    label_horodatage.config(text=f"Dernière actualisation : {heure_actuelle}")
+
+    # ==========================================================================
+    # TODO ÉLÈVE 4 : Programmation du rafraîchissement périodique non bloquant
+    # ==========================================================================
+    # Programmez le rappel automatique de actualiser_donnees après un délai de 2000 ms (2 secondes)
+    # Syntaxe Tkinter : fenetre.after(delai_en_ms, nom_de_la_fonction)
+    # ATTENTION : Ne JAMAIS mettre de parenthèses au nom de la fonction dans .after !
+    fenetre.after(..., ...)
+
+# ------------------------------------------------------------------------------
+# 4. DÉMARRAGE DE LA BOUCLE ÉVÉNEMENTIELLE
+# ------------------------------------------------------------------------------
+# Premier appel pour initialiser l'affichage
+actualiser_donnees()
+
+# Lancement de l'IHM
+print("=== DÉMARRAGE DE L'IHM TKINTER ===")
+fenetre.mainloop()</code></pre>
+    </div>
+
     <div class="question-box">
-        <h4>Validation Expérimentale &amp; Questions de Synthèse :</h4>
-        <p><strong>Q10. Test en direct :</strong> Rapprochez votre main du capteur DHT ou soufflez délicatement dessus pendant une dizaine de secondes. Observez l'évolution conjointe de la température et de l'humidité sur la console série, ainsi que les transitions sur le bargraph et la matrice à DELs. Relevez les valeurs maximales atteintes et décrivez les transitions observées.</p>
-        <p><strong>Q11. Analyse comparative des protocoles de communication :</strong> Complétez le tableau comparatif ci-dessous pour synthétiser les différences technologiques entre les trois périphériques raccordés à la Pico :</p>
+        <h4>Questions d'Analyse &amp; Validation Expérimentale — Partie 2 :</h4>
+        <p><strong>Q4.</strong> Pourquoi est-il strictement interdit d'utiliser une boucle infinie <code>while True:</code> avec <code>time.sleep(2)</code> à l'intérieur d'une interface graphique avec Tkinter ? Quel rôle joue précisément la méthode <code>fenetre.after(2000, actualiser_donnees)</code> par rapport à la boucle événementielle <code>fenetre.mainloop()</code> ?</p>
+        <p><strong>Q5.</strong> Identifiez dans le code les différents widgets Tkinter employés et associez à chacun son rôle dans la restitution visuelle (précisez le rôle de <code>label_valeur_temp</code>, <code>badge_statut</code>, <code>barre_hum</code> et <code>btn_quitter</code>).</p>
+        <p><strong>Q6.</strong> Complétez les 4 blocs <code>TODO ÉLÈVE</code> dans votre script <code>station_meteo_ihm.py</code> sur l'ordinateur. Exécutez le programme. Vérifiez que la température et l'humidité s'actualisent toutes les 2 secondes. Testez la réactivité en réchauffant doucement le capteur DHT ou en soufflant dessus pour observer le basculement automatique des seuils de confort et des couleurs (bleu &rarr; vert &rarr; rouge).</p>
+        <p><strong>Q7 (Défi d'Ingénierie &amp; Ergonomie IHM).</strong> Proposez et implantez une amélioration logicielle sur votre interface. Par exemple :</p>
+        <ul style="padding-left: 1.3rem; margin-top: 0.3rem;">
+            <li>Changer la couleur de la jauge d'humidité si le taux dépasse 70 % (alerte risque de moisissure / condensation).</li>
+            <li>Ajouter deux petits labels affichant la <strong>température minimale</strong> ($T_{\min}$) et <strong>maximale</strong> ($T_{\max}$) enregistrées depuis le lancement de l'application.</li>
+        </ul>
     </div>
 
     <table>
         <thead>
             <tr>
                 <th>Critère de comparaison</th>
-                <th>Capteur DHT (DHT11 / DHT22)</th>
-                <th>Grove LED Bar (MY9221)</th>
-                <th>Grove Red LED Matrix (HT16K33)</th>
+                <th>Jauge Matérielle : Grove LED Bar (MY9221)</th>
+                <th>Supervision Logicielle : IHM PC (Tkinter)</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td><strong>Type de protocole de liaison</strong></td>
-                <td>Bus numérique série propriétaire 1 fil (One-Wire)</td>
-                <td>Série synchrone propriétaire 2 fils (Clock + Data)</td>
-                <td>Bus synchrone normalisé I²C (Inter-Integrated Circuit)</td>
+                <td><strong>Support de restitution</strong></td>
+                <td>Module physique à 10 DELs électroluminescentes</td>
+                <td>Écran d'ordinateur (Fenêtre graphique interactive)</td>
             </tr>
             <tr>
-                <td><strong>Nombre de broches de données</strong></td>
-                <td>1 broche (DATA)</td>
-                <td>2 broches (DI + DCKI)</td>
-                <td>2 broches (SDA + SCL)</td>
+                <td><strong>Liaison de communication</strong></td>
+                <td>Série synchrone propriétaire 2 fils (DI / DCKI) depuis GP16/17</td>
+                <td>Liaison série USB (port COM virtuel) émise par la Pico</td>
             </tr>
             <tr>
-                <td><strong>Adressage matériel sur le bus</strong></td>
-                <td class="empty-cell">... (Oui / Non ? Possible sur un seul fil ?)</td>
-                <td class="empty-cell">... (Possible ou impossible ?)</td>
-                <td class="empty-cell">... (Oui / Non ? De 0x... à 0x...)</td>
+                <td><strong>Type d'information restituée</strong></td>
+                <td>Niveau quantitatif discrétisé sur 10 segments lumineux</td>
+                <td>Valeurs numériques exactes, jauge d'humidité et alertes textuelles colorées</td>
             </tr>
             <tr>
-                <td><strong>Partage des broches avec d'autres périphériques</strong></td>
-                <td class="empty-cell">... (Point à point ou bus partagé ?)</td>
-                <td class="empty-cell">...</td>
-                <td class="empty-cell">...</td>
+                <td><strong>Environnement logiciel</strong></td>
+                <td>MicroPython embarqué sur Raspberry Pi Pico (RP2040)</td>
+                <td>Python 3 standard avec bibliothèque native <code>tkinter</code></td>
             </tr>
             <tr>
-                <td><strong>Rôle dans la chaîne d'information</strong></td>
-                <td>ACQUÉRIR (Capteur d'entrée)</td>
-                <td>RESTITUER (Afficheur quantitatif)</td>
-                <td>RESTITUER (Afficheur qualitatif / IHM)</td>
-            </tr>
-            <tr>
-                <td><strong>Avantage principal par rapport à la CTN</strong></td>
-                <td class="empty-cell">... (Étalonnage usine, mesure numérique directe...)</td>
-                <td style="background:#f8fafc; color:#64748b; font-style:italic;">—</td>
-                <td style="background:#f8fafc; color:#64748b; font-style:italic;">—</td>
+                <td><strong>Avantage principal en ingénierie</strong></td>
+                <td>Visualisation instantanée directe sans ordinateur, faible coût</td>
+                <td>Convivialité, richesse visuelle, historisation possible et ergonomie poussée</td>
             </tr>
         </tbody>
     </table>
 
     <!-- ========================================================================= -->
-    <!-- PARTIE 4 : NIVEAU À BULLE ÉLECTRONIQUE & HORIZON ARTIFICIEL -->
+    <!-- PARTIE 3 : APPROFONDISSEMENT — NIVEAU À BULLE ÉLECTRONIQUE & HORIZON ARTIFICIEL -->
     <!-- ========================================================================= -->
     <h2 class="part-title">
-        <span>Partie 4 : Niveau à Bulle Électronique &amp; Horizon Artificiel (Accéléromètre 3 Axes)</span>
+        <span>Partie 3 : Défi d'Approfondissement — Niveau à Bulle Électronique &amp; Horizon Artificiel (Accéléromètre 3 Axes)</span>
         <span class="duration-badge">Durée : 1h00 (Étude Théorique &amp; Modélisation)</span>
     </h2>
 
@@ -1324,7 +1272,7 @@ while True:
         <em>Ce composant communique également sur le bus I²C (adresse <code>0x4C</code>) et mesure les accélérations selon 3 axes orthogonaux (<em>x</em>, <em>y</em>, <em>z</em>).</em>
     </div>
 
-    <h3 class="section-title">4.1. Modélisation Vectorielle : Mesure de l'Inclinaison par la Pesanteur</h3>
+    <h3 class="section-title">3.1. Modélisation Vectorielle : Mesure de l'Inclinaison par la Pesanteur</h3>
     <p>
         Dans un état statique ou quasi-statique (vitesse de déplacement faible sans accélération dynamique violente), le capteur ne subit que l'<strong>accélération de la pesanteur terrestre <em>g&#x20D7;</em></strong>, dirigée selon la verticale descendante locale (<em>g</em> &approx; 9,81 m/s&sup2;, soit 1 g).
     </p>
@@ -1359,7 +1307,7 @@ while True:
         </p>
     </div>
 
-    <h3 class="section-title">4.2. Principe du Niveau à Bulle &amp; Horizon Artificiel sur la Matrice 8×8</h3>
+    <h3 class="section-title">3.2. Principe du Niveau à Bulle &amp; Horizon Artificiel sur la Matrice 8×8</h3>
     <p>
         L'accéléromètre est solidaire du dos de la matrice à DELs. Si l'utilisateur fait pivoter physiquement le boîtier d'un angle +&theta; dans le sens trigonométrique :
     </p>
@@ -1376,18 +1324,18 @@ while True:
     </div>
 
     <div class="question-box">
-        <h4>Questions d'Ingénierie &amp; Analyse Algorithmique — Partie 4 :</h4>
+        <h4>Questions d'Ingénierie &amp; Analyse Algorithmique — Partie 3 :</h4>
         <p><em>(Rappel : Vous ne devez pas coder cette partie sur la Pico, mais mener la démarche d'analyse et concevoir l'algorithme sous forme d'équations et d'organigramme).</em></p>
-        <p><strong>Q12.</strong> On repère chaque DEL de la matrice par ses coordonnées entières (<em>x</em>, <em>y</em>) &isin; {0, 1, &hellip;, 7}&sup2;, le centre géométrique de la matrice étant le point (<em>x</em><sub>0</sub>, <em>y</em><sub>0</sub>) = (3,5 ; 3,5). Établissez l'équation cartésienne de la droite de pente <em>m</em> = &minus;tan(&theta;) passant par ce centre : <em>y</em> &minus; <em>y</em><sub>0</sub> = <em>m</em> &middot; (<em>x</em> &minus; <em>x</em><sub>0</sub>).</p>
-        <p><strong>Q13.</strong> La matrice étant discrète (8 rangées de DELs physiques), comment calcule-t-on le numéro de ligne entier <em>y</em><sub>DEL</sub>(<em>x</em>) à allumer pour chaque colonne <em>x</em> &isin; {0, 1, &hellip;, 7} ? Que doit faire l'algorithme si la valeur calculée <em>y</em> sort de l'intervalle [0 ; 7] (par exemple pour une forte inclinaison &theta; = 60°) ?</p>
-        <p><strong>Q14.</strong> Rédigez en français ou sous forme d'organigramme (pseudo-code) l'algorithme complet de la boucle d'asservissement d'horizon artificiel : <em>Lecture I²C MMA7660 &rarr; Calcul de &theta; &rarr; Calcul des 8 octets de la matrice &rarr; Rafraîchissement I²C HT16K33</em>.</p>
+        <p><strong>Q8.</strong> On repère chaque DEL de la matrice par ses coordonnées entières (<em>x</em>, <em>y</em>) &isin; {0, 1, &hellip;, 7}&sup2;, le centre géométrique de la matrice étant le point (<em>x</em><sub>0</sub>, <em>y</em><sub>0</sub>) = (3,5 ; 3,5). Établissez l'équation cartésienne de la droite de pente <em>m</em> = &minus;tan(&theta;) passant par ce centre : <em>y</em> &minus; <em>y</em><sub>0</sub> = <em>m</em> &middot; (<em>x</em> &minus; <em>x</em><sub>0</sub>).</p>
+        <p><strong>Q9.</strong> La matrice étant discrète (8 rangées de DELs physiques), comment calcule-t-on le numéro de ligne entier <em>y</em><sub>DEL</sub>(<em>x</em>) à allumer pour chaque colonne <em>x</em> &isin; {0, 1, &hellip;, 7} ? Que doit faire l'algorithme si la valeur calculée <em>y</em> sort de l'intervalle [0 ; 7] (par exemple pour une forte inclinaison &theta; = 60°) ?</p>
+        <p><strong>Q10.</strong> Rédigez en français ou sous forme d'organigramme (pseudo-code) l'algorithme complet de la boucle d'asservissement d'horizon artificiel : <em>Lecture I²C MMA7660 &rarr; Calcul de &theta; &rarr; Calcul des 8 octets de la matrice &rarr; Rafraîchissement I²C HT16K33</em>.</p>
     </div>
 
     <!-- ========================================================================= -->
-    <!-- PARTIE 5 : CONTRÔLE D'UN PIXEL PAR JOYSTICK GROVE -->
+    <!-- PARTIE 4 : APPROFONDISSEMENT — PILOTAGE D'UN PIXEL PAR JOYSTICK GROVE -->
     <!-- ========================================================================= -->
     <h2 class="part-title">
-        <span>Partie 5 : Pilotage Interactif d'un Pixel par Joystick Analogique (Grove Thumb Joystick)</span>
+        <span>Partie 4 : Défi d'Approfondissement — Pilotage Interactif d'un Pixel par Joystick Analogique (Grove Thumb Joystick)</span>
         <span class="duration-badge">Durée : 45 min</span>
     </h2>
 
@@ -1400,7 +1348,7 @@ while True:
         <a href="https://wiki.seeedstudio.com/Grove-Thumb_Joystick/" target="_blank" rel="noopener noreferrer">https://wiki.seeedstudio.com/Grove-Thumb_Joystick/</a>
     </div>
 
-    <h3 class="section-title">5.1. Fonctionnement Matériel du Joystick &amp; Câblage Pico</h3>
+    <h3 class="section-title">4.1. Fonctionnement Matériel du Joystick &amp; Câblage Pico</h3>
     <p>
         Le Thumb Joystick Grove intègre deux potentiomètres de 10 kΩ montés orthogonalement (axe X et axe Y). Lorsqu'on incline le manche, les curseurs des deux potentiomètres se déplacent et délivrent deux tensions analogiques continues <em>U</em><sub>X</sub> et <em>U</em><sub>Y</sub> comprises entre 0 V et <em>V</em><sub>CC</sub> (3,3 V). Au repos (manche au centre), les deux tensions sont centrées autour de <em>V</em><sub>CC</sub> / 2 &approx; 1,65 V.
     </p>
@@ -1420,7 +1368,7 @@ while True:
         • Fil Noir (Masse GND) &rarr; Relier à un <span class="pin-tag gnd">GND</span>
     </div>
 
-    <h3 class="section-title">5.2. Code MicroPython Fourni : Déplacement Temps Réel du Pixel Lumineux</h3>
+    <h3 class="section-title">4.2. Code MicroPython Fourni : Déplacement Temps Réel du Pixel Lumineux</h3>
     <p>
         Voici le programme complet permettant de piloter en direct la position du pixel lumineux sur la matrice 8×8 en fonction de la position du joystick. Ouvrez un nouveau script dans Thonny nommé <code>joystick_matrice_pixel.py</code> :
     </p>
@@ -1495,9 +1443,9 @@ while True:
     </div>
 
     <div class="question-box">
-        <h4>Questions d'Analyse — Partie 5 :</h4>
-        <p><strong>Q15.</strong> Exécutez le script ci-dessus. Déplacez le manche du joystick et observez la réactivité du pixel. Que constatez-vous lorsque le manche est au repos ? Y a-t-il des micro-oscillations ou hésitations du pixel entre deux DELs adjacentes ? Expliquez ce phénomène lié au bruit de mesure du convertisseur analogique-numérique.</p>
-        <p><strong>Q16 (Défi d'Approfondissement).</strong> Dans un jeu vidéo (type <em>Snake</em> ou curseur de sélection), le joystick ne commande pas la <em>position absolue</em> du pixel, mais sa <em>vitesse de déplacement</em> :</p>
+        <h4>Questions d'Analyse — Partie 4 :</h4>
+        <p><strong>Q11.</strong> Exécutez le script ci-dessus. Déplacez le manche du joystick et observez la réactivité du pixel. Que constatez-vous lorsque le manche est au repos ? Y a-t-il des micro-oscillations ou hésitations du pixel entre deux DELs adjacentes ? Expliquez ce phénomène lié au bruit de mesure du convertisseur analogique-numérique.</p>
+        <p><strong>Q12 (Défi d'Approfondissement).</strong> Dans un jeu vidéo (type <em>Snake</em> ou curseur de sélection), le joystick ne commande pas la <em>position absolue</em> du pixel, mais sa <em>vitesse de déplacement</em> :</p>
         <ul style="padding-left: 1.3rem; margin-top: 0.3rem;">
             <li>Si le manche est au centre (zone morte, par exemple 28000 &le; <em>N</em> &le; 37000), le pixel reste immobile à sa position actuelle.</li>
             <li>Si le manche est poussé vers la droite (<em>N</em><sub>X</sub> &gt; 50000), le pixel se décale d'une case vers la droite à chaque pas de temps.</li>
@@ -1521,33 +1469,28 @@ while True:
         <tbody>
             <tr>
                 <td><strong>1. Câblage matériel &amp; Sécurité électrique</strong></td>
-                <td>Raccordements corrects des périphériques sur la Raspberry Pi Pico (Potentiomètre, Capteur DHT, LED Bar, Matrice 8×8, Joystick) sans faux contact ni court-circuit.</td>
+                <td>Raccordements corrects et sécurisés sur la Raspberry Pi Pico (Potentiomètre sur GP26, Capteur DHT sur GP22, Grove LED Bar sur GP16/17, liaison USB PC).</td>
                 <td class="bareme-points">/ 3 pts</td>
             </tr>
             <tr>
                 <td><strong>2. Maîtrise du Grove LED Bar (MY9221)</strong></td>
-                <td>Compréhension de la liaison 2 fils série, test du chenillard réussi, formule d'interpolation linéaire <code>potentiometre_vers_niveau</code> fonctionnelle.</td>
-                <td class="bareme-points">/ 3 pts</td>
-            </tr>
-            <tr>
-                <td><strong>3. Recherche documentaire I²C &amp; Matrice 8×8</strong></td>
-                <td>Recherche efficace sur le wiki Seeed Studio, identification de l'adresse 0x70, utilisation de LED Matrix Editor pour créer les 3 pictogrammes.</td>
+                <td>Compréhension du protocole 2 fils, chenillard opérationnel, programmation correcte de la fonction d'interpolation linéaire <code>potentiometre_vers_niveau</code>.</td>
                 <td class="bareme-points">/ 4 pts</td>
             </tr>
             <tr>
-                <td><strong>4. Station de surveillance thermique intégrée</strong></td>
-                <td>Fonctionnement autonome de la station complète (Capteur DHT, LED Bar, Matrice 8×8), programmation de la boucle temps réel, affichage simultané de la jauge et de l'icône, validation expérimentale.</td>
-                <td class="bareme-points">/ 3 pts</td>
-            </tr>
-            <tr>
-                <td><strong>5. Modélisation Niveau à Bulle &amp; Horizon Artificiel</strong></td>
-                <td>Analyse vectorielle de la pesanteur <em>g&#x20D7;</em>, justification rigoureuse de la formule &theta; = arctan(&minus;<em>a</em><sub>x</sub> / <em>a</em><sub>y</sub>), équation de compensation de la ligne de DELs.</td>
+                <td><strong>3. Acquisition DHT &amp; Transmission Série</strong></td>
+                <td>Acquisition correcte de la température et de l'humidité en MicroPython, cadence de 2 s respectée, émission des trames texte formatées sur le port série USB.</td>
                 <td class="bareme-points">/ 4 pts</td>
             </tr>
             <tr>
-                <td><strong>6. Pilotage du pixel par Joystick (IHM)</strong></td>
-                <td>Acquisition analogique 2 voies ADC, discrétisation spatiale sur 8×8, réactivité temps réel et analyse du filtrage de zone morte.</td>
-                <td class="bareme-points">/ 3 pts</td>
+                <td><strong>4. Interface Graphique IHM sur PC (Tkinter)</strong></td>
+                <td>Mise en place des widgets graphiques, complétion des <code>TODO ÉLÈVE</code>, gestion conditionnelle des seuils de confort thermique (code couleur bleu/vert/rouge) et actualisation non bloquante par <code>fenetre.after()</code>.</td>
+                <td class="bareme-points">/ 5 pts</td>
+            </tr>
+            <tr>
+                <td><strong>5. Approfondissement : Modélisation 2D &amp; IHM</strong></td>
+                <td>Raisonnement mathématique sur l'horizon artificiel (projection vectorielle de la pesanteur) ou analyse du filtrage de zone morte du joystick analogique.</td>
+                <td class="bareme-points">/ 4 pts</td>
             </tr>
             <tr style="background:#f1f5f9; font-weight:bold;">
                 <td colspan="2" style="text-align:right;">NOTE GLOBALE DU TP :</td>
