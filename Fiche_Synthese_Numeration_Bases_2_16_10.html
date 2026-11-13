@@ -129,6 +129,17 @@
             font-weight: 700;
         }
 
+        .table-decimal th {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .table-decimal td.poids {
+            font-weight: bold;
+            color: #15803d;
+            background-color: #f0fdf4;
+        }
+
         .table-binary th {
             background-color: #e0f2fe;
             color: #0369a1;
@@ -461,8 +472,55 @@
     <h2 class="section-title">
         <span>1. Les Tableaux de Référence des Poids d'Exposants</span>
     </h2>
+    <p style="margin-bottom: 0.9rem;">
+        Toute numération de position pondérée fonctionne selon la même règle : le <strong>poids</strong> d'un chiffre dépend de son <strong>rang <em>i</em></strong> et vaut <strong>Base<sup><em>i</em></sup></strong>.
+    </p>
 
-    <h3 class="sub-title">A. Table des Poids en Base 2 (sur un octet = 8 bits, de <em>b</em><sub>7</sub> à <em>b</em><sub>0</sub>)</h3>
+    <h3 class="sub-title">A. Table des Poids en Base 10 (Rappel de référence — Notre système décimal usuel)</h3>
+    <table class="table-decimal">
+        <thead>
+            <tr>
+                <th style="width: 20%;">Rang du chiffre (<em>i</em>)</th>
+                <th>3</th>
+                <th>2</th>
+                <th>1</th>
+                <th>0</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Poids d'exposant</strong></td>
+                <td>10<sup>3</sup></td>
+                <td>10<sup>2</sup></td>
+                <td>10<sup>1</sup></td>
+                <td>10<sup>0</sup></td>
+            </tr>
+            <tr>
+                <td><strong>Désignation usuelle</strong></td>
+                <td>Milliers</td>
+                <td>Centaines</td>
+                <td>Dizaines</td>
+                <td>Unités</td>
+            </tr>
+            <tr>
+                <td><strong>Valeur décimale</strong></td>
+                <td class="poids">1 000</td>
+                <td class="poids">100</td>
+                <td class="poids">10</td>
+                <td class="poids">1</td>
+            </tr>
+        </tbody>
+    </table>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: -0.5rem; margin-bottom: 0.8rem;">
+        <em>Rapprochement avec notre quotidien : dans <strong>3 425</strong>, le 3 pèse 3 &times; 10<sup>3</sup> = 3 000, le 4 pèse 4 &times; 10<sup>2</sup> = 400, le 2 pèse 2 &times; 10<sup>1</sup> = 20 et le 5 pèse 5 &times; 10<sup>0</sup> = 5. C'est exactement cette même logique de décomposition qui s'applique au binaire (base 2) et à l'hexadécimal (base 16) !</em>
+    </p>
+
+    <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 0.7rem 1rem; border-radius: 6px; font-size: 0.88rem; margin-bottom: 1.3rem;">
+        <strong>Les 10 symboles de la base 10 (chiffres usuels) :</strong>
+        <code>0, 1, 2, 3, 4, 5, 6, 7, 8, 9</code>. <em>Dès qu'on atteint la valeur 10, on change de rang (création d'une dizaine).</em>
+    </div>
+
+    <h3 class="sub-title">B. Table des Poids en Base 2 (sur un octet = 8 bits, de <em>b</em><sub>7</sub> à <em>b</em><sub>0</sub>)</h3>
     <table class="table-binary">
         <thead>
             <tr>
@@ -502,11 +560,16 @@
             </tr>
         </tbody>
     </table>
-    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: -0.5rem; margin-bottom: 1rem;">
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: -0.5rem; margin-bottom: 0.8rem;">
         <em>Au-delà de 8 bits : 2<sup>8</sup> = 256, 2<sup>9</sup> = 512, 2<sup>10</sup> = 1024 (10 bits), 2<sup>11</sup> = 2048, 2<sup>12</sup> = 4096 (12 bits), 2<sup>16</sup> = 65536 (16 bits).</em>
     </p>
 
-    <h3 class="sub-title">B. Table des Poids en Base 16 (Hexadécimal)</h3>
+    <div style="background: #f0f9ff; border: 1px solid #bae6fd; padding: 0.7rem 1rem; border-radius: 6px; font-size: 0.88rem; margin-bottom: 1.3rem;">
+        <strong>Les 2 symboles de la base 2 (chiffres binaires / bits) :</strong>
+        <code>0</code> et <code>1</code>. <em>Dès qu'on atteint la valeur 2, on change de rang (création d'un bit supérieur : 1 + 1 = 10₂).</em>
+    </div>
+
+    <h3 class="sub-title">C. Table des Poids en Base 16 (Hexadécimal)</h3>
     <table class="table-hex">
         <thead>
             <tr>
