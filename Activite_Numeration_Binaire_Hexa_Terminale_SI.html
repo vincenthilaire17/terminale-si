@@ -1022,34 +1022,6 @@
         </div>
     </div>
 
-    <!-- EXERCICE 3 -->
-    <div class="challenge-card">
-        <div class="challenge-header">
-            <div class="challenge-title">Exercice 3 : Chronogramme d'Émission Série Asynchrone (UART)</div>
-            <span class="challenge-badge">5 points</span>
-        </div>
-        <div class="challenge-body">
-            <p>
-                Une liaison série asynchrone (UART) configurée à la vitesse normalisée de <strong>9600 bauds</strong> (9600 bits par seconde) transmet des caractères entre un capteur et un microcontrôleur.
-                Le protocole utilise le format standard <strong>8N1</strong> :
-            </p>
-            <ul style="margin-left: 1.2rem; font-size: 0.9rem;">
-                <li>Niveau de repos de la ligne : état logique <strong>'1'</strong> (3,3 V).</li>
-                <li><strong>1 bit de Start :</strong> toujours à <strong>'0'</strong> (front descendant pour réveiller le récepteur).</li>
-                <li><strong>8 bits de données :</strong> transmis en commençant par le bit de poids faible (LSB en premier).</li>
-                <li><strong>1 bit de Stop :</strong> toujours à <strong>'1'</strong> (retour à l'état de repos).</li>
-            </ul>
-
-            <div class="question-box">
-                <ol style="padding-left: 1.2rem;">
-                    <li>Calculez la durée <em>T</em><sub>bit</sub> d'un seul bit en microsecondes (&mu;s) à 9600 bauds (<em>T</em><sub>bit</sub> = 1 / 9600).</li>
-                    <li>Combien de bits au total (Start + Données + Stop) sont émis pour transmettre 1 seul octet ? En déduire le temps total d'émission d'un octet en millisecondes.</li>
-                    <li>On transmet l'octet hexadécimal <code>0x53</code> (qui correspond à la lettre 'S' en ASCII). Donnez son écriture binaire sur 8 bits, puis donnez la séquence exacte des 10 niveaux logiques transmis sur la ligne dans l'ordre chronologique.</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-
     <!-- ===================================================================== -->
     <!-- SECTION PRATIQUE : IMPLANTATION MICROPYTHON SUR RASPBERRY PI PICO      -->
     <!-- ===================================================================== -->
@@ -1071,14 +1043,35 @@
     </div>
 
     <div class="info-bridge">
-        <h4>🔌 Câblage Matériel : Matrice LED 8×8 Grove (I²C) &harr; Raspberry Pi Pico</h4>
-        <ul style="margin-left: 1.2rem;">
-            <li><strong>Broche SCL (Horloge I2C) :</strong> Connectée sur <strong>GP9</strong> (Broche physique 12 du Pico).</li>
-            <li><strong>Broche SDA (Données I2C) :</strong> Connectée sur <strong>GP8</strong> (Broche physique 11 du Pico).</li>
-            <li><strong>Alimentation VCC :</strong> <strong>3V3(OUT)</strong> (Broche 36) ou <strong>VBUS 5V</strong> (Broche 40).</li>
-            <li><strong>Masse GND :</strong> Broche 38 ou 3.</li>
-            <li><em>Adresse I²C par défaut :</em> <code>0x70</code> (ou <code>0x77</code> selon le composant Holtek HT16K33).</li>
+        <h4>🔌 Câblage Matériel : Matrice LED 8×8 Grove (I²C) &harr; Shield Grove Raspberry Pi Pico</h4>
+        <p style="margin-bottom: 0.6rem;">
+            Le microcontrôleur Raspberry Pi Pico est inséré sur le <strong>Shield Grove for Pi Pico</strong> (Seeed Studio). Connectez directement le câble Grove de la matrice LED 8×8 sur le port <strong>I2C0</strong> du shield :
+        </p>
+        <ul style="margin-left: 1.2rem; margin-bottom: 0.8rem;">
+            <li><strong>Port I2C0 (Grove Shield) :</strong>
+                <ul>
+                    <li>Broche <strong>SCL (Horloge I2C) :</strong> reliée en interne à <strong>GP9</strong> (broche physique 12 du Pico).</li>
+                    <li>Broche <strong>SDA (Données I2C) :</strong> reliée en interne à <strong>GP8</strong> (broche physique 11 du Pico).</li>
+                    <li>Broche <strong>VCC :</strong> <strong>3V3</strong> ou <strong>5V</strong> (selon la position du commutateur SW1 du shield).</li>
+                    <li>Broche <strong>GND :</strong> masse commune.</li>
+                </ul>
+            </li>
+            <li><strong>Adresse I²C par défaut du contrôleur HT16K33 :</strong> <code>0x70</code> (ou <code>0x77</code> selon le modèle).</li>
         </ul>
+
+        <!-- Illustrations : Shield Grove et Schéma structurel -->
+        <div style="display: flex; gap: 1.2rem; justify-content: center; align-items: stretch; margin-top: 1rem; flex-wrap: wrap;">
+            <div style="flex: 1 1 280px; max-width: 380px; background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+                <img src="images/grove_shield_pi_pico.png" alt="Shield Grove pour Raspberry Pi Pico" style="width: 100%; max-height: 250px; object-fit: contain; border-radius: 4px;">
+                <p style="font-size: 0.85rem; font-weight: bold; color: var(--primary); margin-top: 0.5rem;">Shield Grove pour Pi Pico (Seeed Studio)</p>
+                <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">Connecteur <strong>I2C0</strong> (en haut à gauche) pour la matrice LED</p>
+            </div>
+            <div style="flex: 1 1 380px; max-width: 520px; background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+                <img src="images/grove_shield_pi_pico_schema.png" alt="Schéma électrique du Shield Grove pour Pi Pico" style="width: 100%; max-height: 250px; object-fit: contain; border-radius: 4px;">
+                <p style="font-size: 0.85rem; font-weight: bold; color: var(--secondary-dark); margin-top: 0.5rem;">Schéma de câblage du Shield Grove</p>
+                <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">Correspondance du port <strong>I2C0</strong> : <code>I2C0_SDA &rarr; GP8</code> &bull; <code>I2C0_SCL &rarr; GP9</code></p>
+            </div>
+        </div>
     </div>
 
     <div style="background: #0f172a; border-radius: 8px; overflow: hidden; margin: 1.2rem 0; border: 1px solid #334155;">
