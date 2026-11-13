@@ -545,26 +545,6 @@
         </div>
     </div>
 
-    <!-- Objectifs et compétences du programme -->
-    <div class="competences-box">
-        <h3>🎯 Objectifs & Compétences du Programme de Terminale SI</h3>
-        <ul>
-            <li><strong>Compétence B2 / CO2.1 :</strong> Caractériser les échanges d'information entre composants (structure d'une trame série, délimiteurs de début/fin, octet de commande, assemblage de données sur plusieurs octets MSB/LSB, contrôle d'erreur par Checksum).</li>
-            <li><strong>Compétence B1 / CO1.2 :</strong> Traiter et coder l'information : convertir et manipuler les grandeurs numériques dans les bases 2, 10 et 16, maîtriser la règle des quartets et le découpage en octets.</li>
-            <li><strong>Compétence C1 / CO3.1 :</strong> Manipuler les représentations de données dans un système numérique (binaire naturel, puissances de 2, octets, hexadécimal, masquage de bits, code ASCII, pilotage d'afficheurs 7 segments).</li>
-        </ul>
-    </div>
-
-    <!-- Introduction contextualisée et enjeu d'ingénierie -->
-    <div class="concept-box">
-        <h4>🧭 Pourquoi cette activité est-elle le socle de vos futurs TPs de Terminale SI ?</h4>
-        <p>Dans un système mécatronique moderne (robotique, banc d'essai, drone, chaîne de tri automatisée) :</p>
-        <ul style="margin-left: 1.2rem; margin-top: 0.4rem;">
-            <li><strong>Côté Traitement des Données :</strong> Les processeurs et microcontrôleurs manipulent l'information sous forme de registres de 8, 10, 12 ou 16 bits. L'ingénieur doit savoir passer instantanément de la valeur binaire brute à son écriture hexadécimale compacte et à sa grandeur réelle décimale.</li>
-            <li><strong>Côté Communication (Le transport des données dans une trame) :</strong> Pour envoyer des mesures à un microcontrôleur ou un afficheur (sur une liaison série UART, SPI ou I²C), les bits sont organisés en <strong>octets</strong> successifs formant une <strong>trame</strong>. Une mesure de 10 ou 16 bits ne tenant pas dans un seul octet, elle doit être découpée en un <em>octet de poids fort (MSB)</em> et un <em>octet de poids faible (LSB)</em>, puis encadrée par des octets de synchronisation et de contrôle.</li>
-        </ul>
-    </div>
-
     <!-- ===================================================================== -->
     <!-- PARTIE 1 : L'ESCAPE GAME NUMÉRIQUE (1h30)                             -->
     <!-- ===================================================================== -->
@@ -604,10 +584,7 @@
                     REG_ETAT = 11010110₂
                 </code>
             </div>
-            <p><strong>Rappel d'ingénierie :</strong> Dans un registre binaire de 8 bits numérotés de <em>b</em><sub>7</sub> (poids fort / MSB) à <em>b</em><sub>0</sub> (poids faible / LSB), la valeur décimale est donnée par le développement positionnel en base 2 :</p>
-            <div class="math-formula">
-                <em>N</em><sub>10</sub> = &sum;<sub><em>i</em> = 0</sub><sup>7</sup> (<em>b<sub>i</sub></em> &times; 2<sup><em>i</em></sup>) = (<em>b</em><sub>7</sub> &times; 128) + (<em>b</em><sub>6</sub> &times; 64) + (<em>b</em><sub>5</sub> &times; 32) + (<em>b</em><sub>4</sub> &times; 16) + (<em>b</em><sub>3</sub> &times; 8) + (<em>b</em><sub>2</sub> &times; 4) + (<em>b</em><sub>1</sub> &times; 2) + (<em>b</em><sub>0</sub> &times; 1)
-            </div>
+            <p><strong>Rappel d'ingénierie :</strong> Dans un registre binaire de 8 bits numérotés de <em>b</em><sub>7</sub> (poids fort / MSB) à <em>b</em><sub>0</sub> (poids faible / LSB), la valeur décimale est donnée par le développement positionnel en base 2.</p>
 
             <div class="question-box">
                 <h4>Questions Défi 1 :</h4>
@@ -676,12 +653,6 @@
                 <h4>📐 Rappels : Mots Numériques sur 10 bits et au-delà :</h4>
                 <ul style="padding-left: 1.2rem;">
                     <li><strong>Nombre de combinaisons :</strong> Pour un mot de <em>n</em> bits, il y a 2<sup><em>n</em></sup> combinaisons binaires possibles (de 0 à 2<sup><em>n</em></sup> &minus; 1). Sur 10 bits : 2<sup>10</sup> = 1024 valeurs (de 0 à 1023).</li>
-                    <li><strong>Poids des bits d'un mot 10 bits :</strong>
-                        <div class="math-formula">
-                            <em>b</em><sub>9</sub>: 512 &bull; <em>b</em><sub>8</sub>: 256 &bull; <em>b</em><sub>7</sub>: 128 &bull; <em>b</em><sub>6</sub>: 64 &bull; <em>b</em><sub>5</sub>: 32 &bull; <em>b</em><sub>4</sub>: 16 &bull; <em>b</em><sub>3</sub>: 8 &bull; <em>b</em><sub>2</sub>: 4 &bull; <em>b</em><sub>1</sub>: 2 &bull; <em>b</em><sub>0</sub>: 1
-                        </div>
-                    </li>
-                    <li><strong>Conversion Hexadécimal &rarr; Binaire :</strong> Chaque symbole hexadécimal correspond à 4 bits (un quartet). Pour <code>0x0280</code> : <code>0x2 = 0010₂</code> et <code>0x8 = 1000₂</code> et <code>0x0 = 0000₂</code>.</li>
                 </ul>
             </div>
 
