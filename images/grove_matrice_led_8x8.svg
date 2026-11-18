@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" width="100%" height="100%">
+  <defs>
+    <radialGradient id="led-on" cx="40%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#fca5a5" />
+      <stop offset="60%" stop-color="#ef4444" />
+      <stop offset="100%" stop-color="#991b1b" />
+    </radialGradient>
+    <radialGradient id="led-off" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#475569" />
+      <stop offset="60%" stop-color="#334155" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </radialGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- PCB Board -->
+  <rect x="20" y="20" width="360" height="280" rx="14" fill="#0f766e" stroke="#115e59" stroke-width="3"/>
+  
+  <!-- Mounting Holes -->
+  <circle cx="36" cy="36" r="7" fill="#042f2e" stroke="#5eead4" stroke-width="1.5"/>
+  <circle cx="364" cy="36" r="7" fill="#042f2e" stroke="#5eead4" stroke-width="1.5"/>
+  <circle cx="36" cy="284" r="7" fill="#042f2e" stroke="#5eead4" stroke-width="1.5"/>
+  <circle cx="364" cy="284" r="7" fill="#042f2e" stroke="#5eead4" stroke-width="1.5"/>
+
+  <!-- Matrix Bezel / Frame -->
+  <rect x="50" y="35" width="210" height="210" rx="6" fill="#090d16" stroke="#1e293b" stroke-width="2"/>
+
+  <!-- 8x8 LED Grid with a nice 'SI' or arrow pattern lit up -->
+  <!-- Let's render an 8x8 grid of circles (r=9, spacing=24, offset x=67, y=52) -->
+  <!-- Pattern: letter 'S' & 'I' or smiley or diamond -->
+  <!-- Row 0: . X X X . X X X -->
+  <!-- Row 1: X . . . . . X . -->
+  <!-- Row 2: . X X . . . X . -->
+  <!-- Row 3: . . . X . . X . -->
+  <!-- Row 4: X X X . . X X X -->
+  <!-- Let's draw the 64 LEDs programmatically with proper coordinates -->
+  <!-- Background OFF LEDs first -->
+  <g id="led-grid">
+    <!-- Row 0 -->
+    <circle cx="70" cy="55" r="9" fill="url(#led-off)"/>
+    <circle cx="94" cy="55" r="9" fill="url(#led-on)" filter="url(#glow)"/>
+    <circle cx="118" cy="55" r="9" fill="url(#led-on)" filter="url(#glow)"/>
+    <circle cx="142" cy="55" r="9" fill="url(#led-on)" filter="url(#glow)"/>
+    <circle cx="166" cy="55" r="9" fill="url(#led-off)"/>
+    <circle cx="190" cy="55" r="9" fill="url(#led-on)" filter="url(#glow)"/>
+    <circle cx="214" cy="55" r="9" fill="url(#led-on)" filter="url(#glow)"/>
+    <circle cx="238" cy="55" r="9" fill="url(#led-on)" filter="url(#glow)"/>
+
+    <!-- Row 1 -->
+    <circle cx="70" cy="79" r="9" fill="url(#led-on)" filter="url(#glow)"/>
+    <circle cx="94" cy="79" r="9" fill="url(#led-off)"/>
+    <circle cx="118" cy="79" r="9" fill="url(#led-off)"/>
+    <circle cx="142" cy="79" r="9" fill="url(#led-off)"/>
+    <circle cx="166" cy="79" r="9" fill="url(#led-off)"/>
+    <circle cx="190" cy="79" r="9" fill="url(#led-off)"/>
+    <circle cx="214" cy="79" r="9" fill="url(#led-on)" filter="url(#glow)"/>
+    <circle cx="238" cy="79" r="9" fill="url(#led-off)"/>
+
+    <!-- Row 2 -->
+    <circle cx="70" cy="103" r="9" fill="url(#led-off)"/>
+    <circle cx="94" cy="103" r="9" fill="url(#led-on)" filter="url(#glow)"/>
+    <circle cx="118" cy="103" r="9" fill="url(#led-on)" filter="url(#glow)"/>
+    <circle cx="142" cy="103" r="9" fill="url(#led-off)"/>
+    <circle cx="166" cy="103" r="9" fill="url(#led-off)"/>
+    <circle cx="190" cy="103" r="9" fill="url(#led-off)"/>
+    <circle cx="214" cy="103" r="9" fill="url(#led-on)" filter="url(#glow)"/>
+    <circle cx="238" cy="103" r="9" fill="url(#led-off)"/>
+
+    <!-- Row 3 -->
+    <circle cx="70" cy="127" r="9" fill="url(#led-off)"/>
+    <circle cx="94" cy="127" r="9" fill="url(#led-off)"/>
+    <circle cx="118" cy="127" r="9" fill="url(#led-off)"/>
+    <circle cx="142" cy="127" r="9" fill="url(#led-on)" filter="url(#glow)"/>
+    <circle cx="166" cy="127" r="9" fill="url(#led-off)"/>
+    <circle cx="190" cy="127" r="9" fill="url(#led-off)"/>
+    <circle cx="214" cy="127" r="9" fill="url(#led-on)" filter="url(#glow)"/>
+    <circle cx="238" cy="127" r="9" fill="url(#led-off)"/>
+
+    <!-- Row 4 -->
+    <circle cx="70" cy="151" r="9" fill="url(#led-on)" filter="url(#glow)"/>
+    <circle cx="94" cy="151" r="9" fill="url(#led-on)" filter="url(#glow)"/>
+    <circle cx="118" cy="151" r="9" fill="url(#led-on)" filter="url(#glow)"/>
+    <circle cx="142" cy="151" r="9" fill="url(#led-off)"/>
+    <circle cx="166" cy="151" r="9" fill="url(#led-off)"/>
+    <circle cx="190" cy="151" r="9" fill="url(#led-on)" filter="url(#glow)"/>
+    <circle cx="214" cy="151" r="9" fill="url(#led-on)" filter="url(#glow)"/>
+    <circle cx="238" cy="151" r="9" fill="url(#led-on)" filter="url(#glow)"/>
+
+    <!-- Row 5 (Off) -->
+    <circle cx="70" cy="175" r="9" fill="url(#led-off)"/>
+    <circle cx="94" cy="175" r="9" fill="url(#led-off)"/>
+    <circle cx="118" cy="175" r="9" fill="url(#led-off)"/>
+    <circle cx="142" cy="175" r="9" fill="url(#led-off)"/>
+    <circle cx="166" cy="175" r="9" fill="url(#led-off)"/>
+    <circle cx="190" cy="175" r="9" fill="url(#led-off)"/>
+    <circle cx="214" cy="175" r="9" fill="url(#led-off)"/>
+    <circle cx="238" cy="175" r="9" fill="url(#led-off)"/>
+
+    <!-- Row 6 (Off) -->
+    <circle cx="70" cy="199" r="9" fill="url(#led-off)"/>
+    <circle cx="94" cy="199" r="9" fill="url(#led-off)"/>
+    <circle cx="118" cy="199" r="9" fill="url(#led-off)"/>
+    <circle cx="142" cy="199" r="9" fill="url(#led-off)"/>
+    <circle cx="166" cy="199" r="9" fill="url(#led-off)"/>
+    <circle cx="190" cy="199" r="9" fill="url(#led-off)"/>
+    <circle cx="214" cy="199" r="9" fill="url(#led-off)"/>
+    <circle cx="238" cy="199" r="9" fill="url(#led-off)"/>
+
+    <!-- Row 7 (Off) -->
+    <circle cx="70" cy="223" r="9" fill="url(#led-off)"/>
+    <circle cx="94" cy="223" r="9" fill="url(#led-off)"/>
+    <circle cx="118" cy="223" r="9" fill="url(#led-off)"/>
+    <circle cx="142" cy="223" r="9" fill="url(#led-off)"/>
+    <circle cx="166" cy="223" r="9" fill="url(#led-off)"/>
+    <circle cx="190" cy="223" r="9" fill="url(#led-off)"/>
+    <circle cx="214" cy="223" r="9" fill="url(#led-off)"/>
+    <circle cx="238" cy="223" r="9" fill="url(#led-off)"/>
+  </g>
+
+  <!-- Driver Chip HT16K33 representation -->
+  <rect x="275" y="45" width="45" height="70" rx="3" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+  <circle cx="282" cy="52" r="2.5" fill="#64748b"/>
+  <text x="297" y="85" fill="#94a3b8" font-family="Consolas" font-size="8px" transform="rotate(90 297 85)">HT16K33</text>
+
+  <!-- Grove Connector on Right -->
+  <g transform="translate(285, 140)">
+    <!-- White plastic housing -->
+    <rect x="0" y="0" width="70" height="95" rx="5" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+    <rect x="15" y="8" width="48" height="78" rx="3" fill="#e2e8f0"/>
+    <!-- 4 Pins -->
+    <rect x="35" y="16" width="20" height="6" fill="#94a3b8" rx="1"/>
+    <rect x="35" y="34" width="20" height="6" fill="#94a3b8" rx="1"/>
+    <rect x="35" y="52" width="20" height="6" fill="#94a3b8" rx="1"/>
+    <rect x="35" y="70" width="20" height="6" fill="#94a3b8" rx="1"/>
+    <!-- Pinout labels -->
+    <text x="-4" y="22" fill="#f8fafc" font-family="Consolas" font-size="9px" text-anchor="end">SCL (J)</text>
+    <text x="-4" y="40" fill="#f8fafc" font-family="Consolas" font-size="9px" text-anchor="end">SDA (B)</text>
+    <text x="-4" y="58" fill="#f8fafc" font-family="Consolas" font-size="9px" text-anchor="end">VCC (R)</text>
+    <text x="-4" y="76" fill="#f8fafc" font-family="Consolas" font-size="9px" text-anchor="end">GND (N)</text>
+  </g>
+
+  <!-- Silkscreen Labels -->
+  <text x="50" y="265" fill="#f8fafc" font-family="'Segoe UI', sans-serif" font-weight="bold" font-size="13px">Grove - Red LED Matrix 8x8</text>
+  <text x="50" y="283" fill="#99f6e4" font-family="Consolas" font-size="11px">Bus I2C : Adresse 0x70 (HT16K33)</text>
+</svg>

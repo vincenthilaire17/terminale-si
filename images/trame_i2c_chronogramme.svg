@@ -1,0 +1,202 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 420" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; rx: 12px; }
+      .grid-line { stroke: #334155; stroke-width: 1; stroke-dasharray: 4 4; }
+      .signal-scl { stroke: #a855f7; stroke-width: 3.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .signal-sda { stroke: #10b981; stroke-width: 3.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .signal-ack { stroke: #eab308; stroke-width: 3.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .txt-title { fill: #f8fafc; font-family: 'Segoe UI', system-ui, sans-serif; font-size: 16px; font-weight: bold; }
+      .txt-subtitle { fill: #cbd5e1; font-family: 'Segoe UI', system-ui, sans-serif; font-size: 12px; }
+      .txt-bit { fill: #e2e8f0; font-family: 'Consolas', monospace; font-size: 12px; font-weight: bold; text-anchor: middle; }
+      .txt-val { fill: #10b981; font-family: 'Consolas', monospace; font-size: 14px; font-weight: bold; text-anchor: middle; }
+      .txt-lbl { fill: #94a3b8; font-family: 'Consolas', monospace; font-size: 12px; }
+      .badge-start { fill: #ef4444; }
+      .badge-stop { fill: #06b6d4; }
+      .badge-ack { fill: #eab308; }
+      .box-addr { fill: rgba(16, 185, 129, 0.08); stroke: #059669; stroke-width: 1; rx: 5px; }
+    </style>
+    <marker id="time-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#94a3b8" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1000" height="420" class="bg"/>
+
+  <!-- Title -->
+  <text x="30" y="36" class="txt-title">Structure d'une Trame I2C — Octet d'Adressage (Ex: Matrice LED 0x70 en Écriture W=0)</text>
+  <text x="30" y="58" class="txt-subtitle">Lignes bidirectionnelles à drain ouvert avec résistances de tirage (Pull-Up). Échantillonnage SDA quand SCL est HAUT.</text>
+
+  <!-- Labels on left -->
+  <text x="25" y="125" fill="#a855f7" font-weight="bold" font-family="Consolas" font-size="14px">SCL (Horloge)</text>
+  <text x="25" y="245" fill="#10b981" font-weight="bold" font-family="Consolas" font-size="14px">SDA (Données)</text>
+
+  <!-- Grid horizontal references -->
+  <!-- SCL: High=100, Low=150 -->
+  <line x1="140" y1="100" x2="940" y2="100" class="grid-line"/>
+  <line x1="140" y1="150" x2="940" y2="150" class="grid-line"/>
+
+  <!-- SDA: High=220, Low=270 -->
+  <line x1="140" y1="220" x2="940" y2="220" class="grid-line"/>
+  <line x1="140" y1="270" x2="940" y2="270" class="grid-line"/>
+
+  <!-- Timing columns:
+       Start condition: 140 to 200
+       Clock 1 (A6=1): 200 to 270 (SCL high 220-250)
+       Clock 2 (A5=1): 270 to 340 (SCL high 290-320)
+       Clock 3 (A4=1): 340 to 410 (SCL high 360-390)
+       Clock 4 (A3=0): 410 to 480 (SCL high 430-460)
+       Clock 5 (A2=0): 480 to 550 (SCL high 500-530)
+       Clock 6 (A1=0): 550 to 620 (SCL high 570-600)
+       Clock 7 (A0=0): 620 to 690 (SCL high 640-670)
+       Clock 8 (R/W=0): 690 to 760 (SCL high 710-740)
+       Clock 9 (ACK=0 par esclave): 760 to 830 (SCL high 780-810)
+       Stop condition: 830 to 920
+  -->
+
+  <!-- Highlight Address box -->
+  <rect x="200" y="75" width="490" height="225" class="box-addr"/>
+  <text x="445" y="90" fill="#34d399" font-family="'Segoe UI', sans-serif" font-size="12px" font-weight="bold" text-anchor="middle">Champ Adresse Esclave sur 7 bits (0x70 = 0b1110000)</text>
+
+  <!-- SCL Waveform -->
+  <!-- 
+       Start: High (140 to 190), falls at 190
+       Pulse 1: low 190-215, high 215-255, low 255-285
+       Pulse 2: high 285-325, low 325-355
+       Pulse 3: high 355-395, low 395-425
+       Pulse 4: high 425-465, low 465-495
+       Pulse 5: high 495-535, low 535-565
+       Pulse 6: high 565-605, low 605-635
+       Pulse 7: high 635-675, low 675-705
+       Pulse 8: high 705-745, low 745-775
+       Pulse 9: high 775-815, low 815-845
+       Stop: rises to high at 845, stays high 845-940
+  -->
+  <path d="M 140 100 
+           L 190 100 
+           L 190 150 
+           L 215 150 
+           L 215 100 
+           L 255 100 
+           L 255 150 
+           L 285 150 
+           L 285 100 
+           L 325 100 
+           L 325 150 
+           L 355 150 
+           L 355 100 
+           L 395 100 
+           L 395 150 
+           L 425 150 
+           L 425 100 
+           L 465 100 
+           L 465 150 
+           L 495 150 
+           L 495 100 
+           L 535 100 
+           L 535 150 
+           L 565 150 
+           L 565 100 
+           L 605 100 
+           L 605 150 
+           L 635 150 
+           L 635 100 
+           L 675 100 
+           L 675 150 
+           L 705 150 
+           L 705 100 
+           L 745 100 
+           L 745 150 
+           L 775 150 
+           L 775 100 
+           L 815 100 
+           L 815 150 
+           L 845 150 
+           L 845 100 
+           L 940 100" class="signal-scl"/>
+
+  <!-- Clock Pulse Numbers -->
+  <text x="235" y="130" class="txt-bit" fill="#c084fc">1</text>
+  <text x="305" y="130" class="txt-bit" fill="#c084fc">2</text>
+  <text x="375" y="130" class="txt-bit" fill="#c084fc">3</text>
+  <text x="445" y="130" class="txt-bit" fill="#c084fc">4</text>
+  <text x="515" y="130" class="txt-bit" fill="#c084fc">5</text>
+  <text x="585" y="130" class="txt-bit" fill="#c084fc">6</text>
+  <text x="655" y="130" class="txt-bit" fill="#c084fc">7</text>
+  <text x="725" y="130" class="txt-bit" fill="#c084fc">8</text>
+  <text x="795" y="130" class="txt-bit" fill="#facc15">9</text>
+
+  <!-- SDA Waveform:
+       Idle: High (220) from 140 to 165
+       START: Falls at 165 to 270 (while SCL=High)
+       Bit 1 (A6='1'): Rises to 220 at 200 (while SCL low), stays high through clock 1
+       Bit 2 (A5='1'): Stays high (220) through clock 2
+       Bit 3 (A4='1'): Stays high (220) through clock 3
+       Bit 4 (A3='0'): Falls to 270 at 410 (while SCL low)
+       Bit 5 (A2='0'): Stays low (270) through clock 5
+       Bit 6 (A1='0'): Stays low (270) through clock 6
+       Bit 7 (A0='0'): Stays low (270) through clock 7
+       Bit 8 (R/W='0'): Stays low (270) through clock 8 (0 = Write)
+       Bit 9 (ACK='0'): Forced LOW by slave!
+       STOP: Slave releases SDA at 825 -> goes to low, then rises to HIGH at 875 while SCL is HIGH
+  -->
+  <path d="M 140 220 
+           L 165 220 
+           L 165 270 
+           L 200 270 
+           L 200 220 
+           L 410 220 
+           L 410 270 
+           L 865 270 
+           L 865 220 
+           L 940 220" class="signal-sda"/>
+
+  <!-- Vertical dashed lines for bit sampling -->
+  <line x1="165" y1="90" x2="165" y2="300" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <line x1="865" y1="90" x2="865" y2="300" stroke="#06b6d4" stroke-width="1.5" stroke-dasharray="3 3"/>
+
+  <!-- START and STOP annotations -->
+  <rect x="135" y="308" width="60" height="22" rx="4" class="badge-start"/>
+  <text x="165" y="323" class="txt-bit" fill="#ffffff">START</text>
+  <text x="165" y="342" fill="#ef4444" font-family="'Segoe UI', sans-serif" font-size="11px" text-anchor="middle">SDA ↓ (SCL=1)</text>
+
+  <rect x="835" y="308" width="60" height="22" rx="4" class="badge-stop"/>
+  <text x="865" y="323" class="txt-bit" fill="#ffffff">STOP</text>
+  <text x="865" y="342" fill="#06b6d4" font-family="'Segoe UI', sans-serif" font-size="11px" text-anchor="middle">SDA ↑ (SCL=1)</text>
+
+  <!-- Bit labels & values -->
+  <text x="235" y="210" class="txt-bit">A6</text>
+  <text x="235" y="250" class="txt-val">'1'</text>
+
+  <text x="305" y="210" class="txt-bit">A5</text>
+  <text x="305" y="250" class="txt-val">'1'</text>
+
+  <text x="375" y="210" class="txt-bit">A4</text>
+  <text x="375" y="250" class="txt-val">'1'</text>
+
+  <text x="445" y="210" class="txt-bit">A3</text>
+  <text x="445" y="285" class="txt-val">'0'</text>
+
+  <text x="515" y="210" class="txt-bit">A2</text>
+  <text x="515" y="285" class="txt-val">'0'</text>
+
+  <text x="585" y="210" class="txt-bit">A1</text>
+  <text x="585" y="285" class="txt-val">'0'</text>
+
+  <text x="655" y="210" class="txt-bit">A0</text>
+  <text x="655" y="285" class="txt-val">'0'</text>
+
+  <text x="725" y="210" class="txt-bit" fill="#f59e0b">R/W</text>
+  <text x="725" y="285" class="txt-val" fill="#f59e0b">'0' (W)</text>
+
+  <rect x="765" y="200" width="60" height="20" rx="4" class="badge-ack"/>
+  <text x="795" y="214" class="txt-bit" fill="#0f172a">ACK</text>
+  <text x="795" y="285" class="txt-val" fill="#facc15">'0' (OK)</text>
+
+  <!-- Explanatory footer -->
+  <rect x="30" y="365" width="940" height="42" rx="6" fill="#1e293b"/>
+  <text x="45" y="390" fill="#f1f5f9" font-family="'Segoe UI', sans-serif" font-size="12px">
+    <tspan fill="#34d399" font-weight="bold">Règle d'or I2C :</tspan> Les données sur SDA ne peuvent changer que lorsque <tspan fill="#c084fc">SCL est BAS</tspan>. Lorsque <tspan fill="#c084fc">SCL est HAUT</tspan>, SDA doit rester rigoureusement stable (sauf pour START et STOP).
+  </text>
+</svg>

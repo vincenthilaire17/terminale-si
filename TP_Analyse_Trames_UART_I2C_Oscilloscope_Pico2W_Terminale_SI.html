@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP Terminale SI — Analyse et Décodage de Trames Série : UART & I²C avec Analog Discovery & Raspberry Pi Pico 2 W</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;          /* Bleu nuit académique */
+            --primary-light: #2563eb;    /* Bleu vif */
+            --secondary: #0d9488;        /* Sarcelle / Teal */
+            --secondary-dark: #0f766e;
+            --accent: #d97706;           /* Ambre chaud */
+            --accent-red: #dc2626;       /* Rouge alerte */
+            --accent-green: #16a34a;     /* Vert validation */
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+            --code-bg: #0f172a;
+            --code-text: #f1f5f9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            padding: 1.5rem 1rem;
+        }
+
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 2.2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
+        }
+
+        /* En-tête officiel de TP */
+        .tp-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            margin-bottom: 1.8rem;
+            overflow: hidden;
+        }
+
+        .header-cell {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid var(--primary);
+            background: #ffffff;
+            font-size: 0.9rem;
+        }
+
+        .header-cell:nth-child(odd) {
+            border-right: 1px solid var(--primary);
+        }
+
+        .header-cell.full {
+            grid-column: span 2;
+        }
+
+        .header-cell.title {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 1.2rem 1rem;
+        }
+
+        .header-cell.title h1 {
+            font-size: 1.35rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.35rem;
+        }
+
+        .header-cell.title p {
+            font-size: 0.92rem;
+            opacity: 0.92;
+        }
+
+        /* Badges de durée & état */
+        .badge-bar {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin: 0.8rem 0 1.4rem;
+        }
+
+        .duration-badge {
+            background: var(--primary-light);
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.25rem 0.7rem;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .duration-badge.i2c {
+            background: var(--secondary-dark);
+        }
+
+        .duration-badge.project {
+            background: #9333ea;
+        }
+
+        /* Encadré Compétences & Contexte */
+        .competences-box {
+            background-color: #eff6ff;
+            border-left: 5px solid var(--primary-light);
+            padding: 1.1rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1.8rem;
+        }
+
+        .competences-box h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        .competences-box ul {
+            padding-left: 1.4rem;
+            font-size: 0.92rem;
+        }
+
+        .competences-box li {
+            margin-bottom: 0.35rem;
+        }
+
+        /* Titres de parties */
+        h2.part-title {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.4rem;
+            margin: 2.2rem 0 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 1.28rem;
+        }
+
+        h3.section-title {
+            color: var(--secondary);
+            margin: 1.4rem 0 0.6rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        h4.subsection-title {
+            color: var(--text);
+            margin: 1rem 0 0.4rem;
+            font-size: 0.98rem;
+            font-weight: 700;
+        }
+
+        /* Grilles de matériel & images */
+        .hardware-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.1rem;
+            margin: 1.2rem 0 1.6rem;
+        }
+
+        .hardware-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.8rem;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .hardware-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+        }
+
+        .hardware-card img {
+            max-width: 100%;
+            height: 125px;
+            object-fit: contain;
+            margin-bottom: 0.6rem;
+        }
+
+        .hardware-card h5 {
+            font-size: 0.88rem;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .hardware-card p {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        /* Conteneurs d'images larges */
+        .tp-image-container {
+            margin: 1.3rem 0;
+            text-align: center;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .tp-image-container img {
+            max-width: 100%;
+            height: auto;
+            max-height: 380px;
+            border-radius: 6px;
+        }
+
+        .tp-image-caption {
+            font-size: 0.84rem;
+            color: var(--text-muted);
+            margin-top: 0.6rem;
+            font-style: italic;
+        }
+
+        /* Boîtes d'alerte, concept & méthodologie */
+        .concept-box {
+            background-color: #fefce8;
+            border: 1px solid #fef08a;
+            border-left: 5px solid #eab308;
+            padding: 0.95rem 1.15rem;
+            margin: 1.1rem 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.92rem;
+        }
+
+        .concept-box h4 {
+            color: #a16207;
+            margin-bottom: 0.45rem;
+            font-size: 0.98rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .info-box {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-left: 5px solid #22c55e;
+            padding: 0.95rem 1.15rem;
+            margin: 1.1rem 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.92rem;
+        }
+
+        .info-box h4 {
+            color: #15803d;
+            margin-bottom: 0.45rem;
+            font-size: 0.98rem;
+        }
+
+        .warning-box {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+            border-left: 5px solid var(--accent-red);
+            padding: 0.95rem 1.15rem;
+            margin: 1.1rem 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.92rem;
+        }
+
+        .warning-box h4 {
+            color: var(--accent-red);
+            margin-bottom: 0.45rem;
+            font-size: 0.98rem;
+        }
+
+        /* Encadré Pistes de recherche IA */
+        .ai-prompt-box {
+            background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+            border: 1px solid #c4b5fd;
+            border-left: 5px solid #7c3aed;
+            padding: 1rem 1.2rem;
+            margin: 1.2rem 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.91rem;
+        }
+
+        .ai-prompt-box h4 {
+            color: #6d28d9;
+            margin-bottom: 0.45rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.98rem;
+        }
+
+        .ai-prompt-box .prompt-text {
+            background: #ffffff;
+            border: 1px dashed #8b5cf6;
+            padding: 0.65rem 0.85rem;
+            border-radius: 6px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.85rem;
+            color: #4c1d95;
+            margin-top: 0.45rem;
+            display: block;
+        }
+
+        /* Tableaux de relevés et décodage */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0 1.4rem;
+            font-size: 0.88rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.6rem 0.65rem;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        td.empty-cell {
+            background-color: #ffffff;
+            color: var(--text-muted);
+            font-style: italic;
+            height: 2.2rem;
+        }
+
+        td.highlight-cell {
+            background-color: #eff6ff;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        /* Blocs de code MicroPython */
+        .code-container {
+            margin: 1.1rem 0 1.4rem;
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--code-bg);
+            border: 1px solid #1e293b;
+        }
+
+        .code-header {
+            background: #1e293b;
+            color: #94a3b8;
+            padding: 0.45rem 1rem;
+            font-size: 0.82rem;
+            font-family: 'Consolas', monospace;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+        }
+
+        pre {
+            padding: 0.95rem;
+            overflow-x: auto;
+            color: var(--code-text);
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.86rem;
+            line-height: 1.45;
+        }
+
+        .code-kw { color: #f43f5e; font-weight: bold; }
+        .code-fn { color: #38bdf8; }
+        .code-str { color: #a3e635; }
+        .code-num { color: #fbbf24; }
+        .code-comment { color: #64748b; font-style: italic; }
+
+        /* Questions et zones de travail */
+        .question-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--primary-light);
+            border-radius: 0 6px 6px 0;
+            padding: 0.85rem 1rem;
+            margin: 0.85rem 0;
+        }
+
+        .question-num {
+            font-weight: bold;
+            color: var(--primary);
+            margin-right: 0.35rem;
+        }
+
+        .answer-zone {
+            min-height: 48px;
+            border: 1px dashed #94a3b8;
+            border-radius: 4px;
+            margin-top: 0.55rem;
+            background: #f8fafc;
+            padding: 0.5rem;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        /* Checklists étapes */
+        .step-list {
+            list-style: none;
+            margin: 0.8rem 0;
+        }
+
+        .step-list li {
+            position: relative;
+            padding-left: 1.8rem;
+            margin-bottom: 0.55rem;
+            font-size: 0.92rem;
+        }
+
+        .step-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1.2rem;
+            height: 1.2rem;
+            background: #e2e8f0;
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        /* Responsive & Print */
+        @media (max-width: 768px) {
+            .tp-header { grid-template-columns: 1fr; }
+            .header-cell:nth-child(odd) { border-right: none; }
+            .header-cell.full { grid-column: span 1; }
+            .container { padding: 1rem; }
+        }
+
+        @media print {
+            body { background: #ffffff; padding: 0; font-size: 11pt; }
+            .container { box-shadow: none; border: none; padding: 0; max-width: 100%; }
+            .hardware-card { break-inside: avoid; }
+            .code-container { break-inside: avoid; }
+            table { break-inside: avoid; }
+            .tp-image-container { break-inside: avoid; }
+            .ai-prompt-box { border: 1px solid #7c3aed; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- En-tête officiel du document de TP -->
+    <header class="tp-header">
+        <div class="header-cell title full">
+            <h1>Travaux Pratiques — Numérisation &amp; Bus Numériques Série</h1>
+            <p>Analyse &amp; Décodage de Trames UART et I²C à l'Oscilloscope et à l'Analyseur Logique (Analog Discovery)</p>
+        </div>
+        <div class="header-cell">
+            <strong>Discipline :</strong> Sciences de l'Ingénieur / STI2D — Terminale
+        </div>
+        <div class="header-cell">
+            <strong>Système cible :</strong> Raspberry Pi Pico 2 W (RP2350) + Grove Shield
+        </div>
+        <div class="header-cell">
+            <strong>Appareil de mesure :</strong> Digilent Analog Discovery (WaveForms)
+        </div>
+        <div class="header-cell">
+            <strong>Durée totale conseillée :</strong> 3h30 (Partie 1 : 1h30 | Partie 2 : 2h00)
+        </div>
+        <div class="header-cell full">
+            <strong>Nom de l'élève / Binôme :</strong> _______________________________________ &nbsp;&nbsp;&nbsp;&nbsp; <strong>Date :</strong> ___/___/202___
+        </div>
+    </header>
+
+    <!-- Badges de synthèse -->
+    <div class="badge-bar">
+        <span class="duration-badge">⏱️ Partie 1 UART : 1h30</span>
+        <span class="duration-badge i2c">⏱️ Partie 2 I²C : 2h00</span>
+        <span class="duration-badge project">🚀 Mini-Projet : Synthèse Bus de Données</span>
+        <span class="duration-badge" style="background:#475569;">📊 Progression : Oscillo Analogique ➔ Analyseur Logique</span>
+    </div>
+
+    <!-- Encadré Compétences & Contexte pédagogique -->
+    <section class="competences-box">
+        <h3>🎯 Contexte &amp; Objectifs Pédagogiques</h3>
+        <p style="margin-bottom:0.6rem; font-size:0.91rem;">
+            À la suite de notre cours sur la <strong>numération (binaire, hexadécimal, ASCII)</strong>, vous allez observer comment ces suites de bits se traduisent concrètement sous forme de signaux électriques sur les broches physiques d'un microcontrôleur. 
+        </p>
+        <ul>
+            <li><strong>Mettre en œuvre l'instrumentation :</strong> Utiliser l'oscilloscope numérique et l'analyseur logique de la suite <em>Digilent Analog Discovery / WaveForms</em>.</li>
+            <li><strong>Comprendre la couche physique :</strong> Mesurer les niveaux de tension (TTL 3.3V), les fronts, la durée d'un bit et déduire le débit (Baud rate / fréquence d'horloge).</li>
+            <li><strong>Décoder manuellement une trame numérique :</strong> Extraire la séquence binaire à partir des chronogrammes de tension, puis reconstituer l'information transmise (ASCII / registres) sans recourir aux décodeurs automatiques.</li>
+            <li><strong>Maîtriser l'adressage sur un bus partagé :</strong> Différencier l'envoi d'ordres sélectifs vers plusieurs constituants connectés sur le même bus physique I²C à l'aide d'un Hub.</li>
+            <li><strong>Développer un mini-projet embarqué :</strong> Associer en MicroPython la saisie d'un code sur clavier UART et l'affichage d'état sur afficheurs I²C.</li>
+        </ul>
+    </section>
+
+    <!-- Galerie Matériel Utilisé -->
+    <h3 class="section-title">🧰 Matériel Mis à Disposition</h3>
+    <div class="hardware-grid">
+        <div class="hardware-card">
+            <img src="images/analog_discovery.png" alt="Digilent Analog Discovery">
+            <h5>Analog Discovery</h5>
+            <p>Centrale d'acquisition USB (Oscilloscope 2 voies, Analyseur logique 16 voies).</p>
+        </div>
+        <div class="hardware-card">
+            <img src="images/analog_discovery_bnc_probes.png" alt="Platine BNC et sondes d'oscilloscope">
+            <h5>Platine BNC &amp; Sondes</h5>
+            <p>Adaptateur BNC pour Analog Discovery et sondes x1/x10 avec pinces de masse.</p>
+        </div>
+        <div class="hardware-card">
+            <img src="images/waveforms_interface.png" alt="Logiciel Digilent WaveForms">
+            <h5>WaveForms</h5>
+            <p>Logiciel de pilotage (Modules <em>Scope</em>, <em>Logic</em> et <em>Protocol</em>).</p>
+        </div>
+        <div class="hardware-card">
+            <img src="images/pico_grove_shield_pinout.png" alt="Raspberry Pi Pico sur Grove Shield">
+            <h5>Pico 2 W + Grove Shield</h5>
+            <p>Microcontrôleur RP2350 (MicroPython) avec sélecteur de tension 3.3V.</p>
+        </div>
+        <div class="hardware-card">
+            <img src="images/grove_keypad_touch.png" alt="Clavier capacitif 12 touches Grove">
+            <h5>Clavier Capacitif UART</h5>
+            <p>12 touches tactiles gérées par ATtiny1616. Envoi série à 9600 bauds.</p>
+        </div>
+        <div class="hardware-card">
+            <img src="images/grove_matrice_led_8x8.png" alt="Matrice LED 8x8 rouge Grove">
+            <h5>Matrice LED 8x8 I²C</h5>
+            <p>Afficheur 64 LEDs rouges piloté par HT16K33 (Adresse I²C <code>0x70</code>).</p>
+        </div>
+        <div class="hardware-card">
+            <img src="images/grove_i2c_hub.png" alt="Hub Grove I2C 4 ports">
+            <h5>Hub Grove I²C (4 ports)</h5>
+            <p>Multiplicateur de ports passif pour bus partagé (SDA, SCL, VCC, GND).</p>
+        </div>
+        <div class="hardware-card">
+            <img src="images/grove_lcd_rgb.png" alt="Afficheur LCD RGB Grove v2.0">
+            <h5>Afficheur LCD RGB I²C</h5>
+            <p>Écran 2x16 caractères rétroéclairé (Contrôleur <code>0x3E</code>, RGB <code>0x62</code>).</p>
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- PARTIE 1 : ANALYSE DU BUS SERIE ASYNCHRONE (UART)                  -->
+    <!-- =================================================================== -->
+    <h2 class="part-title">
+        <span>Partie 1 — Analyse du Bus Asynchrone UART (Liaison Clavier)</span>
+        <span class="duration-badge">Durée : 1h30</span>
+    </h2>
+
+    <p>
+        La liaison <strong>UART</strong> (<em>Universal Asynchronous Receiver Transmitter</em>) est une liaison point-à-point, bidirectionnelle et asynchrone : <strong>aucun signal d'horloge n'est véhiculé</strong> entre l'émetteur et le récepteur. L'accord préalable sur la vitesse de transmission (exprimée en <em>bauds</em> ou bits/s) est donc obligatoire.
+    </p>
+
+    <div class="concept-box">
+        <h4>⚡ Caractéristiques de la trame UART 8N1 (Standard utilisé par le clavier)</h4>
+        <ul style="padding-left:1.3rem;">
+            <li><strong>Niveau de repos (Idle) :</strong> Ligne maintenue à l'état HAUT (3.3V logique).</li>
+            <li><strong>Bit de START :</strong> Un front descendant ramenant la ligne à '0' (0V) pendant exactement <i>T</i><sub>bit</sub> annonce l'arrivée d'un caractère et synchronise l'horloge interne du récepteur.</li>
+            <li><strong>8 Bits de Données :</strong> Transmis du bit de poids faible (<strong>LSB, D0</strong>) au bit de poids fort (<strong>MSB, D7</strong>).</li>
+            <li><strong>Pas de parité (None) :</strong> Le "N" de 8N1 indique l'absence de bit de contrôle de parité.</li>
+            <li><strong>Bit de STOP :</strong> La ligne repasse à '1' pendant au moins 1 bit (<i>T</i><sub>bit</sub>) pour clore la trame.</li>
+        </ul>
+    </div>
+
+    <div class="tp-image-container">
+        <img src="images/trame_uart_chronogramme.svg" alt="Chronogramme d'une trame UART 8N1">
+        <p class="tp-image-caption">Figure 1 : Chronogramme électrique d'une trame UART 8N1 pour la touche '1' (Code ASCII <code>0x31</code> = <code>0b00110001</code>). Remarquez la transmission LSB en premier.</p>
+    </div>
+
+    <h3 class="section-title">1.1. Câblage Matériel &amp; Connexion de l'Oscilloscope</h3>
+    
+    <div class="info-box">
+        <h4>🔌 Guide de Branchement UART</h4>
+        <ol style="padding-left:1.3rem; margin-top:0.3rem;">
+            <li><strong>Grove Shield :</strong> Assurez-vous que le commutateur d'alimentation du shield est positionné sur <strong>3.3V</strong> (repère sérigraphié à gauche des connecteurs I2C).</li>
+            <li><strong>Clavier Grove :</strong> Branchez le câble 4 fils sur le port <code>UART0</code> du Grove Shield. D'après le tableau de repérage :
+                <ul>
+                    <li>Fil Jaune (Pin 1) = GP1 (Broche <code>Rx</code> du Pico) &larr; Signal émis par la touche du clavier !</li>
+                    <li>Fil Blanc (Pin 2) = GP0 (Broche <code>Tx</code> du Pico).</li>
+                </ul>
+            </li>
+            <li><strong>Sonde d'Oscilloscope (Analog Discovery Voie 1) :</strong>
+                <ul>
+                    <li>Connectez la pointe de la sonde BNC Voie 1 (ou le fil orange <code>1+</code>) sur le <strong>fil Jaune (GP1 / Rx)</strong>.</li>
+                    <li>Connectez la pince crocodile noire de masse sur la <strong>masse GND</strong> (fil noir du connecteur Grove ou pin GND du Pico).</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <div class="tp-image-container">
+        <img src="images/pico_grove_shield_pinout.png" alt="Brochage du Grove Shield pour Raspberry Pi Pico">
+        <p class="tp-image-caption">Figure 2 : Repérage officiel des broches du Grove Shield (Connecteurs UART0/UART1 et I2C1/I2C2).</p>
+    </div>
+
+    <h3 class="section-title">1.2. Programme de Réception MicroPython sur le Pico 2 W</h3>
+    <p>Téléversez et exécutez le script suivant dans <strong>Thonny IDE</strong>. Ce script configure l'UART0 matérielle du Pico à 9600 bauds et affiche dans la console REPL les caractères reçus.</p>
+
+    <div class="code-container">
+        <div class="code-header">
+            <span>reception_uart_clavier.py (MicroPython sur Pico 2 W)</span>
+            <span>Baudrate : 9600 | 8N1</span>
+        </div>
+        <pre><span class="code-kw">from</span> machine <span class="code-kw">import</span> UART, Pin
+<span class="code-kw">import</span> time
+
+<span class="code-comment"># Initialisation UART0 : GP0=TX, GP1=RX à 9600 bauds</span>
+uart = UART(<span class="code-num">0</span>, baudrate=<span class="code-num">9600</span>, tx=Pin(<span class="code-num">0</span>), rx=Pin(<span class="code-num">1</span>))
+
+print(<span class="code-str">"=== Récepteur UART initialisé (9600 bauds) ==="</span>)
+print(<span class="code-str">"Appuyez sur une touche du clavier tactile..."</span>)
+
+<span class="code-kw">while</span> <span class="code-kw">True</span>:
+    <span class="code-kw">if</span> uart.any():
+        octet_recu = uart.read(<span class="code-num">1</span>)
+        code_ascii = octet_recu[<span class="code-num">0</span>]
+        caractere = chr(code_ascii)
+        print(<span class="code-str">f"Touche : '{caractere}' | Décimal : {code_ascii} | Hex : {hex(code_ascii)} | Binaire : {bin(code_ascii)}"</span>)
+    time.sleep(<span class="code-num">0.05</span>)</pre>
+    </div>
+
+    <h3 class="section-title">1.3. Relevé à l'Oscilloscope Analogique &amp; Décodage Manuel (Sans Analyseur)</h3>
+
+    <div class="concept-box">
+        <h4>🛠️ Réglages recommandés sur WaveForms (Module "Scope")</h4>
+        <ul style="padding-left:1.3rem;">
+            <li><strong>Voie 1 (C1) :</strong> <code>1 V / div</code>, décalage vertical (Offset) à <code>-1.5 V</code> pour centrer le signal 0-3.3V.</li>
+            <li><strong>Base de temps :</strong> <code>200 µs / div</code> (fenêtre totale de 2 ms, idéal pour une trame de 10 bits à 9600 bauds).</li>
+            <li><strong>Déclenchement (Trigger) :</strong> Source = <code>Channel 1</code>, Type = <code>Edge</code>, Sens = <strong>Front Descendant (Falling)</strong>, Niveau = <code>1.5 V</code>, Mode = <code>Normal</code> ou <code>Single</code>.</li>
+        </ul>
+    </div>
+
+    <p>
+        Appuyez sur la touche <strong>'1'</strong> du clavier. L'oscilloscope fige la trame à l'écran.
+    </p>
+
+    <div class="question-card">
+        <span class="question-num">Q1.</span> <strong>Mesure du Baud rate réel :</strong>
+        Placez les deux curseurs temporels de l'oscilloscope sur la largeur du bit de START.
+        <br>Relevez la durée mesurée : &Delta;<i>t</i> = <i>T</i><sub>bit</sub> = ________________ &mu;s.
+        <br>Calculez le débit binaire réel de transmission : <i>R</i> = 1 / <i>T</i><sub>bit</sub> = ________________ bauds. Comparez avec la valeur nominale de 9600 bauds.
+        <div class="answer-zone">Calcul &amp; Justification : </div>
+    </div>
+
+    <div class="question-card">
+        <span class="question-num">Q2.</span> <strong>Décodage manuel de la touche '1' :</strong>
+        Observez les 8 tranches de temps succédant au bit de START. Relevez la valeur logique ('0' ou '1') au centre de chaque bit :
+        <table>
+            <thead>
+                <tr>
+                    <th>Bit</th>
+                    <th>START</th>
+                    <th>D0 (LSB)</th>
+                    <th>D1</th>
+                    <th>D2</th>
+                    <th>D3</th>
+                    <th>D4</th>
+                    <th>D5</th>
+                    <th>D6</th>
+                    <th>D7 (MSB)</th>
+                    <th>STOP</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Niveau relevé</strong></td>
+                    <td class="highlight-cell">0</td>
+                    <td class="empty-cell">...</td>
+                    <td class="empty-cell">...</td>
+                    <td class="empty-cell">...</td>
+                    <td class="empty-cell">...</td>
+                    <td class="empty-cell">...</td>
+                    <td class="empty-cell">...</td>
+                    <td class="empty-cell">...</td>
+                    <td class="empty-cell">...</td>
+                    <td class="highlight-cell">1</td>
+                </tr>
+            </tbody>
+        </table>
+        Remettez l'octet dans l'ordre naturel (MSB à gauche : <i>D</i><sub>7</sub> <i>D</i><sub>6</sub> <i>D</i><sub>5</sub> <i>D</i><sub>4</sub> <i>D</i><sub>3</sub> <i>D</i><sub>2</sub> <i>D</i><sub>1</sub> <i>D</i><sub>0</sub>) : <code>0b</code>______________________.
+        <br>Convertissez cet octet en hexadécimal : <code>0x</code>________.
+        <br>Vérifiez dans la table ASCII que cette valeur correspond bien au caractère '1' affiché par le Pico.
+    </div>
+
+    <div class="question-card">
+        <span class="question-num">Q3.</span> <strong>Décodage d'un caractère inconnu :</strong>
+        Demandez à votre binôme d'appuyer sur une touche mystère (par exemple <strong>'*'</strong> ou <strong>'#'</strong>). Sans regarder l'écran de la console Thonny, capturez la trame à l'oscilloscope et déterminez le caractère par décodage manuel :
+        <div class="answer-zone">
+            Octet binaire reçu (LSB d'abord) : __________________________ <br>
+            Octet réordonné (MSB &rarr; LSB) : <code>0b</code>__________________ = <code>0x</code>______ &rarr; Caractère ASCII déduit : ________
+        </div>
+    </div>
+
+    <h3 class="section-title">1.4. Validation avec l'Analyseur Logique (WaveForms Logic)</h3>
+    <p>
+        Les ingénieurs utilisent un <strong>analyseur logique</strong> pour décoder automatiquement des millions de trames sans calcul manuel.
+    </p>
+    <ul class="step-list">
+        <li>Reliez le fil numérique <strong>DIO 0</strong> (fil rose de la nappe) sur la broche <strong>GP1 (Rx)</strong> et le fil <strong>GND</strong> (noir) sur la masse.</li>
+        <li>Dans WaveForms, ouvrez l'outil <strong>Logic</strong>.</li>
+        <li>Cliquez sur <strong>+ (Add) &rarr; UART</strong>. Configurez :
+            <code>RX = DIO 0</code> | <code>Baud rate = 9600</code> | <code>Data bits = 8</code> | <code>Parity = None</code> | <code>Stop = 1</code>.
+        </li>
+        <li>Lancez l'acquisition (mode <em>Repeated</em> ou <em>Single</em>). Appuyez sur différentes touches.</li>
+        <li>Constatez que WaveForms affiche directement les caractères ASCII au-dessus des signaux logiques. Vos résultats manuels sont-ils validés ?</li>
+    </ul>
+
+    <!-- Piste IA UART -->
+    <div class="ai-prompt-box">
+        <h4>🤖 Piste de Recherche par IA — Approfondissement UART</h4>
+        <p>Pour approfondir la gestion des erreurs de transmission et la tolérance temporelle, soumettez ce prompt à une IA générative (ChatGPT, Gemini, etc.) :</p>
+        <span class="prompt-text">
+            "Dans une liaison série asynchrone UART 8N1 à 9600 bauds, quel est le pourcentage maximal de dérive d'horloge toléré entre l'émetteur et le récepteur avant qu'une erreur de cadrage (Framing Error) n'apparaisse sur le bit de stop ? Explique le rôle du sur-échantillonnage 16x du récepteur."
+        </span>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- PARTIE 2 : ANALYSE DU BUS SERIE SYNCHRONE (I2C)                    -->
+    <!-- =================================================================== -->
+    <h2 class="part-title">
+        <span>Partie 2 — Analyse du Bus Synchrone I²C &amp; Adressage Multiple</span>
+        <span class="duration-badge i2c">Durée : 2h00</span>
+    </h2>
+
+    <p>
+        Le bus <strong>I²C</strong> (<em>Inter-Integrated Circuit</em>) est un bus série <strong>synchrone, bifilaire et multi-composants</strong> inventé par Philips. Contrairement à l'UART, il véhicule une horloge partagée et permet de brancher plusieurs dizaines de périphériques esclaves sur <strong>seulement deux fils</strong>.
+    </p>
+
+    <div class="concept-box">
+        <h4>⚡ Les 4 Règles d'Or du Bus I²C</h4>
+        <ul style="padding-left:1.3rem;">
+            <li><strong>2 Lignes Physiques :</strong> <code>SCL</code> (Serial Clock, horloge générée par le maître) et <code>SDA</code> (Serial Data, données bidirectionnelles).</li>
+            <li><strong>Lignes à Drain Ouvert (Open-Drain) :</strong> Les broches ne peuvent que forcer la ligne à la masse (0V) ou la relâcher. Deux résistances de tirage (<em>Pull-Up</em>) ramènent naturellement les lignes à 3.3V au repos.</li>
+            <li><strong>Règle de synchronisme :</strong> Les données sur SDA ne doivent changer que lorsque <strong>SCL est à '0'</strong>. Lorsque <strong>SCL est à '1'</strong>, la ligne SDA doit impérativement être stable.</li>
+            <li><strong>Conditions d'encadrement START &amp; STOP :</strong>
+                <ul>
+                    <li><strong>START :</strong> Transition de SDA du HAUT vers le BAS alors que SCL est HAUT.</li>
+                    <li><strong>STOP :</strong> Transition de SDA du BAS vers le HAUT alors que SCL est HAUT.</li>
+                </ul>
+            </li>
+            <li><strong>Octet d'Adressage :</strong> Le maître envoie toujours en premier 7 bits d'adresse esclave + 1 bit <i>R</i>/<span style="text-decoration:overline;"><i>W</i></span> (0 = Écriture, 1 = Lecture), suivi du 9<sup>e</sup> coup d'horloge où l'esclave tire SDA à 0 pour acquitter (<strong>ACK</strong>).</li>
+        </ul>
+    </div>
+
+    <div class="tp-image-container">
+        <img src="images/trame_i2c_chronogramme.svg" alt="Chronogramme d'une trame I2C">
+        <p class="tp-image-caption">Figure 3 : Chronogramme d'un octet d'adressage I²C vers la matrice LED (Adresse <code>0x70</code> en écriture, ACK esclave au 9<sup>e</sup> coup d'horloge).</p>
+    </div>
+
+    <h3 class="section-title">2.1. Étape 1 : Relevé à l'Oscilloscope d'un Seul Composant (Matrice LED 8x8)</h3>
+    
+    <p>
+        On commence par analyser la communication avec un composant unique : la <strong>Matrice de LED 8x8 rouge Grove</strong> (contrôleur HT16K33, adresse I²C matérielle <code>0x70</code>).
+    </p>
+
+    <div class="info-box" style="display:flex; justify-content:space-between; align-items:center; gap:1.2rem; flex-wrap:wrap;">
+        <div style="flex:1; min-width:280px;">
+            <h4>🔌 Branchements Matrice LED &amp; Oscilloscope 2 Voies</h4>
+            <ol style="padding-left:1.3rem;">
+                <li>Branchez la Matrice LED 8x8 sur le port <strong>I2C1</strong> du Grove Shield :
+                    <ul>
+                        <li>Fil Blanc (Pin 2) = <strong>GP8 (SDA)</strong>.</li>
+                        <li>Fil Jaune (Pin 1) = <strong>GP9 (SCL)</strong>.</li>
+                    </ul>
+                </li>
+                <li>Connectez les deux voies de l'Analog Discovery :
+                    <ul>
+                        <li><strong>Voie 1 (BNC 1) :</strong> Connectée sur <strong>SDA (Fil Blanc / GP8)</strong>.</li>
+                        <li><strong>Voie 2 (BNC 2) :</strong> Connectée sur <strong>SCL (Fil Jaune / GP9)</strong>.</li>
+                        <li><strong>Masses (GND) :</strong> Pinces crocodiles reliées au fil Noir (GND).</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+        <div style="text-align:center;">
+            <img src="images/grove_matrice_led_8x8.png" style="max-height:130px; border-radius:6px; border:1px solid #bbf7d0; background:#fff; padding:4px;" alt="Matrice LED 8x8">
+            <p style="font-size:0.76rem; color:var(--text-muted); margin-top:0.25rem; font-weight:600;">Matrice 8x8 (Adresse 0x70)</p>
+        </div>
+    </div>
+
+    <div class="code-container">
+        <div class="code-header">
+            <span>test_matrice_led.py (MicroPython sur Pico 2 W)</span>
+            <span>I2C sur GP8 (SDA) et GP9 (SCL)</span>
+        </div>
+        <pre><span class="code-kw">from</span> machine <span class="code-kw">import</span> I2C, Pin
+<span class="code-kw">import</span> time
+
+<span class="code-comment"># Initialisation bus I2C0 sur GP8 (SDA) et GP9 (SCL) à 100 kHz (Standard Mode)</span>
+i2c = I2C(<span class="code-num">0</span>, scl=Pin(<span class="code-num">9</span>), sda=Pin(<span class="code-num">8</span>), freq=<span class="code-num">100000</span>)
+
+ADRESSE_MATRICE = <span class="code-num">0x70</span>
+
+print(<span class="code-str">"Envoi d'un ordre d'allumage toutes les 2 secondes..."</span>)
+<span class="code-kw">while</span> <span class="code-kw">True</span>:
+    <span class="code-comment"># Activation de l'oscillateur interne du HT16K33 (Commande 0x21)</span>
+    i2c.writeto(ADRESSE_MATRICE, <span class="code-str">b'\x21'</span>)
+    time.sleep(<span class="code-num">2.0</span>)</pre>
+    </div>
+
+    <h4 class="subsection-title">Configuration de l'Oscilloscope (Scope) :</h4>
+    <p>
+        - Voie 1 (SDA) et Voie 2 (SCL) à <code>1 V / div</code>.<br>
+        - Base de temps : <code>20 µs / div</code> (période d'horloge de 10 µs à 100 kHz).<br>
+        - Déclenchement (Trigger) : Voie 1 (SDA), Front descendant, Niveau 1.5 V, Mode <em>Normal</em>.
+    </p>
+
+    <div class="question-card">
+        <span class="question-num">Q4.</span> <strong>Décodage manuel de la trame I²C sans décodeur :</strong>
+        Observez les 9 coups d'horloge de SCL suivant la condition START :
+        <table>
+            <thead>
+                <tr>
+                    <th>Coup d'horloge</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                    <th>5</th>
+                    <th>6</th>
+                    <th>7</th>
+                    <th>8</th>
+                    <th>9</th>
+                </tr>
+                <tr>
+                    <th>Rôle du bit</th>
+                    <th>A6</th>
+                    <th>A5</th>
+                    <th>A4</th>
+                    <th>A3</th>
+                    <th>A2</th>
+                    <th>A1</th>
+                    <th>A0</th>
+                    <th>R/W</th>
+                    <th>ACK</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Niveau SDA relevé</strong></td>
+                    <td class="empty-cell">...</td>
+                    <td class="empty-cell">...</td>
+                    <td class="empty-cell">...</td>
+                    <td class="empty-cell">...</td>
+                    <td class="empty-cell">...</td>
+                    <td class="empty-cell">...</td>
+                    <td class="empty-cell">...</td>
+                    <td class="empty-cell">...</td>
+                    <td class="empty-cell">...</td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="margin-top:0.4rem;">
+            a) Isolez les 7 bits d'adresse ($A_6 \dots A_0$) : <code>0b</code>_____________________. Convertissez en hexadécimal : <code>0x</code>________. Retrouve-t-on l'adresse de la matrice ?<br>
+            b) Que vaut le 8<sup>e</sup> bit ($R/\bar{W}$) ? Pourquoi est-il à '0' ?<br>
+            c) Que vaut le 9<sup>e</sup> bit (ACK) ? Qui génère ce niveau électrique : le maître (Pico) ou l'esclave (Matrice) ? Justifiez.
+        </p>
+        <div class="answer-zone">Réponses &amp; Justifications : </div>
+    </div>
+
+    <!-- 2.2 Hub I2C & Deux composants -->
+    <h3 class="section-title">2.2. Étape 2 : Deux Composants sur le Bus via le Hub I²C &amp; Notion d'Adresse</h3>
+
+    <p>
+        Nous connectons à présent <strong>deux constituants différents sur le même bus physique</strong> en intercalant le <strong>Hub Grove I²C</strong>.
+    </p>
+
+    <div class="warning-box">
+        <h4>⚠️ Problématique d'Ingénierie : Le Partage du Médium Physique</h4>
+        <p>
+            Sur un bus I²C partagé, les broches SDA et SCL de tous les esclaves sont électriquement reliées entre elles en parallèle. 
+            <strong>Comment un composant sait-il qu'un message lui est adressé sans interférer avec les autres esclaves ?</strong>
+        </p>
+    </div>
+
+    <div class="tp-image-container">
+        <div style="display:flex; justify-content:center; align-items:center; gap:1.5rem; flex-wrap:wrap;">
+            <img src="images/grove_matrice_led_8x8.png" style="max-height:150px; border-radius:6px;" alt="Matrice LED 8x8 Grove">
+            <span style="font-size:1.5rem; font-weight:bold; color:var(--secondary);">+</span>
+            <img src="images/grove_i2c_hub.png" style="max-height:150px; border-radius:6px;" alt="Hub I2C Grove">
+            <span style="font-size:1.5rem; font-weight:bold; color:var(--secondary);">+</span>
+            <img src="images/grove_lcd_rgb.png" style="max-height:150px; border-radius:6px;" alt="Afficheur LCD RGB Grove">
+        </div>
+        <p class="tp-image-caption">Figure 4 : Le Hub Grove I²C (centre) permet de relier en bus partagé la Matrice LED 8x8 (gauche, adresse <code>0x70</code>) et l'écran LCD RGB (droite, adresses <code>0x3E</code> et <code>0x62</code>).</p>
+    </div>
+
+    <div class="info-box">
+        <h4>🔌 Câblage du Bus Partagé</h4>
+        <ol style="padding-left:1.3rem;">
+            <li>Débranchez la Matrice LED du port <code>I2C1</code> du Shield.</li>
+            <li>Reliez le port <code>I2C1</code> du Shield à l'un des ports du <strong>Hub Grove I²C</strong>.</li>
+            <li>Branchez la <strong>Matrice LED 8x8</strong> sur le second port du Hub.</li>
+            <li>Branchez l'<strong>Écran LCD RGB Backlight v2.0</strong> sur le troisième port du Hub.</li>
+            <li>Laissez les sondes d'oscilloscope (Voie 1 sur SDA, Voie 2 sur SCL) connectées sur le bus.</li>
+        </ol>
+    </div>
+
+    <p>Exécutez le script MicroPython suivant pour scanner le bus et piloter alternativement chaque écran :</p>
+
+    <div class="code-container">
+        <div class="code-header">
+            <span>scan_et_double_adressage.py (MicroPython sur Pico 2 W)</span>
+            <span>Bus partagé avec 2 composants</span>
+        </div>
+        <pre><span class="code-kw">from</span> machine <span class="code-kw">import</span> I2C, Pin
+<span class="code-kw">import</span> time
+
+i2c = I2C(<span class="code-num">0</span>, scl=Pin(<span class="code-num">9</span>), sda=Pin(<span class="code-num">8</span>), freq=<span class="code-num">100000</span>)
+
+<span class="code-comment"># 1. Scan automatique du bus I2C</span>
+print(<span class="code-str">"--- Scan du bus I2C en cours ---"</span>)
+peripheriques = i2c.scan()
+print(<span class="code-str">f"Adresses détectées ({len(peripheriques)}) : {[hex(addr) for addr in peripheriques]}"</span>)
+
+<span class="code-comment"># Adresses cibles sur le bus</span>
+ADDR_MATRICE = <span class="code-num">0x70</span>       <span class="code-comment"># Matrice LED</span>
+ADDR_LCD_TEXT = <span class="code-num">0x3E</span>      <span class="code-comment"># Contrôleur d'affichage LCD texte</span>
+ADDR_LCD_RGB = <span class="code-num">0x62</span>       <span class="code-comment"># Contrôleur couleur de fond RGB</span>
+
+<span class="code-comment"># 2. Dialogue sélectif alterné</span>
+<span class="code-kw">while</span> <span class="code-kw">True</span>:
+    <span class="code-comment"># Message destiné UNIQUEMENT à la matrice LED (allumage oscillateur)</span>
+    print(<span class="code-str">"Envoi trame -> Matrice (0x70)"</span>)
+    i2c.writeto(ADDR_MATRICE, <span class="code-str">b'\x21'</span>)
+    time.sleep(<span class="code-num">1.0</span>)
+
+    <span class="code-comment"># Message destiné UNIQUEMENT au rétroéclairage LCD (Couleur Bleue)</span>
+    print(<span class="code-str">"Envoi trame -> LCD RGB (0x62)"</span>)
+    i2c.writeto(ADDR_LCD_RGB, <span class="code-str">b'\x00\x00'</span>)  <span class="code-comment"># Reset mode</span>
+    time.sleep(<span class="code-num">1.0</span>)</pre>
+    </div>
+
+    <div class="question-card">
+        <span class="question-num">Q5.</span> <strong>Analyse du scan et de la sélectivité :</strong>
+        <br>a) Quelles sont les adresses hexadécimales retournées par la fonction <code>i2c.scan()</code> dans Thonny ?
+        <div class="answer-zone">Adresses détectées : ________________________________________________________________</div>
+        b) Lorsque le maître envoie l'octet d'adresse <code>0x70</code>, que fait le contrôleur LCD (<code>0x3E</code>) ? Acquitte-t-il le message ? Comment réagit-il aux octets de données suivants ?
+        <div class="answer-zone">Explication du comportement de l'esclave non concerné : </div>
+        c) Que se passerait-il si deux composants branchés sur le même bus possédaient rigoureusement la même adresse I²C matérielle ?
+        <div class="answer-zone">Conséquence sur la ligne SDA lors de la phase ACK : </div>
+    </div>
+
+    <h3 class="section-title">2.3. Étape 3 : Capture &amp; Décodage avec l'Analyseur Logique (WaveForms)</h3>
+    <ul class="step-list">
+        <li>Reliez le fil numérique <strong>DIO 0</strong> sur <strong>SCL (GP9)</strong> et <strong>DIO 1</strong> sur <strong>SDA (GP8)</strong> de l'Analog Discovery.</li>
+        <li>Dans WaveForms, ouvrez l'outil <strong>Logic</strong>.</li>
+        <li>Ajoutez un décodeur de protocole : <strong>+ &rarr; I2C</strong>. Paramétrez : <code>SCL = DIO 0</code>, <code>SDA = DIO 1</code>, Format d'adresse = <code>7-bit Address</code>.</li>
+        <li>Lancez l'acquisition continue. Observez l'alternance des trames destinées à l'adresse <code>0x70</code> puis <code>0x62</code>.</li>
+        <li>Dans l'outil <em>Protocol</em> de WaveForms, ouvrez l'onglet <strong>I2C</strong> et lancez la fonction <em>Spy</em> ou <em>Scan</em>. Comparez les résultats avec le scan MicroPython.</li>
+    </ul>
+
+    <!-- Piste IA I2C -->
+    <div class="ai-prompt-box">
+        <h4>🤖 Piste de Recherche par IA — Approfondissement I²C</h4>
+        <p>Pour explorer les limites matérielles du bus I²C en milieu industriel, soumettez ce prompt à une IA :</p>
+        <span class="prompt-text">
+            "Sur un bus I2C, quel est l'impact de la capacité parasite des câbles longs sur les temps de montée du signal (résistances pull-up) ? Explique le mécanisme d'arbitrage en cas de multi-maîtres et la fonction de 'Clock Stretching' par laquelle un esclave lent peut temporiser le maître."
+        </span>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- MINI-PROJET DE SYNTHESE                                             -->
+    <!-- =================================================================== -->
+    <h2 class="part-title">
+        <span>Mini-Projet de Synthèse : Système de Contrôle d'Accès Sécurisé</span>
+        <span class="duration-badge project">Intégration Bus UART + I²C</span>
+    </h2>
+
+    <p>
+        Vous allez concevoir l'architecture logicielle et matérielle d'un <strong>contrôleur d'accès à code secret (Digicode)</strong> intégrant les deux bus de communication étudiés.
+    </p>
+
+    <div class="concept-box">
+        <h4>📋 Cahier des Charges Fonctionnel du Système</h4>
+        <ul style="padding-left:1.3rem;">
+            <li><strong>Saisie Utilisateur (Bus UART) :</strong> L'utilisateur tape un code à 4 chiffres sur le clavier tactile capacitif Grove (reçu sur UART0).</li>
+            <li><strong>Affichage &amp; Statut (Bus I²C partagé sur Hub) :</strong>
+                <ul>
+                    <li><strong>Écran LCD RGB :</strong> Affiche en temps réel le nombre d'étoiles saisies (ex: <code>"Code: **  "</code>). En cas de code correct, le fond devient <strong>Vert</strong> et affiche <code>"ACCES VALIDE"</code>. En cas d'erreur, le fond devient <strong>Rouge</strong> avec <code>"CODE ERREUR"</code>.</li>
+                    <li><strong>Matrice LED 8x8 :</strong> Affiche un pictogramme animé : une <em>Croix</em> en cas de refus, ou une <em>Coche de validation</em> en cas de succès.</li>
+                </ul>
+            </li>
+            <li><strong>Code secret par défaut :</strong> <code>"1234"</code> (la touche <code>'#'</code> valide la saisie, la touche <code>'*'</code> efface).</li>
+        </ul>
+    </div>
+
+    <div class="code-container">
+        <div class="code-header">
+            <span>digicode_securise_bus_uart_i2c.py (Squelette de code à compléter)</span>
+            <span>Terminale SI — Projet Embarqué</span>
+        </div>
+        <pre><span class="code-kw">from</span> machine <span class="code-kw">import</span> UART, I2C, Pin
+<span class="code-kw">import</span> time
+
+<span class="code-comment"># Initialisation des périphériques de communication</span>
+uart = UART(<span class="code-num">0</span>, baudrate=<span class="code-num">9600</span>, tx=Pin(<span class="code-num">0</span>), rx=Pin(<span class="code-num">1</span>))
+i2c = I2C(<span class="code-num">0</span>, scl=Pin(<span class="code-num">9</span>), sda=Pin(<span class="code-num">8</span>), freq=<span class="code-num">100000</span>)
+
+CODE_SECRET = <span class="code-str">"1234"</span>
+code_saisi = <span class="code-str">""</span>
+
+<span class="code-kw">def</span> <span class="code-fn">init_systeme</span>():
+    <span class="code-comment"># Initialisation de la matrice 8x8 (0x70)</span>
+    i2c.writeto(<span class="code-num">0x70</span>, <span class="code-str">b'\x21'</span>)  <span class="code-comment"># Oscillo ON</span>
+    i2c.writeto(<span class="code-num">0x70</span>, <span class="code-str">b'\x81'</span>)  <span class="code-comment"># Display ON</span>
+    <span class="code-comment"># Initialisation LCD RGB (0x62) : Rétroéclairage Blanc au repos</span>
+    i2c.writeto(<span class="code-num">0x62</span>, bytes([<span class="code-num">0x00</span>, <span class="code-num">0x00</span>]))
+    i2c.writeto(<span class="code-num">0x62</span>, bytes([<span class="code-num">0x08</span>, <span class="code-num">0xAA</span>]))
+    print(<span class="code-str">"Système de contrôle d'accès prêt !"</span>)
+
+<span class="code-kw">def</span> <span class="code-fn">afficher_statut</span>(valide):
+    <span class="code-kw">if</span> valide:
+        print(<span class="code-str">"ACCES ACCORDE -> Fond Vert, Motif Coche"</span>)
+        <span class="code-comment"># TODO (Élèves) : Configurer le registre RGB pour passer en vert</span>
+        <span class="code-comment"># TODO (Élèves) : Envoyer le motif de coche sur la matrice 8x8</span>
+    <span class="code-kw">else</span>:
+        print(<span class="code-str">"ACCES REFUSE -> Fond Rouge, Motif Croix"</span>)
+        <span class="code-comment"># TODO (Élèves) : Configurer le registre RGB pour passer en rouge</span>
+        <span class="code-comment"># TODO (Élèves) : Envoyer le motif de croix sur la matrice 8x8</span>
+
+init_systeme()
+
+<span class="code-kw">while</span> <span class="code-kw">True</span>:
+    <span class="code-kw">if</span> uart.any():
+        touche = uart.read(<span class="code-num">1</span>).decode(<span class="code-str">'utf-8'</span>, errors=<span class="code-str">'ignore'</span>)
+        <span class="code-kw">if</span> touche == <span class="code-str">'#'</span>:   <span class="code-comment"># Validation</span>
+            afficher_statut(code_saisi == CODE_SECRET)
+            code_saisi = <span class="code-str">""</span>
+        <span class="code-kw">elif</span> touche == <span class="code-str">'*'</span>: <span class="code-comment"># Effacement</span>
+            code_saisi = <span class="code-str">""</span>
+        <span class="code-kw">else</span>:
+            code_saisi += touche
+            print(<span class="code-str">f"Code actuel : {'*' * len(code_saisi)}"</span>)
+    time.sleep(<span class="code-num">0.05</span>)</pre>
+    </div>
+
+    <div class="question-card">
+        <span class="question-num">Projet :</span> <strong>Mise en œuvre expérimentale &amp; Validation :</strong>
+        <br>1. Complétez le script pour envoyer les trames d'affichage adaptées sur le bus I²C selon que le code soit juste ou faux.
+        <br>2. Validez le fonctionnement avec votre professeur.
+        <br>3. Capturez à l'analyseur logique la séquence complète survenant lors de l'appui sur <code>'#'</code> : observez la trame UART reçue du clavier, immédiatement suivie de la trame I²C émise vers les afficheurs sur le Hub.
+        <div class="answer-zone">Signature &amp; Validation Professeur : </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- GRILLE D'EVALUATION SOMMATIVE                                      -->
+    <!-- =================================================================== -->
+    <h3 class="section-title">📊 Grille d'Évaluation des Compétences</h3>
+    <table>
+        <thead>
+            <tr>
+                <th style="width:15%;">Domaine</th>
+                <th style="width:55%;">Critères d'évaluation</th>
+                <th style="width:15%;">Niveau</th>
+                <th style="width:15%;">Barème</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Mesure Oscilloscope</strong></td>
+                <td style="text-align:left;">Réglage correct du trigger (front descendant), centrage de la trame UART et mesure précise du baud rate nominal.</td>
+                <td>Non acquis / En cours / Acquis</td>
+                <td>/ 4 pts</td>
+            </tr>
+            <tr>
+                <td><strong>Décodage Manuel UART</strong></td>
+                <td style="text-align:left;">Reconstitution sans erreur de l'octet transmis (LSB first), conversion binaire &rarr; hexadécimal et correspondance table ASCII.</td>
+                <td>Non acquis / En cours / Acquis</td>
+                <td>/ 4 pts</td>
+            </tr>
+            <tr>
+                <td><strong>Décodage I²C &amp; Adressage</strong></td>
+                <td style="text-align:left;">Identification de la condition START, décodage des 7 bits d'adresse, identification du bit R/W et observation de l'ACK.</td>
+                <td>Non acquis / En cours / Acquis</td>
+                <td>/ 4 pts</td>
+            </tr>
+            <tr>
+                <td><strong>Bus Partagé &amp; Hub</strong></td>
+                <td style="text-align:left;">Compréhension de la sélectivité par adresse lorsque deux constituants partagent les mêmes lignes SDA/SCL.</td>
+                <td>Non acquis / En cours / Acquis</td>
+                <td>/ 4 pts</td>
+            </tr>
+            <tr>
+                <td><strong>Mini-Projet Embarqué</strong></td>
+                <td style="text-align:left;">Complétion du code MicroPython, intégration des deux bus et démonstration du Digicode fonctionnel.</td>
+                <td>Non acquis / En cours / Acquis</td>
+                <td>/ 4 pts</td>
+            </tr>
+            <tr>
+                <td colspan="3" style="text-align:right; font-weight:bold;">NOTE FINALE DU TP :</td>
+                <td style="font-weight:bold; color:var(--primary); font-size:1.05rem;">/ 20 pts</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>
