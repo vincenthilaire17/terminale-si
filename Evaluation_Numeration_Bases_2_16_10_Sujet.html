@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Évaluation — Numération &amp; Conversions des Bases 2, 16 et 10 (30 min)</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #2563eb;
+            --secondary: #0d9488;
+            --secondary-dark: #0f766e;
+            --accent: #d97706;
+            --accent-red: #dc2626;
+            --accent-purple: #7c3aed;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            padding: 1.2rem 1rem;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 1.8rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+            border: 1px solid var(--border);
+        }
+
+        /* En-tête officiel d'évaluation */
+        .eval-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            margin-bottom: 1.2rem;
+            overflow: hidden;
+        }
+
+        .header-cell {
+            padding: 0.65rem 0.9rem;
+            border-bottom: 1px solid var(--primary);
+            background: #ffffff;
+            font-size: 0.9rem;
+        }
+
+        .header-cell:nth-child(odd) {
+            border-right: 1px solid var(--primary);
+        }
+
+        .header-cell.full {
+            grid-column: span 2;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .header-cell.title {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 0.95rem 1rem;
+        }
+
+        .header-cell.title h1 {
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .header-cell.title p {
+            font-size: 0.9rem;
+            opacity: 0.92;
+        }
+
+        .note-box {
+            display: inline-block;
+            border: 2px solid var(--primary);
+            border-radius: 6px;
+            padding: 0.15rem 0.7rem;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--primary);
+            background: #eff6ff;
+            margin-left: 0.4rem;
+        }
+
+        /* Encadré consignes */
+        .rules-box {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-left: 5px solid var(--accent-red);
+            border-radius: 0 6px 6px 0;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.3rem;
+            font-size: 0.88rem;
+        }
+
+        .rules-box strong.alert-title {
+            color: var(--accent-red);
+            display: block;
+            margin-bottom: 0.25rem;
+            font-size: 0.92rem;
+        }
+
+        .rules-box ul {
+            margin-left: 1.2rem;
+        }
+
+        .rules-box li {
+            margin-bottom: 0.15rem;
+        }
+
+        /* Cartes d'exercices */
+        .exercise-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #ffffff;
+            margin-bottom: 1.3rem;
+            overflow: hidden;
+        }
+
+        .exercise-header {
+            padding: 0.65rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+            font-size: 0.98rem;
+        }
+
+        .bg-ex1 { background: linear-gradient(135deg, #1e3a8a, #2563eb); }
+        .bg-ex2 { background: linear-gradient(135deg, #0d9488, #0f766e); }
+        .bg-ex3 { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+        .bg-ex4 { background: linear-gradient(135deg, #d97706, #b45309); }
+
+        .pts-badge {
+            background: rgba(255, 255, 255, 0.22);
+            color: white;
+            padding: 0.15rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .exercise-body {
+            padding: 0.95rem 1.1rem;
+            font-size: 0.92rem;
+        }
+
+        .context-note {
+            font-style: italic;
+            color: var(--text-muted);
+            font-size: 0.87rem;
+            margin-bottom: 0.7rem;
+        }
+
+        .question-block {
+            margin-bottom: 0.95rem;
+        }
+
+        .question-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .q-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.35rem;
+        }
+
+        .sub-badge {
+            display: inline-block;
+            font-size: 0.76rem;
+            font-weight: 700;
+            padding: 0.1rem 0.45rem;
+            border-radius: 4px;
+            margin-left: 0.4rem;
+            vertical-align: middle;
+        }
+
+        .badge-b2d { background: #dbeafe; color: #1d4ed8; }
+        .badge-d2b { background: #dcfce7; color: #15803d; }
+        .badge-b2h { background: #f3e8ff; color: #6d28d9; }
+        .badge-h2b { background: #ede9fe; color: #5b21b6; }
+        .badge-h2d { background: #fef3c7; color: #b45309; }
+        .badge-d2h { background: #fee2e2; color: #b91c1c; }
+
+        .code-val {
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-weight: 700;
+            font-size: 1rem;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 0.1rem 0.45rem;
+            border-radius: 4px;
+            color: #0f172a;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.55rem 0 0.75rem;
+            font-size: 0.88rem;
+        }
+
+        th, td {
+            border: 1px solid #94a3b8;
+            padding: 0.45rem 0.4rem;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        td.blank-cell {
+            height: 2rem;
+            background: #ffffff;
+        }
+
+        /* Zones de réponse manuscrite */
+        .answer-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.85rem;
+            margin-top: 0.45rem;
+        }
+
+        .answer-box {
+            border: 1px solid #94a3b8;
+            border-radius: 6px;
+            padding: 0.55rem 0.75rem;
+            background: #fcfcfd;
+        }
+
+        .answer-box-header {
+            font-weight: 700;
+            font-size: 0.88rem;
+            margin-bottom: 0.4rem;
+            padding-bottom: 0.25rem;
+            border-bottom: 1px dashed #cbd5e1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .write-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
+        }
+
+        .write-line {
+            border-bottom: 1px dotted #94a3b8;
+            height: 1.55rem;
+            width: 100%;
+        }
+
+        .result-line {
+            margin-top: 0.5rem;
+            padding-top: 0.35rem;
+            border-top: 1px solid #cbd5e1;
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: var(--primary);
+        }
+
+        .page-break {
+            page-break-before: always;
+            break-before: page;
+        }
+
+        /* Barre d'export PDF (masquée à l'impression) */
+        .print-bar {
+            max-width: 960px;
+            margin: 0 auto 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            font-size: 0.88rem;
+            color: #1e3a8a;
+        }
+
+        .btn-pdf {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            cursor: pointer;
+        }
+
+        .btn-pdf:hover {
+            background: #1e40af;
+        }
+
+        @media (max-width: 720px) {
+            .container { padding: 1rem; }
+            .eval-header { grid-template-columns: 1fr; }
+            .header-cell:nth-child(odd) { border-right: none; }
+            .header-cell.full { grid-column: span 1; }
+            .answer-grid-2 { grid-template-columns: 1fr; }
+            .print-bar { flex-direction: column; gap: 0.5rem; text-align: center; }
+        }
+
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 8mm 10mm;
+            }
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background: white;
+                padding: 0;
+                font-size: 9.2pt;
+                line-height: 1.32;
+            }
+            .container {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                max-width: 100%;
+            }
+            .eval-header {
+                margin-bottom: 0.5rem;
+            }
+            .header-cell {
+                padding: 0.35rem 0.65rem;
+                font-size: 8.5pt;
+            }
+            .header-cell.title {
+                padding: 0.5rem 0.8rem;
+            }
+            .header-cell.title h1 {
+                font-size: 11.5pt;
+                margin-bottom: 0.1rem;
+            }
+            .header-cell.title p {
+                font-size: 8.2pt;
+            }
+            .note-box {
+                font-size: 9.5pt;
+                padding: 0.08rem 0.5rem;
+            }
+            .rules-box {
+                padding: 0.4rem 0.7rem;
+                margin-bottom: 0.55rem;
+                font-size: 8.2pt;
+            }
+            .rules-box strong.alert-title {
+                font-size: 8.5pt;
+                margin-bottom: 0.1rem;
+            }
+            .rules-box li {
+                margin-bottom: 0.05rem;
+            }
+            .exercise-card {
+                break-inside: avoid;
+                margin-bottom: 0.55rem;
+            }
+            .exercise-header {
+                padding: 0.38rem 0.75rem;
+                font-size: 9.5pt;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .exercise-body {
+                padding: 0.55rem 0.75rem;
+                font-size: 8.8pt;
+            }
+            .context-note {
+                font-size: 8.1pt;
+                margin-bottom: 0.35rem;
+            }
+            .question-block {
+                margin-bottom: 0.5rem;
+            }
+            .q-title {
+                margin-bottom: 0.2rem;
+                font-size: 8.8pt;
+            }
+            table {
+                margin: 0.25rem 0 0.35rem !important;
+                font-size: 8.2pt;
+            }
+            th, td {
+                padding: 0.22rem 0.25rem;
+            }
+            td.blank-cell {
+                height: 1.35rem;
+            }
+            .answer-grid-2 {
+                gap: 0.55rem;
+                margin-top: 0.25rem;
+            }
+            .answer-box {
+                padding: 0.38rem 0.55rem;
+            }
+            .answer-box-header {
+                font-size: 8.4pt;
+                margin-bottom: 0.2rem;
+                padding-bottom: 0.15rem;
+            }
+            .code-val {
+                font-size: 8.8pt;
+                padding: 0.05rem 0.3rem;
+            }
+            .write-line {
+                height: 1.25rem;
+            }
+            .result-line {
+                margin-top: 0.25rem;
+                padding-top: 0.2rem;
+                font-size: 8.3pt;
+            }
+            .header-cell.title, .rules-box, th, .sub-badge, .note-box {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="print-bar no-print">
+    <span>📄 <strong>Mise en page calibrée sur 2 pages A4</strong> (Page 1 : En-tête + Ex. 1 &amp; 2 &nbsp;|&nbsp; Page 2 : Ex. 3 &amp; 4)</span>
+    <button class="btn-pdf" onclick="window.print()">🖨️ Exporter en PDF (2 pages A4)</button>
+</div>
+
+<div class="container">
+
+    <!-- EN-TÊTE -->
+    <div class="eval-header">
+        <div class="header-cell">
+            <strong>Lycée — Spécialité Sciences de l'Ingénieur</strong><br>
+            Niveau : <strong>Terminale SI</strong> &nbsp;|&nbsp; Thème : <em>Chaîne d'Information / Numération</em>
+        </div>
+        <div class="header-cell">
+            <strong>ÉVALUATION ÉCRITE</strong><br>
+            Durée : <strong>30 minutes</strong>
+        </div>
+        <div class="header-cell">
+            Nom &amp; Prénom : .................................................................<br>
+            Classe : ..............................
+        </div>
+        <div class="header-cell">
+            Date : .................................<br>
+            Note : <span class="note-box">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; / 20</span>
+        </div>
+        <div class="header-cell full title">
+            <h1>Évaluation : Numération &amp; Conversions entre les Bases 2, 16 et 10</h1>
+            <p>Méthode des poids d'exposants, méthode de la pesée et règle des quartets (sans division euclidienne)</p>
+        </div>
+    </div>
+
+    <!-- CONSIGNES -->
+    <div class="rules-box">
+        <strong class="alert-title">⚠️ Consignes importantes :</strong>
+        <ul>
+            <li><strong>Calculatrice et documents strictement interdits.</strong></li>
+            <li><strong>Tous les calculs et étapes intermédiaires doivent être clairement détaillés</strong> dans les zones prévues (un résultat exact sans justification ne rapportera pas la totalité des points).</li>
+            <li>Respecter les notations : indice <code>₂</code> (ou préfixe <code>0b</code>) pour le binaire, préfixe <code>0x</code> (ou indice <code>₁₆</code>) pour l'hexadécimal, et indice <code>₁₀</code> pour le décimal.</li>
+        </ul>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- EXERCICE 1 : COURS & POIDS                                          -->
+    <!-- =================================================================== -->
+    <div class="exercise-card">
+        <div class="exercise-header bg-ex1">
+            <span>Exercice 1 — Maîtrise des bases et des poids d'exposants</span>
+            <span class="pts-badge">3 points</span>
+        </div>
+        <div class="exercise-body">
+
+            <div class="question-block">
+                <p class="q-title">1.1 (1 pt) Compléter la table des poids en base 2 sur un octet (8 bits), puis indiquer le MSB et le LSB :</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 24%;">Puissance de 2</th>
+                            <th>2<sup>7</sup></th>
+                            <th>2<sup>6</sup></th>
+                            <th>2<sup>5</sup></th>
+                            <th>2<sup>4</sup></th>
+                            <th>2<sup>3</sup></th>
+                            <th>2<sup>2</sup></th>
+                            <th>2<sup>1</sup></th>
+                            <th>2<sup>0</sup></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Valeur décimale</strong></td>
+                            <td class="blank-cell"></td>
+                            <td class="blank-cell"></td>
+                            <td class="blank-cell"></td>
+                            <td class="blank-cell"></td>
+                            <td class="blank-cell"></td>
+                            <td class="blank-cell"></td>
+                            <td class="blank-cell"></td>
+                            <td class="blank-cell"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="question-block">
+                <p class="q-title">1.2 (1 pt) Compléter toute la base 16 sur 4 bits (de 0 à F), les valeurs décimales de A à F, ainsi que les puissances de 16 :</p>
+                <table style="margin-bottom: 0.4rem;">
+                    <thead>
+                        <tr>
+                            <th style="width: 24%;">Symbole hexa</th>
+                            <th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Binaire (4 bits)</strong></td>
+                            <td class="blank-cell"></td><td class="blank-cell"></td><td class="blank-cell"></td><td class="blank-cell"></td>
+                            <td class="blank-cell"></td><td class="blank-cell"></td><td class="blank-cell"></td><td class="blank-cell"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table style="margin-top: 0; margin-bottom: 0.4rem;">
+                    <thead>
+                        <tr>
+                            <th style="width: 24%;">Symbole hexa</th>
+                            <th>8</th><th>9</th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Valeur décimale</strong></td>
+                            <td>8</td><td>9</td>
+                            <td class="blank-cell"></td><td class="blank-cell"></td><td class="blank-cell"></td>
+                            <td class="blank-cell"></td><td class="blank-cell"></td><td class="blank-cell"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Binaire (4 bits)</strong></td>
+                            <td class="blank-cell"></td><td class="blank-cell"></td><td class="blank-cell"></td><td class="blank-cell"></td>
+                            <td class="blank-cell"></td><td class="blank-cell"></td><td class="blank-cell"></td><td class="blank-cell"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table style="margin-top: 0; width: 60%;">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;">Puissance de 16</th>
+                            <th>16<sup>2</sup></th>
+                            <th>16<sup>1</sup></th>
+                            <th>16<sup>0</sup></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Valeur décimale</strong></td>
+                            <td class="blank-cell"></td>
+                            <td class="blank-cell"></td>
+                            <td class="blank-cell"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="question-block">
+                <p class="q-title">1.3 (1 pt) Un capteur numérique code sa mesure sur un mot de 8 bits (1 octet). Combien de valeurs différentes peut-il coder ? Quelle est la valeur décimale maximale codable ? (Justifier avec une puissance de 2.)</p>
+                <div class="write-lines">
+                    <div class="write-line"></div>
+                    <div class="write-line"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- EXERCICE 2 : BASE 2 <-> BASE 10                                     -->
+    <!-- =================================================================== -->
+    <div class="exercise-card">
+        <div class="exercise-header bg-ex2">
+            <span>Exercice 2 — Conversions entre Binaire (Base 2) et Décimal (Base 10)</span>
+            <span class="pts-badge">5 points</span>
+        </div>
+        <div class="exercise-body">
+            <p class="context-note">Contexte SI : Un microcontrôleur lit l'état de capteurs Tout-Ou-Rien (TOR) sur 8 bits et génère des consignes PWM de vitesse moteur.</p>
+
+            <!-- Sens 1 : Binaire -> Décimal -->
+            <div class="question-block">
+                <p class="q-title">
+                    2.1 Convertir les mots binaires suivants en décimal en détaillant la somme des poids 2<sup><em>i</em></sup> actifs :
+                    <span class="sub-badge badge-b2d">Base 2 &rarr; Base 10</span>
+                </p>
+                <div class="answer-grid-2">
+                    <div class="answer-box">
+                        <div class="answer-box-header">
+                            <span>a) <span class="code-val">1001 1100₂</span></span>
+                            <span style="font-size: 0.78rem; color: var(--text-muted);">1 pt</span>
+                        </div>
+                        <div class="write-lines">
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                        </div>
+                        <div class="result-line">Résultat : 1001 1100₂ = ...................... <sub>10</sub></div>
+                    </div>
+
+                    <div class="answer-box">
+                        <div class="answer-box-header">
+                            <span>b) <span class="code-val">0111 0101₂</span></span>
+                            <span style="font-size: 0.78rem; color: var(--text-muted);">1,5 pts</span>
+                        </div>
+                        <div class="write-lines">
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                        </div>
+                        <div class="result-line">Résultat : 0111 0101₂ = ...................... <sub>10</sub></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sens 2 : Décimal -> Binaire -->
+            <div class="question-block">
+                <p class="q-title">
+                    2.2 Convertir les valeurs décimales suivantes en binaire sur 8 bits par la <u>méthode de la pesée</u> (soustractions successives des poids 2<sup><em>i</em></sup>, sans division) :
+                    <span class="sub-badge badge-d2b">Base 10 &rarr; Base 2</span>
+                </p>
+                <div class="answer-grid-2">
+                    <div class="answer-box">
+                        <div class="answer-box-header">
+                            <span>a) <span class="code-val">93₁₀</span></span>
+                            <span style="font-size: 0.78rem; color: var(--text-muted);">1 pt</span>
+                        </div>
+                        <div class="write-lines">
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                        </div>
+                        <div class="result-line">Résultat : 93₁₀ = ............................ <sub>2</sub></div>
+                    </div>
+
+                    <div class="answer-box">
+                        <div class="answer-box-header">
+                            <span>b) <span class="code-val">203₁₀</span></span>
+                            <span style="font-size: 0.78rem; color: var(--text-muted);">1,5 pts</span>
+                        </div>
+                        <div class="write-lines">
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                        </div>
+                        <div class="result-line">Résultat : 203₁₀ = ............................ <sub>2</sub></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- EXERCICE 3 : BASE 2 <-> BASE 16                                     -->
+    <!-- =================================================================== -->
+    <div class="exercise-card page-break">
+        <div class="exercise-header bg-ex3">
+            <span>Exercice 3 — Conversions entre Binaire (Base 2) et Hexadécimal (Base 16)</span>
+            <span class="pts-badge">5 points</span>
+        </div>
+        <div class="exercise-body">
+            <p class="context-note">Contexte SI : Décodage de trames circulant sur un bus de communication industriel (CAN / I²C) à l'aide de la règle des quartets (8 - 4 - 2 - 1).</p>
+
+            <!-- Sens 3 : Binaire -> Hexadécimal -->
+            <div class="question-block">
+                <p class="q-title">
+                    3.1 Convertir les mots binaires suivants en hexadécimal en détaillant le découpage en quartets (poids 8-4-2-1) :
+                    <span class="sub-badge badge-b2h">Base 2 &rarr; Base 16</span>
+                </p>
+                <div class="answer-grid-2">
+                    <div class="answer-box">
+                        <div class="answer-box-header">
+                            <span>a) <span class="code-val">1110 1001₂</span> (8 bits)</span>
+                            <span style="font-size: 0.78rem; color: var(--text-muted);">1 pt</span>
+                        </div>
+                        <div class="write-lines">
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                        </div>
+                        <div class="result-line">Résultat : 1110 1001₂ = 0x....................</div>
+                    </div>
+
+                    <div class="answer-box">
+                        <div class="answer-box-header">
+                            <span>b) <span class="code-val">1010110111₂</span> (10 bits)</span>
+                            <span style="font-size: 0.78rem; color: var(--text-muted);">1,5 pts</span>
+                        </div>
+                        <div class="write-lines">
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                        </div>
+                        <div class="result-line">Résultat : 1010110111₂ = 0x....................</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sens 4 : Hexadécimal -> Binaire -->
+            <div class="question-block">
+                <p class="q-title">
+                    3.2 Convertir les codes hexadécimaux suivants en binaire en détaillant chaque quartet (4 bits) :
+                    <span class="sub-badge badge-h2b">Base 16 &rarr; Base 2</span>
+                </p>
+                <div class="answer-grid-2">
+                    <div class="answer-box">
+                        <div class="answer-box-header">
+                            <span>a) <span class="code-val">0xA7</span> (sur 8 bits)</span>
+                            <span style="font-size: 0.78rem; color: var(--text-muted);">1 pt</span>
+                        </div>
+                        <div class="write-lines">
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                        </div>
+                        <div class="result-line">Résultat : 0xA7 = ............................ <sub>2</sub></div>
+                    </div>
+
+                    <div class="answer-box">
+                        <div class="answer-box-header">
+                            <span>b) <span class="code-val">0x3D4</span> (sur 12 bits)</span>
+                            <span style="font-size: 0.78rem; color: var(--text-muted);">1,5 pts</span>
+                        </div>
+                        <div class="write-lines">
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                        </div>
+                        <div class="result-line">Résultat : 0x3D4 = .................................. <sub>2</sub></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- EXERCICE 4 : BASE 16 <-> BASE 10                                    -->
+    <!-- =================================================================== -->
+    <div class="exercise-card">
+        <div class="exercise-header bg-ex4">
+            <span>Exercice 4 — Conversions entre Hexadécimal (Base 16) et Décimal (Base 10)</span>
+            <span class="pts-badge">7 points</span>
+        </div>
+        <div class="exercise-body">
+            <p class="context-note">Contexte SI : Paramétrage d'adresses mémoire et codage d'octets d'affichage pour une matrice à DELs 8&times;8.</p>
+
+            <!-- Sens 5 : Hexadécimal -> Décimal -->
+            <div class="question-block">
+                <p class="q-title">
+                    4.1 Convertir les nombres hexadécimaux suivants en décimal en détaillant le calcul avec les <u>puissances de 16</u> :
+                    <span class="sub-badge badge-h2d">Base 16 &rarr; Base 10</span>
+                </p>
+                <div class="answer-grid-2">
+                    <div class="answer-box">
+                        <div class="answer-box-header">
+                            <span>a) <span class="code-val">0x8C</span></span>
+                            <span style="font-size: 0.78rem; color: var(--text-muted);">1,5 pts</span>
+                        </div>
+                        <div class="write-lines">
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                        </div>
+                        <div class="result-line">Résultat : 0x8C = ...................... <sub>10</sub></div>
+                    </div>
+
+                    <div class="answer-box">
+                        <div class="answer-box-header">
+                            <span>b) <span class="code-val">0x1B9</span></span>
+                            <span style="font-size: 0.78rem; color: var(--text-muted);">1,5 pts</span>
+                        </div>
+                        <div class="write-lines">
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                        </div>
+                        <div class="result-line">Résultat : 0x1B9 = ...................... <sub>10</sub></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sens 6 : Décimal -> Hexadécimal -->
+            <div class="question-block">
+                <p class="q-title">
+                    4.2 Convertir les valeurs décimales suivantes en hexadécimal <u>sans division euclidienne</u>, en utilisant la passerelle de la synthèse (Décimal &rarr; Binaire par pesée &rarr; Hexadécimal par quartets) :
+                    <span class="sub-badge badge-d2h">Base 10 &rarr; Base 16</span>
+                </p>
+                <div class="answer-grid-2">
+                    <div class="answer-box">
+                        <div class="answer-box-header">
+                            <span>a) <span class="code-val">173₁₀</span></span>
+                            <span style="font-size: 0.78rem; color: var(--text-muted);">1,5 pts</span>
+                        </div>
+                        <div class="write-lines">
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                        </div>
+                        <div class="result-line">Binaire : ...................... &rarr; Hexa : 0x........</div>
+                    </div>
+
+                    <div class="answer-box">
+                        <div class="answer-box-header">
+                            <span>b) <span class="code-val">246₁₀</span></span>
+                            <span style="font-size: 0.78rem; color: var(--text-muted);">1,5 pts</span>
+                        </div>
+                        <div class="write-lines">
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                            <div class="write-line"></div>
+                        </div>
+                        <div class="result-line">Binaire : ...................... &rarr; Hexa : 0x........</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question de vérification croisée -->
+            <div class="question-block">
+                <p class="q-title">4.3 (1 pt) Contrôle croisé : À partir du code hexadécimal trouvé à la question 4.2 a), vérifier par un calcul en puissances de 16 que l'on retrouve bien 173₁₀.</p>
+                <div class="write-lines">
+                    <div class="write-line"></div>
+                    <div class="write-line"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

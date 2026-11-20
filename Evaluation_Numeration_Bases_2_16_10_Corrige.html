@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corrigé &amp; Barème — Évaluation Numération Bases 2, 16 et 10 (30 min)</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #2563eb;
+            --secondary: #0d9488;
+            --secondary-dark: #0f766e;
+            --accent: #d97706;
+            --accent-red: #dc2626;
+            --accent-purple: #7c3aed;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            padding: 1.2rem 1rem;
+        }
+
+        .container {
+            max-width: 980px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 1.8rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+            border: 1px solid var(--border);
+        }
+
+        .sheet-header {
+            border: 2px solid var(--secondary-dark);
+            border-radius: 8px;
+            margin-bottom: 1.4rem;
+            overflow: hidden;
+        }
+
+        .header-top {
+            background: linear-gradient(135deg, #0f766e, #0d9488);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .header-top h1 {
+            font-size: 1.35rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .header-top p {
+            font-size: 0.92rem;
+            opacity: 0.92;
+        }
+
+        .header-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            background: #ffffff;
+            border-top: 1px solid var(--border);
+            font-size: 0.88rem;
+        }
+
+        .header-meta div {
+            padding: 0.55rem 0.9rem;
+            border-right: 1px solid var(--border);
+        }
+
+        .header-meta div:last-child {
+            border-right: none;
+        }
+
+        .summary-box {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-left: 5px solid #16a34a;
+            border-radius: 0 6px 6px 0;
+            padding: 0.8rem 1rem;
+            margin-bottom: 1.4rem;
+            font-size: 0.88rem;
+        }
+
+        .summary-box h3 {
+            color: #15803d;
+            font-size: 0.95rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .exercise-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #ffffff;
+            margin-bottom: 1.3rem;
+            overflow: hidden;
+        }
+
+        .exercise-header {
+            padding: 0.65rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+            font-size: 0.98rem;
+        }
+
+        .bg-ex1 { background: linear-gradient(135deg, #1e3a8a, #2563eb); }
+        .bg-ex2 { background: linear-gradient(135deg, #0d9488, #0f766e); }
+        .bg-ex3 { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+        .bg-ex4 { background: linear-gradient(135deg, #d97706, #b45309); }
+
+        .pts-badge {
+            background: rgba(255, 255, 255, 0.22);
+            color: white;
+            padding: 0.15rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .exercise-body {
+            padding: 1rem 1.15rem;
+            font-size: 0.91rem;
+        }
+
+        .corr-block {
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px dashed #cbd5e1;
+        }
+
+        .corr-block:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .q-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.45rem;
+        }
+
+        .bareme-tag {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fcd34d;
+            border-radius: 4px;
+            padding: 0.05rem 0.45rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin-left: 0.4rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.9rem;
+            margin-top: 0.45rem;
+        }
+
+        .sol-card {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 0.75rem 0.9rem;
+        }
+
+        .sol-card h4 {
+            font-size: 0.9rem;
+            color: #0f172a;
+            margin-bottom: 0.4rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.25rem;
+        }
+
+        .step-list {
+            margin-left: 1.15rem;
+            font-size: 0.87rem;
+        }
+
+        .step-list li {
+            margin-bottom: 0.2rem;
+        }
+
+        .highlight-calc {
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-weight: 700;
+            background: #dcfce7;
+            color: #166534;
+            padding: 0.1rem 0.45rem;
+            border-radius: 4px;
+            border: 1px solid #86efac;
+        }
+
+        code {
+            font-family: 'Consolas', 'Courier New', monospace;
+            background: #f1f5f9;
+            padding: 0.05rem 0.3rem;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.5rem 0 0.7rem;
+            font-size: 0.86rem;
+        }
+
+        th, td {
+            border: 1px solid #94a3b8;
+            padding: 0.4rem 0.35rem;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        td.poids {
+            font-weight: 700;
+            color: #0284c7;
+            background: #f0f9ff;
+        }
+
+        td.poids-hex {
+            font-weight: 700;
+            color: #b45309;
+            background: #fffbeb;
+        }
+
+        .rubric-note {
+            margin-top: 0.4rem;
+            font-size: 0.82rem;
+            color: #475569;
+            font-style: italic;
+        }
+
+        @media (max-width: 720px) {
+            .container { padding: 1rem; }
+            .header-meta { grid-template-columns: 1fr; }
+            .grid-2 { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 12mm;
+            }
+            body { background: white; padding: 0; font-size: 10.5pt; }
+            .container { box-shadow: none; border: none; padding: 0; max-width: 100%; }
+            .exercise-card { break-inside: avoid; }
+            .header-top, .exercise-header, .highlight-calc, .bareme-tag, th, td.poids, td.poids-hex, .summary-box {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- EN-TÊTE -->
+    <div class="sheet-header">
+        <div class="header-top">
+            <h1>Corrigé Détaillé &amp; Barème — Évaluation Numération (Bases 2, 16, 10)</h1>
+            <p>Terminale SI — Aligné sur la Fiche Synthèse (Méthode des poids &amp; Quartets, sans division euclidienne)</p>
+        </div>
+        <div class="header-meta">
+            <div><strong>Durée :</strong> 30 minutes (sans calculatrice)</div>
+            <div><strong>Barème total :</strong> 20 points</div>
+            <div><strong>Couverture :</strong> Les 6 sens de conversion</div>
+        </div>
+    </div>
+
+    <!-- MATRICE DE COUVERTURE -->
+    <div class="summary-box">
+        <h3>📋 Récapitulatif des 6 sens de conversion et répartition du barème</h3>
+        <table style="margin: 0.4rem 0 0;">
+            <thead>
+                <tr>
+                    <th>Exercice</th>
+                    <th>Compétence / Sens évalué</th>
+                    <th>Méthode attendue (Fiche Synthèse)</th>
+                    <th>Barème</th>
+                    <th>Temps estimé</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Ex. 1</strong></td>
+                    <td>Tableaux de poids &amp; capacité 8 bits</td>
+                    <td>Puissances de 2 et 16, symboles A–F, 2<sup><em>n</em></sup></td>
+                    <td><strong>3 pts</strong></td>
+                    <td>~4 min</td>
+                </tr>
+                <tr>
+                    <td><strong>Ex. 2</strong></td>
+                    <td><strong>Binaire &rarr; Décimal</strong> &amp; <strong>Décimal &rarr; Binaire</strong></td>
+                    <td>Somme des poids 2<sup><em>i</em></sup> / Pesée par soustraction</td>
+                    <td><strong>5 pts</strong></td>
+                    <td>~8 min</td>
+                </tr>
+                <tr>
+                    <td><strong>Ex. 3</strong></td>
+                    <td><strong>Binaire &rarr; Hexa</strong> &amp; <strong>Hexa &rarr; Binaire</strong></td>
+                    <td>Règle des quartets de 4 bits (8-4-2-1)</td>
+                    <td><strong>5 pts</strong></td>
+                    <td>~7 min</td>
+                </tr>
+                <tr>
+                    <td><strong>Ex. 4</strong></td>
+                    <td><strong>Hexa &rarr; Décimal</strong> &amp; <strong>Décimal &rarr; Hexa</strong> + Vérif.</td>
+                    <td>Puissances de 16 / Passerelle 10 &rarr; 2 &rarr; 16</td>
+                    <td><strong>7 pts</strong></td>
+                    <td>~11 min</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- CORRIGÉ EXERCICE 1                                                  -->
+    <!-- =================================================================== -->
+    <div class="exercise-card">
+        <div class="exercise-header bg-ex1">
+            <span>Corrigé Exercice 1 — Maîtrise des bases et des poids d'exposants</span>
+            <span class="pts-badge">3 points</span>
+        </div>
+        <div class="exercise-body">
+
+            <div class="corr-block">
+                <p class="q-title">1.1 Table des poids en base 2 sur 1 octet <span class="bareme-tag">1 pt</span></p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 24%;">Puissance de 2</th>
+                            <th>2<sup>7</sup> (MSB)</th>
+                            <th>2<sup>6</sup></th>
+                            <th>2<sup>5</sup></th>
+                            <th>2<sup>4</sup></th>
+                            <th>2<sup>3</sup></th>
+                            <th>2<sup>2</sup></th>
+                            <th>2<sup>1</sup></th>
+                            <th>2<sup>0</sup> (LSB)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Valeur décimale</strong></td>
+                            <td class="poids">128</td><td class="poids">64</td><td class="poids">32</td><td class="poids">16</td>
+                            <td class="poids">8</td><td class="poids">4</td><td class="poids">2</td><td class="poids">1</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="rubric-note">Barème : 0,5 pt pour les 8 valeurs décimales exactes ; 0,5 pt pour MSB (2<sup>7</sup>) et LSB (2<sup>0</sup>).</p>
+            </div>
+
+            <div class="corr-block">
+                <p class="q-title">1.2 Base 16 complète sur 4 bits &amp; puissances de 16 <span class="bareme-tag">1 pt</span></p>
+                <table style="margin-bottom: 0.4rem;">
+                    <thead>
+                        <tr>
+                            <th style="width: 24%;">Symbole hexa</th>
+                            <th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Binaire (4 bits)</strong></td>
+                            <td class="poids">0000</td><td class="poids">0001</td><td class="poids">0010</td><td class="poids">0011</td>
+                            <td class="poids">0100</td><td class="poids">0101</td><td class="poids">0110</td><td class="poids">0111</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table style="margin-top: 0; margin-bottom: 0.4rem;">
+                    <thead>
+                        <tr>
+                            <th style="width: 24%;">Symbole hexa</th>
+                            <th>8</th><th>9</th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Valeur décimale</strong></td>
+                            <td>8</td><td>9</td>
+                            <td class="poids-hex">10</td><td class="poids-hex">11</td><td class="poids-hex">12</td>
+                            <td class="poids-hex">13</td><td class="poids-hex">14</td><td class="poids-hex">15</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Binaire (4 bits)</strong></td>
+                            <td class="poids">1000</td><td class="poids">1001</td><td class="poids">1010</td><td class="poids">1011</td>
+                            <td class="poids">1100</td><td class="poids">1101</td><td class="poids">1110</td><td class="poids">1111</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table style="margin-top: 0; width: 60%;">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;">Puissance de 16</th>
+                            <th>16<sup>2</sup></th>
+                            <th>16<sup>1</sup></th>
+                            <th>16<sup>0</sup></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Valeur décimale</strong></td>
+                            <td class="poids-hex">256</td>
+                            <td class="poids-hex">16</td>
+                            <td class="poids-hex">1</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="rubric-note">Barème : 0,5 pt pour les 16 quartets 4 bits (0 à F) ; 0,25 pt pour les valeurs décimales de A à F ; 0,25 pt pour les puissances de 16 (256, 16, 1).</p>
+            </div>
+
+            <div class="corr-block">
+                <p class="q-title">1.3 Capacité d'un mot de 8 bits <span class="bareme-tag">1 pt</span></p>
+                <ul class="step-list">
+                    <li>Nombre total de combinaisons possibles : <code>2⁸ = 256</code> valeurs différentes. <em>(0,5 pt)</em></li>
+                    <li>Valeur décimale maximale (en comptant le 0) : <code>2⁸ &minus; 1 = 255</code> (codée <code>1111 1111₂</code>). <em>(0,5 pt)</em></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- CORRIGÉ EXERCICE 2                                                  -->
+    <!-- =================================================================== -->
+    <div class="exercise-card">
+        <div class="exercise-header bg-ex2">
+            <span>Corrigé Exercice 2 — Conversions Base 2 &harr; Base 10</span>
+            <span class="pts-badge">5 points</span>
+        </div>
+        <div class="exercise-body">
+
+            <div class="corr-block">
+                <p class="q-title">2.1 Binaire &rarr; Décimal (Somme des poids 2<sup><em>i</em></sup> actifs) <span class="bareme-tag">2,5 pts</span></p>
+                <div class="grid-2">
+                    <div class="sol-card">
+                        <h4>a) 1001 1100₂ <span class="bareme-tag">1 pt</span></h4>
+                        <ul class="step-list">
+                            <li>Bits à 1 aux rangs : 7, 4, 3 et 2.</li>
+                            <li>Calcul : <code>128 + 16 + 8 + 4</code></li>
+                            <li><code>= 144 + 12 = 156</code></li>
+                            <li>Résultat : <span class="highlight-calc">156₁₀</span></li>
+                        </ul>
+                    </div>
+                    <div class="sol-card">
+                        <h4>b) 0111 0101₂ <span class="bareme-tag">1,5 pts</span></h4>
+                        <ul class="step-list">
+                            <li>Bits à 1 aux rangs : 6, 5, 4, 2 et 0.</li>
+                            <li>Calcul : <code>64 + 32 + 16 + 4 + 1</code></li>
+                            <li><code>= 96 + 16 + 5 = 112 + 5 = 117</code></li>
+                            <li>Résultat : <span class="highlight-calc">117₁₀</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="rubric-note">Barème : la moitié des points pour l'identification correcte des poids actifs, l'autre moitié pour l'addition exacte.</p>
+            </div>
+
+            <div class="corr-block">
+                <p class="q-title">2.2 Décimal &rarr; Binaire sur 8 bits (Méthode de la pesée) <span class="bareme-tag">2,5 pts</span></p>
+                <div class="grid-2">
+                    <div class="sol-card">
+                        <h4>a) 93₁₀ <span class="bareme-tag">1 pt</span></h4>
+                        <ul class="step-list">
+                            <li>128 &gt; 93 &rarr; <strong>b₇ = 0</strong> (reste 93)</li>
+                            <li>93 &minus; 64 = 29 &rarr; <strong>b₆ = 1</strong></li>
+                            <li>32 &gt; 29 &rarr; <strong>b₅ = 0</strong> (reste 29)</li>
+                            <li>29 &minus; 16 = 13 &rarr; <strong>b₄ = 1</strong></li>
+                            <li>13 &minus; 8 = 5 &rarr; <strong>b₃ = 1</strong></li>
+                            <li>5 &minus; 4 = 1 &rarr; <strong>b₂ = 1</strong></li>
+                            <li>2 &gt; 1 &rarr; <strong>b₁ = 0</strong> (reste 1)</li>
+                            <li>1 &minus; 1 = 0 &rarr; <strong>b₀ = 1</strong></li>
+                            <li>Résultat : <span class="highlight-calc">0101 1101₂</span></li>
+                        </ul>
+                    </div>
+                    <div class="sol-card">
+                        <h4>b) 203₁₀ <span class="bareme-tag">1,5 pts</span></h4>
+                        <ul class="step-list">
+                            <li>203 &minus; 128 = 75 &rarr; <strong>b₇ = 1</strong></li>
+                            <li>75 &minus; 64 = 11 &rarr; <strong>b₆ = 1</strong></li>
+                            <li>32 &gt; 11 &rarr; <strong>b₅ = 0</strong></li>
+                            <li>16 &gt; 11 &rarr; <strong>b₄ = 0</strong></li>
+                            <li>11 &minus; 8 = 3 &rarr; <strong>b₃ = 1</strong></li>
+                            <li>4 &gt; 3 &rarr; <strong>b₂ = 0</strong></li>
+                            <li>3 &minus; 2 = 1 &rarr; <strong>b₁ = 1</strong></li>
+                            <li>1 &minus; 1 = 0 &rarr; <strong>b₀ = 1</strong></li>
+                            <li>Résultat : <span class="highlight-calc">1100 1011₂</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="rubric-note">Barème : exiger les soustractions successives (ou la décomposition explicite en somme de puissances de 2) et le codage complet sur 8 bits.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- CORRIGÉ EXERCICE 3                                                  -->
+    <!-- =================================================================== -->
+    <div class="exercise-card">
+        <div class="exercise-header bg-ex3">
+            <span>Corrigé Exercice 3 — Conversions Base 2 &harr; Base 16 (Quartets)</span>
+            <span class="pts-badge">5 points</span>
+        </div>
+        <div class="exercise-body">
+
+            <div class="corr-block">
+                <p class="q-title">3.1 Binaire &rarr; Hexadécimal (Regroupement par quartets 8-4-2-1) <span class="bareme-tag">2,5 pts</span></p>
+                <div class="grid-2">
+                    <div class="sol-card">
+                        <h4>a) 1110 1001₂ <span class="bareme-tag">1 pt</span></h4>
+                        <ul class="step-list">
+                            <li>Quartet fort : <code>1110₂</code> = 8 + 4 + 2 = 14 &rarr; <strong>E</strong></li>
+                            <li>Quartet faible : <code>1001₂</code> = 8 + 1 = 9 &rarr; <strong>9</strong></li>
+                            <li>Résultat : <span class="highlight-calc">0xE9</span></li>
+                        </ul>
+                    </div>
+                    <div class="sol-card">
+                        <h4>b) 1010110111₂ (10 bits) <span class="bareme-tag">1,5 pts</span></h4>
+                        <ul class="step-list">
+                            <li>Découpage par 4 bits <strong>depuis la droite</strong> (complété par deux 0 à gauche) : <code>0010 | 1011 | 0111</code></li>
+                            <li><code>0010₂</code> = 2 &rarr; <strong>2</strong></li>
+                            <li><code>1011₂</code> = 8 + 2 + 1 = 11 &rarr; <strong>B</strong></li>
+                            <li><code>0111₂</code> = 4 + 2 + 1 = 7 &rarr; <strong>7</strong></li>
+                            <li>Résultat : <span class="highlight-calc">0x2B7</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="rubric-note">Point de vigilance b) : sanctionner (0,5 pt) si l'élève découpe depuis la gauche au lieu de la droite.</p>
+            </div>
+
+            <div class="corr-block">
+                <p class="q-title">3.2 Hexadécimal &rarr; Binaire (Éclatement en quartets de 4 bits) <span class="bareme-tag">2,5 pts</span></p>
+                <div class="grid-2">
+                    <div class="sol-card">
+                        <h4>a) 0xA7 <span class="bareme-tag">1 pt</span></h4>
+                        <ul class="step-list">
+                            <li><code>A</code> = 10 = 8 + 2 &rarr; <code>1010₂</code></li>
+                            <li><code>7</code> = 4 + 2 + 1 &rarr; <code>0111₂</code></li>
+                            <li>Résultat : <span class="highlight-calc">1010 0111₂</span></li>
+                        </ul>
+                    </div>
+                    <div class="sol-card">
+                        <h4>b) 0x3D4 <span class="bareme-tag">1,5 pts</span></h4>
+                        <ul class="step-list">
+                            <li><code>3</code> = 2 + 1 &rarr; <code>0011₂</code></li>
+                            <li><code>D</code> = 13 = 8 + 4 + 1 &rarr; <code>1101₂</code></li>
+                            <li><code>4</code> = 4 &rarr; <code>0100₂</code></li>
+                            <li>Résultat : <span class="highlight-calc">0011 1101 0100₂</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="rubric-note">Barème : 0,5 pt par quartet correctement codé sur 4 bits (attention aux zéros non significatifs de chaque quartet, ex. <code>0100</code> pour 4 et non <code>100</code>).</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- CORRIGÉ EXERCICE 4                                                  -->
+    <!-- =================================================================== -->
+    <div class="exercise-card">
+        <div class="exercise-header bg-ex4">
+            <span>Corrigé Exercice 4 — Conversions Base 16 &harr; Base 10 &amp; Contrôle croisé</span>
+            <span class="pts-badge">7 points</span>
+        </div>
+        <div class="exercise-body">
+
+            <div class="corr-block">
+                <p class="q-title">4.1 Hexadécimal &rarr; Décimal (Puissances de 16) <span class="bareme-tag">3 pts</span></p>
+                <div class="grid-2">
+                    <div class="sol-card">
+                        <h4>a) 0x8C <span class="bareme-tag">1,5 pts</span></h4>
+                        <ul class="step-list">
+                            <li><code>8</code> au rang 1 (16<sup>1</sup> = 16) ; <code>C</code> = 12 au rang 0 (16<sup>0</sup> = 1).</li>
+                            <li>Calcul : <code>(8 &times; 16) + (12 &times; 1)</code></li>
+                            <li><code>= 128 + 12 = 140</code></li>
+                            <li>Résultat : <span class="highlight-calc">140₁₀</span></li>
+                        </ul>
+                    </div>
+                    <div class="sol-card">
+                        <h4>b) 0x1B9 <span class="bareme-tag">1,5 pts</span></h4>
+                        <ul class="step-list">
+                            <li><code>1</code> au rang 2 (256) ; <code>B</code> = 11 au rang 1 (16) ; <code>9</code> au rang 0 (1).</li>
+                            <li>Calcul : <code>(1 &times; 256) + (11 &times; 16) + (9 &times; 1)</code></li>
+                            <li><code>= 256 + 176 + 9 = 432 + 9 = 441</code></li>
+                            <li>Résultat : <span class="highlight-calc">441₁₀</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="corr-block">
+                <p class="q-title">4.2 Décimal &rarr; Hexadécimal sans division (Passerelle Base 10 &rarr; Base 2 &rarr; Base 16) <span class="bareme-tag">3 pts</span></p>
+                <div class="grid-2">
+                    <div class="sol-card">
+                        <h4>a) 173₁₀ <span class="bareme-tag">1,5 pts</span></h4>
+                        <ul class="step-list">
+                            <li><strong>Étape 1 (Pesée 10 &rarr; 2) :</strong><br>
+                                173 &minus; 128 = 45 (b₇ = 1, b₆ = 0)<br>
+                                45 &minus; 32 = 13 (b₅ = 1, b₄ = 0)<br>
+                                13 &minus; 8 = 5 (b₃ = 1)<br>
+                                5 &minus; 4 = 1 (b₂ = 1, b₁ = 0)<br>
+                                1 &minus; 1 = 0 (b₀ = 1)<br>
+                                &rarr; Binaire : <code>1010 1101₂</code> <em>(1 pt)</em>
+                            </li>
+                            <li><strong>Étape 2 (Quartets 2 &rarr; 16) :</strong><br>
+                                <code>1010₂</code> = 8 + 2 = 10 &rarr; <strong>A</strong><br>
+                                <code>1101₂</code> = 8 + 4 + 1 = 13 &rarr; <strong>D</strong> <em>(0,5 pt)</em>
+                            </li>
+                            <li>Résultat : <span class="highlight-calc">0xAD</span></li>
+                        </ul>
+                    </div>
+                    <div class="sol-card">
+                        <h4>b) 246₁₀ <span class="bareme-tag">1,5 pts</span></h4>
+                        <ul class="step-list">
+                            <li><strong>Étape 1 (Pesée 10 &rarr; 2) :</strong><br>
+                                246 &minus; 128 = 118 (b₇ = 1)<br>
+                                118 &minus; 64 = 54 (b₆ = 1)<br>
+                                54 &minus; 32 = 22 (b₅ = 1)<br>
+                                22 &minus; 16 = 6 (b₄ = 1, b₃ = 0)<br>
+                                6 &minus; 4 = 2 (b₂ = 1)<br>
+                                2 &minus; 2 = 0 (b₁ = 1, b₀ = 0)<br>
+                                &rarr; Binaire : <code>1111 0110₂</code> <em>(1 pt)</em>
+                            </li>
+                            <li><strong>Étape 2 (Quartets 2 &rarr; 16) :</strong><br>
+                                <code>1111₂</code> = 8 + 4 + 2 + 1 = 15 &rarr; <strong>F</strong><br>
+                                <code>0110₂</code> = 4 + 2 = 6 &rarr; <strong>6</strong> <em>(0,5 pt)</em>
+                            </li>
+                            <li>Résultat : <span class="highlight-calc">0xF6</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="corr-block">
+                <p class="q-title">4.3 Contrôle croisé de 0xAD <span class="bareme-tag">1 pt</span></p>
+                <ul class="step-list">
+                    <li><code>0xAD = (A &times; 16¹) + (D &times; 16⁰) = (10 &times; 16) + (13 &times; 1) = 160 + 13 =</code> <span class="highlight-calc">173₁₀</span> &check;</li>
+                </ul>
+                <p class="rubric-note">Barème : 0,5 pt pour la pose du calcul pondéré avec A = 10 et D = 13 ; 0,5 pt pour le résultat vérifié.</p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
