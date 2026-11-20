@@ -263,14 +263,67 @@
             .grid-2 { grid-template-columns: 1fr; }
         }
 
+        .page-break {
+            page-break-before: always;
+            break-before: page;
+        }
+
+        .print-bar {
+            max-width: 980px;
+            margin: 0 auto 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f0fdfa;
+            border: 1px solid #99f6e4;
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            font-size: 0.88rem;
+            color: #0f766e;
+        }
+
+        .btn-pdf {
+            background: linear-gradient(135deg, #0f766e, #0d9488);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            cursor: pointer;
+        }
+
+        .btn-pdf:hover {
+            background: #115e59;
+        }
+
         @media print {
             @page {
                 size: A4 portrait;
-                margin: 12mm;
+                margin: 8mm 10mm;
             }
-            body { background: white; padding: 0; font-size: 10.5pt; }
+            .no-print { display: none !important; }
+            body { background: white; padding: 0; font-size: 8.6pt; line-height: 1.28; }
             .container { box-shadow: none; border: none; padding: 0; max-width: 100%; }
-            .exercise-card { break-inside: avoid; }
+            .sheet-header { margin-bottom: 0.45rem; }
+            .header-top { padding: 0.45rem 0.7rem; }
+            .header-top h1 { font-size: 11pt; margin-bottom: 0.1rem; }
+            .header-top p { font-size: 8pt; }
+            .header-meta div { padding: 0.25rem 0.6rem; font-size: 8pt; }
+            .summary-box { padding: 0.4rem 0.65rem; margin-bottom: 0.45rem; font-size: 8pt; }
+            .summary-box h3 { font-size: 8.5pt; margin-bottom: 0.2rem; }
+            .exercise-card { break-inside: avoid; margin-bottom: 0.5rem; }
+            .exercise-header { padding: 0.35rem 0.7rem; font-size: 9pt; }
+            .exercise-body { padding: 0.5rem 0.7rem; font-size: 8.3pt; }
+            .corr-block { margin-bottom: 0.45rem; padding-bottom: 0.4rem; }
+            .q-title { margin-bottom: 0.2rem; font-size: 8.4pt; }
+            .sol-card { padding: 0.4rem 0.6rem; }
+            .sol-card h4 { font-size: 8.3pt; margin-bottom: 0.2rem; padding-bottom: 0.15rem; }
+            .step-list { font-size: 8pt; }
+            .step-list li { margin-bottom: 0.1rem; }
+            table { margin: 0.2rem 0 0.3rem !important; font-size: 7.9pt; }
+            th, td { padding: 0.2rem 0.25rem; }
+            .rubric-note { margin-top: 0.2rem; font-size: 7.6pt; }
             .header-top, .exercise-header, .highlight-calc, .bareme-tag, th, td.poids, td.poids-hex, .summary-box {
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
@@ -279,6 +332,11 @@
     </style>
 </head>
 <body>
+
+<div class="print-bar no-print">
+    <span>📄 <strong>Corrigé calibré sur 2 pages A4</strong> (Page 1 : Récap + Ex. 1 &amp; 2 &nbsp;|&nbsp; Page 2 : Ex. 3 &amp; 4)</span>
+    <button class="btn-pdf" onclick="window.print()">🖨️ Exporter le corrigé en PDF (2 pages A4)</button>
+</div>
 
 <div class="container">
 
@@ -524,7 +582,7 @@
     <!-- =================================================================== -->
     <!-- CORRIGÉ EXERCICE 3                                                  -->
     <!-- =================================================================== -->
-    <div class="exercise-card">
+    <div class="exercise-card page-break">
         <div class="exercise-header bg-ex3">
             <span>Corrigé Exercice 3 — Conversions Base 2 &harr; Base 16 (Quartets)</span>
             <span class="pts-badge">5 points</span>
